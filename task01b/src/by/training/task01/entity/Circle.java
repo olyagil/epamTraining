@@ -1,25 +1,31 @@
 /**
- * The Circle class describes a circle which is set by a point and the radius
+ * The entity package describes a entities of the objects
  */
-
 package by.training.task01.entity;
 
+/**
+ * The {@code Circle} class describes a circle which is set by the center and
+ * the radius
+ *
+ * @author Gil Olga
+ */
 public class Circle {
 
-    private Point point;
+    private Point center;
     private double radius;
 
-    public Circle(int x, int y, double radius) {
-        point = new Point(x, y);
+
+    public Circle(Point center, double radius) {
+        this.center = center;
         this.radius = radius;
     }
 
-    public Point getPoint() {
-        return point;
+    public Point getCenter() {
+        return center;
     }
 
-    public void setPoint(Point point) {
-        this.point = point;
+    public void setCenter(Point center) {
+        this.center = center;
     }
 
     public double getRadius() {
@@ -34,7 +40,7 @@ public class Circle {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((point == null) ? 0 : point.hashCode());
+        result = prime * result + ((center == null) ? 0 : center.hashCode());
         long temp;
         temp = Double.doubleToLongBits(radius);
         result = prime * result + (int) (temp ^ (temp >>> 32));
@@ -53,11 +59,11 @@ public class Circle {
             return false;
         }
         Circle other = (Circle) obj;
-        if (point == null) {
-            if (other.point != null) {
+        if (center == null) {
+            if (other.center != null) {
                 return false;
             }
-        } else if (!point.equals(other.point)) {
+        } else if (!center.equals(other.center)) {
             return false;
         }
         if (radius != other.radius) {
@@ -68,6 +74,9 @@ public class Circle {
 
     @Override
     public String toString() {
-        return "Circle{" + "point=" + point + ", radius=" + radius + '}';
+        StringBuilder string = new StringBuilder("Circle { ");
+        string.append("center " + center);
+        string.append(" radius " + radius + " }");
+        return string.toString();
     }
 }

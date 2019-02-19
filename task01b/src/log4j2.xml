@@ -11,11 +11,10 @@
 
     <Appenders>
         <RollingFile name="RollingFile" fileName="logs/app.log"
-                     filePattern="logs/app-%d{MM-dd-yyyy}.log.gz">
+                     filePattern="logs/app-%d{MM-dd-yyyy}.log">
             <PatternLayout pattern="${patternfull}"/>
             <Policies>
-                <TimeBasedTriggeringPolicy
-                        filePattern="${LOG_DIR}/application.%d{dd-MMM-hh}.log.gz"/>
+                <TimeBasedTriggeringPolicy/>
             </Policies>
             <DefaultRolloverStrategy max="5"/>
         </RollingFile>
@@ -26,7 +25,6 @@
     </Appenders>
 
     <Loggers>
-        <!-- Root Logger -->
         <Root level="all">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="RollingFile"/>
