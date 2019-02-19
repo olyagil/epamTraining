@@ -10,26 +10,25 @@
     </Properties>
 
     <Appenders>
+        <RollingFile name="RollingFile" fileName="logs/app.log"
+                     filePattern="logs/app-%d{MM-dd-yyyy}.log">
+            <PatternLayout pattern="${patternfull}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="5"/>
+        </RollingFile>
+
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="${patternshort}" />
+            <PatternLayout pattern="${patternshort}"/>
         </Console>
-        <File name="TxtFile" fileName="logs/text.log" bufferedIO="true">
-            <PatternLayout pattern="${patternfull}" />
-        </File>
     </Appenders>
 
     <Loggers>
-        <Logger name="by.training.log4j2hello.User" level="debug"
-                additivity="true">
-            <AppenderRef ref="Console" />
-            <AppenderRef ref="TxtFile" />
-        </Logger>
-
-        <!-- Root Logger -->
         <Root level="all">
-            <AppenderRef ref="Console" />
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingFile"/>
         </Root>
     </Loggers>
-
 
 </Configuration>
