@@ -1,6 +1,3 @@
-/**
- * The action package is used to calculate object's parameters
- */
 package by.training.task01.action;
 
 import by.training.task01.entity.Circle;
@@ -16,7 +13,10 @@ import org.apache.logging.log4j.Logger;
  */
 public class CircleAction {
 
-    private static final Logger logger = LogManager.getLogger();
+    /**
+     * Logger for writing in console and a file.
+     */
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * Calculate the area of the circle.
@@ -24,9 +24,9 @@ public class CircleAction {
      * @param circle that's needed to be checked
      * @return area of the circle
      */
-    public double calcArea(Circle circle) {
+    public double calcArea(final Circle circle) {
         double area = Math.PI * circle.getRadius() * circle.getRadius();
-        logger.info("The area of the circle = " + area);
+        LOGGER.info("The area of the circle = " + area);
         return area;
     }
 
@@ -36,9 +36,9 @@ public class CircleAction {
      * @param circle that's needed to be checked
      * @return perimeter of the circle
      */
-    public double calcPerimeter(Circle circle) {
+    public double calcPerimeter(final Circle circle) {
         double perimeter = 2 * Math.PI * circle.getRadius();
-        logger.info("The perimeter of the circle = " + perimeter);
+        LOGGER.info("The perimeter of the circle = " + perimeter);
         return perimeter;
     }
 
@@ -48,9 +48,9 @@ public class CircleAction {
      * @param circle that's needed to be checked
      * @return true, if the circle
      */
-    public boolean isCircle(Circle circle) {
+    public boolean isCircle(final Circle circle) {
         boolean isCircle = (circle.getRadius() > 0);
-        logger.info("It is a circle: " + isCircle);
+        LOGGER.info("It is a circle: " + isCircle);
         return isCircle;
     }
 
@@ -61,11 +61,11 @@ public class CircleAction {
      * @param distance given distance
      * @return true, if cross
      */
-    public boolean isCross(Circle circle, int distance) {
+    public boolean isCross(final Circle circle, final int distance) {
         double absX = Math.abs(circle.getCenter().getX());
         double absY = Math.abs(circle.getCenter().getY());
         return (absX != absY)
-                && (circle.getRadius() - absX == distance
-                || circle.getRadius() - absY == distance);
+                && (Double.compare(circle.getRadius() - absX, distance) == 0
+                || Double.compare(circle.getRadius() - absY, distance) == 0);
     }
 }

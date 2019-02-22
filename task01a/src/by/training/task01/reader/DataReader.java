@@ -1,6 +1,3 @@
-/**
- * The reader package is used for reading from user
- */
 package by.training.task01.reader;
 
 import by.training.task01.exception.ReadFileException;
@@ -21,7 +18,10 @@ import java.util.stream.Stream;
  */
 public class DataReader {
 
-    private static final Logger logger = LogManager.getLogger();
+    /**
+     * Logger for writing in console and a file.
+     */
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * Used for reading data from file.
@@ -31,13 +31,13 @@ public class DataReader {
      * @throws ReadFileException is thrown when an error accrued while
      *                           reading file
      */
-    public List<String> readDataFromFile(String path) throws ReadFileException {
+    public List<String> readDataFromFile(final String path)
+            throws ReadFileException {
 
-        logger.info("Reading from file " + path);
+        LOGGER.info("Reading from file " + path);
         List<String> list;
         try (Stream<String> stream = Files.lines(Paths.get(path))) {
             list = stream.collect(Collectors.toList());
-            System.out.println(list);
         } catch (IOException e) {
             throw new ReadFileException("Error while reading file ", e);
         }

@@ -1,19 +1,40 @@
 package by.training.task01.exception;
 
+/**
+ * Exceptions occur when trying to read data file.
+ */
 public class ReadFileException extends Exception {
 
+    /**
+     * The constructor without parameters.
+     */
     public ReadFileException() {
     }
 
-    public ReadFileException(String message) {
+    /**
+     * The constructor with string parameter.
+     *
+     * @param message of the exceptions
+     */
+    public ReadFileException(final String message) {
         super(message);
     }
 
-    public ReadFileException(String message, Throwable cause) {
+    /**
+     * The constructor with two parameters.
+     *
+     * @param message of the exceptions
+     * @param cause   of the exceptions
+     */
+    public ReadFileException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
-    public ReadFileException(Throwable cause) {
+    /**
+     * The constructor with one parameter.
+     * @param cause of the exceptions
+     */
+    public ReadFileException(final Throwable cause) {
         super(cause);
     }
 }
