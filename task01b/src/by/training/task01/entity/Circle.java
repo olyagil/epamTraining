@@ -1,4 +1,6 @@
-package by.training.task01.generator.training.task01.entity;
+package by.training.task01.entity;
+
+import by.training.task01.generator.IdGenerator;
 
 /**
  * The {@code Circle} class describes a circle which is set by the center and
@@ -24,7 +26,7 @@ public class Circle {
     /**
      * Identification number of the circle.
      */
-    private long circleId;
+    private Integer circleId;
 
     /**
      * Constructor of the class Circle.
@@ -35,6 +37,7 @@ public class Circle {
     public Circle(final Point centerOfCircle, final double radiusOfCircle) {
         this.center = centerOfCircle;
         this.radius = radiusOfCircle;
+        //  this.circleId = IdGenerator.generateId();
     }
 
     /**
@@ -80,18 +83,30 @@ public class Circle {
      *
      * @return circleId
      */
-    public long getCircleId() {
+    public Integer getCircleId() {
         return circleId;
     }
 
     /**
-     * Set an identification number.
+     * If entered id is invalid generate id.
      *
-     * @param circleIdOfCircle of the circle
+     * @param id of the circle
      */
-    public void setCircleId(final long circleIdOfCircle) {
-        this.circleId = circleIdOfCircle;
+    public void setCircleId(final Integer id) {
+        if (id < 0) {
+            this.circleId = IdGenerator.generateId();
+        } else {
+            this.circleId = id;
+        }
     }
+
+    /**
+     * Set an identification number by generation.
+     */
+    public void setGeneratedCircleId() {
+        this.circleId = IdGenerator.generateId();
+    }
+
 
     /**
      * Overriding a hashCode method.
@@ -102,7 +117,11 @@ public class Circle {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((center == null) ? 0 : center.hashCode());
+        if (center == null) {
+            result *= prime;
+        } else {
+            result = prime * result + center.hashCode();
+        }
         long temp;
         temp = Double.doubleToLongBits(radius);
         result = prime * result + (int) (temp ^ (temp >>> BIT_INT_32));

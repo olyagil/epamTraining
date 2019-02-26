@@ -1,6 +1,6 @@
-package by.training.task01.generator.training.task01.action;
+package by.training.task01.action;
 
-import by.training.task01.generator.training.task01.entity.Circle;
+import by.training.task01.entity.Circle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

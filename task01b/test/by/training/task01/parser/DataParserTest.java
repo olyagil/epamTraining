@@ -1,7 +1,7 @@
-package by.training.task01.generator.training.task01.parser;
+package by.training.task01.parser;
 
-import by.training.task01.generator.training.task01.exception.ReadFileException;
-import by.training.task01.generator.training.task01.reader.DataReader;
+import by.training.task01.exception.ReadFileException;
+import by.training.task01.reader.DataReader;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -23,7 +23,12 @@ public class DataParserTest {
                         {Arrays.asList(new ArrayList<>
                                         (Arrays.asList(1.0, 2.0, 3.0)),
                                 new ArrayList<>
-                                        (Arrays.asList(5.0, 6.0, 7.0)))}
+                                        (Arrays.asList(5.0, 6.0, 7.0)),
+                                new ArrayList<>
+                                        (Arrays.asList(1.0, 15.0, 6.0)),
+                                new ArrayList<>
+                                        (Arrays.asList(0.0, 0.0, 1.0))
+                        )}
                 };
     }
 

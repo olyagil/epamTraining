@@ -1,4 +1,4 @@
-package by.training.task01.generator.training.task01.entity;
+package by.training.task01.entity;
 
 /**
  * The Point class describes a point with two coordinates.

@@ -1,4 +1,4 @@
-package by.training.task01.generator.training.task01.exception;
+package by.training.task01.exception;
 
 /**
  * Exceptions occur when trying to read data file.

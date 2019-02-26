@@ -1,7 +1,7 @@
-package by.training.task01.generator.training.task01.action;
+package by.training.task01.action;
 
-import by.training.task01.generator.training.task01.entity.Circle;
-import by.training.task01.generator.training.task01.entity.Point;
+import by.training.task01.entity.Circle;
+import by.training.task01.entity.Point;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -16,6 +16,13 @@ public class CircleActionTest {
                 new Object[][]{
                         {2, 12.5},
                         {1, 3.1},
+                        {230, 166190.25},
+                        {160, 80424.77},
+                        {0.0, 0.0},
+                        {3, 28.27},
+                        {4, 50.26},
+                        {5.0, 78.53},
+                        {90, 25446.90},
                         {0, 0},};
     }
 
@@ -34,6 +41,13 @@ public class CircleActionTest {
                 new Object[][]{
                         {2, 12.56},
                         {1, 6.283},
+                        {230, 1445.13},
+                        {160, 1005.3},
+                        {0.0, 0.0},
+                        {3, 18.84},
+                        {4, 25.13},
+                        {5.0, 31.41},
+                        {90, 565.48},
                         {0, 0},};
     }
 
@@ -52,6 +66,11 @@ public class CircleActionTest {
                         {2, true},
                         {1, true},
                         {0, false},
+                        {-200, false},
+                        {200, true},
+                        {1596, true},
+                        {3, true},
+                        {4, true},
                         {-1, false}};
     }
 
@@ -71,6 +90,10 @@ public class CircleActionTest {
                         {9, 3, false},
                         {4, 1, true},
                         {0, 5, false},
+                        {15, 10, false},
+                        {29, 3, false},
+                        {44, 50, false},
+                        {-5, 5, false},
                         {-1, 2, false}};
     }
 

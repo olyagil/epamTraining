@@ -1,6 +1,6 @@
-package by.training.task01.generator.training.task01.reader;
+package by.training.task01.reader;
 
-import by.training.task01.generator.training.task01.exception.ReadFileException;
+import by.training.task01.exception.ReadFileException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

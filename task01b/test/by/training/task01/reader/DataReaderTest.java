@@ -1,6 +1,6 @@
-package by.training.task01.generator.training.task01.reader;
+package by.training.task01.reader;
 
-import by.training.task01.generator.training.task01.exception.ReadFileException;
+import by.training.task01.exception.ReadFileException;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -23,10 +23,20 @@ public class DataReaderTest {
                                 " t   e   s   t",
                                 "6.0 7.0 0.0",
                                 "7.0 9.0",
-                                "2.0  6.0   4.0   9.0")}
+                                "2.0  6.0   4.0   9.0",
+                                "1.0 15.0 6.0",
+                                "1.0 6.0 -12.0 5.0",
+                                "f s 6 7",
+                                "0.0 0.0 1.0")}
                 };
     }
 
+    /**
+     * This test will check if the data is read from file correctly.
+     *
+     * @param expected
+     * @throws ReadFileException
+     */
     @Test(description = "The wrong and positive scenario of reading file",
             dataProvider = "inputDataForReadingFile")
     public void testReadDataFromFile(List<String> expected) throws

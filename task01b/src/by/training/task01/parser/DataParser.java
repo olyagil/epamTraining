@@ -1,6 +1,6 @@
-package by.training.task01.generator.training.task01.parser;
+package by.training.task01.parser;
 
-import by.training.task01.generator.training.task01.validator.CircleValidator;
+import by.training.task01.validator.CircleValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
