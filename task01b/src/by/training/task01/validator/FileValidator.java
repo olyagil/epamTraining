@@ -1,7 +1,7 @@
 /**
  * The validator package is used to validate initial data
  */
-package by.training.task01.validator;
+package by.training.task01.generator.training.task01.validator;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +15,10 @@ import java.io.File;
  */
 public class FileValidator {
 
-    private static final Logger logger = LogManager.getLogger();
+    /**
+     * Logger for writing in console and a file.
+     */
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * Checks if file is exist.
@@ -23,12 +26,12 @@ public class FileValidator {
      * @param file entered file
      * @return true if file is exist
      */
-    public boolean checkFile(File file) {
+    public boolean checkFile(final File file) {
         boolean flag = false;
         if (file != null || file.exists() || file.length() != 0) {
             flag = true;
         } else {
-            logger.warn("The file is wrong or doesn't exist" + file);
+            LOGGER.warn("The file is wrong or doesn't exist" + file);
         }
         return flag;
     }

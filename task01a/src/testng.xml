@@ -27,4 +27,5 @@
             <class name="by.training.task01.reader.DataReaderTest"/>
         </classes>
     </test>
+
 </suite>

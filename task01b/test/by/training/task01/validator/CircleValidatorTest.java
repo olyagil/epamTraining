@@ -1,4 +1,4 @@
-package by.training.task01.validator;
+package by.training.task01.generator.training.task01.validator;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;

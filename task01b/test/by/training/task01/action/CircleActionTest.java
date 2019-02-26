@@ -1,7 +1,7 @@
-package by.training.task01.action;
+package by.training.task01.generator.training.task01.action;
 
-import by.training.task01.entity.Circle;
-import by.training.task01.entity.Point;
+import by.training.task01.generator.training.task01.entity.Circle;
+import by.training.task01.generator.training.task01.entity.Point;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;

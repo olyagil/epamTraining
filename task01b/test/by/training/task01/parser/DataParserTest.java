@@ -1,13 +1,12 @@
-package by.training.task01.parser;
+package by.training.task01.generator.training.task01.parser;
 
-import by.training.task01.entity.Circle;
-import by.training.task01.entity.Point;
-import by.training.task01.exception.ReadFileException;
-import by.training.task01.reader.DataReader;
+import by.training.task01.generator.training.task01.exception.ReadFileException;
+import by.training.task01.generator.training.task01.reader.DataReader;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,18 +18,21 @@ public class DataParserTest {
 
     @DataProvider(name = "dataForParse")
     public Object[][] dataForParse() {
-        // List<Circle> circles = new ArrayList<>();
-        return new Object[][]{{Arrays.asList(new Circle(new Point(1.0, 2.0), 3.0),
-                new Circle(new Point(5.0, 6.0), 7))
-        }
-        };
+        return
+                new Object[][]{
+                        {Arrays.asList(new ArrayList<>
+                                        (Arrays.asList(1.0, 2.0, 3.0)),
+                                new ArrayList<>
+                                        (Arrays.asList(5.0, 6.0, 7.0)))}
+                };
     }
 
     @Test(description = "The scenario of the data parsing", dataProvider =
             "dataForParse")
-    public void testParser(List<String> expected) throws ReadFileException {
-        List<String> data = dataReader.readDataFromFile(TEST_DATA_FILE_PATH);
-        List<Circle> actual = dataParser.parseData(data);
+    public void testParser(List<List<Double>> expected) throws ReadFileException {
+        List<List<Double>> actual = dataParser
+                .parseData(dataReader.readDataFromFile(TEST_DATA_FILE_PATH));
+        System.out.println(actual);
         Assert.assertEquals(actual, expected);
     }
 }

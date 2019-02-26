@@ -79,7 +79,11 @@ public class Circle {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((center == null) ? 0 : center.hashCode());
+        if (center == null) {
+            result *= prime;
+        } else {
+            result = prime * result + center.hashCode();
+        }
         long temp;
         temp = Double.doubleToLongBits(radius);
         result = prime * result + (int) (temp ^ (temp >>> BIT_INT_32));
