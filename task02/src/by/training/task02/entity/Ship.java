@@ -24,18 +24,15 @@ public class Ship implements Runnable {
     private String name;
     private Storage storage;
     private int capacityShip;
+    private Queue<Container> containersInShip;
+    private int todo;
+    Lock lock;
+    Condition condition;
+
 
     public int getFilledCapacity() {
         return containersInShip.size();
     }
-
-    private Queue<Container> containersInShip;
-    private int todo;
-    Lock lock;
-    Berth berth;
-    Condition condition;
-    Queue<Container> containers;
-
 
     public boolean addContainer(Container container) {
         return containersInShip.add(container);
@@ -57,10 +54,8 @@ public class Ship implements Runnable {
         this.todo = todo;
         this.storage = storage;
         this.semaphore = semaphore;
-        // this.berth = berth;
         lock = new ReentrantLock();
         condition = lock.newCondition(); // получаем условие связанное сблокировкой
-        containers = new LinkedBlockingQueue<>();
     }
 
     public void run() {
@@ -69,12 +64,10 @@ public class Ship implements Runnable {
                 case LOAD:
                     semaphore.acquire();
                     loadShip();
-                    TimeUnit.MILLISECONDS.sleep(200);
                     semaphore.release();
                     break;
                 case UNLOAD:
                     semaphore.acquire();
-                    TimeUnit.MILLISECONDS.sleep(20);
                     unloadShip();
                     semaphore.release();
                     break;
@@ -84,14 +77,13 @@ public class Ship implements Runnable {
         }
     }
 
-    public void atPier() {
-
-    }
-
-    //todo: если нужно загрузить в корабль ещё контейнеров, но их нет на складе.
     private void loadShip() {
         lock.lock();
         int freeCapacityShip = getCapacityShip() - getFilledCapacity();
+        LOGGER.info("В корабль " + getName() + " необходимо загрузить "
+                + freeCapacityShip + " контейнеров.");
+        LOGGER.info("Емкость склада равна " + storage.getFilledCapacity() +
+                " контейнеров.");
         int count = 0;
         try {
             if (freeCapacityShip == 0) {
@@ -100,16 +92,13 @@ public class Ship implements Runnable {
                         + "Корабль заполнен. Загрузка ненужна. " +
                         "Разгружаем его.");
                 unloadShip();
-            } else if (freeCapacityShip > storage.getFilledCapacity()) {
-                LOGGER.info(">> Емкос+ть корабля " + getName() + " : "
+            } else if (freeCapacityShip < storage.getFilledCapacity()) {
+                LOGGER.info(">> Емкость корабля " + getName() + " : "
                         + getFilledCapacity() + "/" + getCapacityShip()
                         + ". То есть можно загрузить ещё " + freeCapacityShip
-                        + " контейнер(ов).");
+                        + " контейнер (ов).");
                 for (int i = 0; i < freeCapacityShip; i++) {
                     Container container = storage.getContainer();
-//                    if (container == null) { // если в хранилище больше нет товара, загрузка корабля прерывается
-//                        return;
-//                    }
                     containersInShip.add(container);
                     count++;
                     TimeUnit.MILLISECONDS.sleep(50);
@@ -117,21 +106,32 @@ public class Ship implements Runnable {
                 LOGGER.info("Корабль " + getName() + " загрузил " + count
                         + " контейнер(ов). Всего в коробле " + containersInShip.size()
                         + " контейнер(ов). А на складе " + storage.getFilledCapacity()
-                        + " контейнер(ов).");
-                LOGGER.info("!!!!!!!Корабль обслужен!!!!!!!!!!");
-            } else if (capacityShip > storage.getFilledCapacity()) {
-                LOGGER.info("Для загрузки корабля " + getName() + " c "
-                        + freeCapacityShip + " контейнерами недостаточно " +
-                        "контейнеров на складе(" + storage.getFilledCapacity()
-                        + "). Корабль становится в конец очереди.");
+                        + " контейнер (ов).");
+            } else if (freeCapacityShip > storage.getFilledCapacity()) {
+                LOGGER.info("Корабль " + getName() + " может "
+                        + "загрузится частично, т.к. на складе "
+                        + getFilledCapacity() + " контейнеров. А загрузить "
+                        + "нужно " + freeCapacityShip + " контейнеров.");
+                int filledCapacityStorage = storage.getFilledCapacity();
+                for (int i = 0; i < filledCapacityStorage; i++) {
+                    Container container = storage.getContainer();
+                    containersInShip.add(container);
+                    count++;
+                }
+                LOGGER.info("Корабль " + getName() + " загрузил " + count
+                        + " контейнер(ов). Всего в коробле " + containersInShip.size()
+                        + " контейнер(ов). А на складе " + storage.getFilledCapacity()
+                        + " контейнер (ов).");
+                // пока нет доступных контейнеров, ожидаем ограниченное число
+                // времени. Если контейнеров не появляется, то добавляем
+                // сколько есть.
+//            while (freeCapacityShip > storage.getFilledCapacity()) {
+//                condition.await();
+//            }
+//            condition.signalAll();
             }
-            // пока нет доступных контейнеров, ожидаем ограниченное число
-            // времени. Если контейнеров не появляется, то добавляем
-            // сколько есть.
-            while (capacityShip > storage.getFilledCapacity()){
-                condition.await();
-            }
-            condition.signalAll();
+            LOGGER.info("!!!!!!!Корабль " + getName() + " обслужен!!!!!!!!!!");
+
         } catch (
                 InterruptedException e) {
             e.printStackTrace();
@@ -140,7 +140,6 @@ public class Ship implements Runnable {
         }
     }
 
-    //todo: если склад заполнен, но нужно разгрузить ещё контейнеров.
     private void unloadShip() {
         lock.lock();
         try {
@@ -151,21 +150,39 @@ public class Ship implements Runnable {
                         " надо. Он пуст. Загрузим его. Его емкость равна " + capacityShip);
                 loadShip();
             } else {
-                LOGGER.info("<< Необходимо разгрузить корабль " + getName()
-                        + ". Он содержит " + size + " контейнер(ов).");
-                for (int i = 0; i < size; i++) {
-                    Container container = containersInShip.poll();
-                    storage.addContainer(container);
-                    count++;
-                    TimeUnit.MILLISECONDS.sleep(50);
+                int freeCapacityStorage = storage.getCapacity() - storage.getFilledCapacity();
+                if (size < freeCapacityStorage) {
+                    LOGGER.info("<< Необходимо разгрузить корабль " + getName()
+                            + ". Он содержит " + size + " контейнер (ов).");
+                    for (int i = 0; i < size; i++) {
+                        Container container = containersInShip.poll();
+                        storage.addContainer(container);
+                        count++;
+                        TimeUnit.MILLISECONDS.sleep(50);
+                    }
+                    LOGGER.info("Корабль " + getName() + " выгрузил " + count
+                            + " контейнер(ов). Всего в коробле " + containersInShip.size()
+                            + " контейнер(ов). А на складе " + storage.getFilledCapacity()
+                            + " контейнер(ов).");
+                } else {
+                    LOGGER.info("Корабль " + getName() + " может разгрузиться "
+                            + "частично т.к. свободная емкость склада равна "
+                            + freeCapacityStorage + ", а разгрузить нужно " + size
+                            + " контейнер(ов).");
+
+                    for (int i = 0; i < freeCapacityStorage; i++) {
+                        Container container = containersInShip.poll();
+                        storage.addContainer(container);
+                        count++;
+                    }
+                    LOGGER.info("Корабль " + getName() + " выгрузил " + count
+                            + " контейнер(ов). Всего в коробле " + containersInShip.size()
+                            + " контейнер(ов). А на складе " + storage.getFilledCapacity()
+                            + " контейнер(ов).");
                 }
-                LOGGER.info("Корабль " + getName() + " выгрузил " + count
-                        + " контейнер(ов). Всего в коробле " + containersInShip.size()
-                        + " контейнер(ов). А на складе " + storage.getFilledCapacity()
-                        + " контейнер(ов).");
-                LOGGER.info("!!!!!!!Корабль обслужен!!!!!!!!!!");
-                condition.signalAll();
             }
+            LOGGER.info("!!!!!!!Корабль " + getName() + " обслужен!!!!!!!!!!");
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
@@ -175,9 +192,21 @@ public class Ship implements Runnable {
 
     @Override
     public String toString() {
+        String action;
+        switch (todo) {
+            case LOAD:
+                action = " загрузить";
+                break;
+            case UNLOAD:
+                action = " разгрузить";
+                break;
+            default:
+                action = " error";
+        }
         return "\nName: '" + name + '\'' +
                 ", capacity = " + capacityShip
-                + ", containers in ship = " + containersInShip.size();
+                + ", containers in ship = " + containersInShip.size()
+                + ", " + action;
     }
 }
 
