@@ -1,13 +1,11 @@
 package by.training.task02.runner;
 
 
-import by.training.task02.creator.CreateData;
 import by.training.task02.entity.*;
 import by.training.task02.exception.ReadFileException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -34,6 +32,8 @@ public class Main {
     public static void main(String[] args) throws ReadFileException {
 //todo: чтение из файла
 //todo: Callable
+//todo: comments
+//todo: maybe to move 2 methods.
 
 //        CreateData createData = new CreateData();
 //        createData.createData(PATH);
@@ -43,17 +43,18 @@ public class Main {
         //создание кораблей
         List<Ship> shipList = makeShips(SHIP_AMOUNT);
 
-        LOGGER.info("Емкость склада: " + port.getStorage().getFilledCapacity()
+        LOGGER.info("The capacity of the storage: " + port.getStorage().getFilledCapacity()
                 + "/" + STORAGE_CAPACITY);
-        LOGGER.info("На очереди для загрузки/разгрузки стоит "
-                + shipList.size() + " корабл-я(ей): " + shipList);
+        LOGGER.info("The Queue for the loading/unloading are " + shipList.size()
+                + " ships: " + shipList);
 
         //создание потока для каждого корабля
         for (int i = 0; i < shipList.size(); i++) {
             new Thread(shipList.get(i)).start();
         }
+
         try {
-            TimeUnit.MILLISECONDS.sleep(4000);
+            TimeUnit.MILLISECONDS.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -61,10 +62,10 @@ public class Main {
         //Вывод на экран. Отчет in Future
         for (int i = 0; i < shipList.size(); i++) {
             Ship ship = shipList.get(i);
-            LOGGER.info("Емкость корабля " + ship.getName() + " : "
-                    + ship.getFilledCapacity() + "/" + ship.getCapacityShip());
+            LOGGER.info("The capacity of the ship " + ship.getName().toUpperCase()
+                    + " : " + ship.getFilledCapacityShip() + "/" + ship.getCapacityShip());
         }
-        LOGGER.info("* Емкость склада: " + port.getStorage().getFilledCapacity()
+        LOGGER.info("* The capacity of the storage: " + port.getStorage().getFilledCapacity()
                 + "/" + port.getStorage().getCapacity());
     }
 
@@ -78,7 +79,6 @@ public class Main {
                     random.nextInt(MAX_SHIP_CAPACITY) + 1,
                     random.nextInt(SHIP_ACTION), port));
             fillShip(ships.get(i));
-
         }
         return ships;
     }

@@ -16,15 +16,24 @@ public class Berth {
         this.storage = storage;
     }
 
-    public void addToPortStorage(Storage shipStorage, Container container) {
-        storage.addContainer(container);
-    }
-
-    public void addToShipStorage(Storage shipStorage, Container container) {
-        if (container != null) {
-            shipStorage.addContainer(container);
+    protected void moveContainersFromShip(Storage storage,
+                                          List<Container> containersInShip,
+                                          int capacityToMove) {
+        for (int i = 0; i < capacityToMove; i++) {
+            Container container = containersInShip.remove(0);
+            storage.addContainer(container);
         }
     }
 
-
+    protected void moveContainersToShip(Storage storage,
+                                        List<Container> containersInShip,
+                                        int capacityToMove) {
+        for (int i = 0; i < capacityToMove; i++) {
+            Container container = storage.getContainer();
+            containersInShip.add(container);
+        }
+    }
 }
+
+
+

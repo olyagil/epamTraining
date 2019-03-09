@@ -16,8 +16,8 @@ public class Port {
     private Storage storage;
     private Map<Ship, Berth> shipBerthMap;
     private static Lock lock = new ReentrantLock();
-    List<Container> containerList;
-    Random random = new Random();
+    private List<Container> containerList;
+    private Random random = new Random();
 
     public static Port getInstance(int berthAmount, int storageCapacity) {
         if (instance == null) {
@@ -32,7 +32,6 @@ public class Port {
     }
 
     private Port(int berthAmount, int storageCapacity) {
-
 
         int randomFilledCapacity = random.nextInt(storageCapacity);
 
@@ -70,7 +69,7 @@ public class Port {
         }
     }
 
-    public void unmoorShip(Ship ship) {
+    public void unmooreShip(Ship ship) {
         Berth berth = shipBerthMap.get(ship);
         lock.lock();
         try {
@@ -79,6 +78,12 @@ public class Port {
         } finally {
             lock.unlock();
         }
+    }
+
+
+
+    public Berth getBerth(Ship ship) {
+        return shipBerthMap.get(ship);
     }
 
     public Storage getStorage() {
