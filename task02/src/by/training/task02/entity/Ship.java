@@ -3,7 +3,7 @@ package by.training.task02.entity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -24,10 +24,11 @@ public class Ship implements Runnable {
     private String name;
     private Storage storage;
     private int capacityShip;
-    private Queue<Container> containersInShip;
-    private int todo;
+     private int shipAction;
     Lock lock;
     Condition condition;
+    Port port;
+    private List<Container> containersInShip;
 
 
     public int getFilledCapacity() {
@@ -47,34 +48,45 @@ public class Ship implements Runnable {
     }
 
     public Ship(Semaphore semaphore, String name, int capacityShip,
-                int todo, Storage storage) {
+                int shipAction, Port port) {
+        this.port = port;
         this.name = name;
         this.capacityShip = capacityShip;
-        containersInShip = new LinkedBlockingQueue<>(capacityShip);
-        this.todo = todo;
-        this.storage = storage;
+
+        containersInShip = new ArrayList<>(capacityShip);
+        this.shipAction = shipAction;
+        storage = port.getStorage();
         this.semaphore = semaphore;
         lock = new ReentrantLock();
-        condition = lock.newCondition(); // получаем условие связанное сблокировкой
     }
 
     public void run() {
         try {
-            switch (todo) {
-                case LOAD:
-                    semaphore.acquire();
-                    loadShip();
-                    semaphore.release();
-                    break;
-                case UNLOAD:
-                    semaphore.acquire();
-                    unloadShip();
-                    semaphore.release();
-                    break;
-            }
+            semaphore.acquire();
+            port.mooreShip(this);
+            LOGGER.info("The ship " + getName().toUpperCase()
+                    + " has been moored to the berth");
+            shipMoveAction();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            port.unmoorShip(this);
+            LOGGER.info("The ship " + getName().toUpperCase()
+                    + " is unmoored from the berth.");
+            semaphore.release();
         }
+    }
+
+    private void shipMoveAction() {
+        if (shipAction == LOAD) {
+            LOGGER.info("Loading the ship \"" + getName().toUpperCase() + "\".");
+            loadShip();
+        } else {
+            LOGGER.info("Unloading the ship \"" + getName().toUpperCase() + "\".");
+            unloadShip();
+        }
+        LOGGER.info("The ship \"" + getName().toUpperCase() + "\" was served.");
+
     }
 
     private void loadShip() {
@@ -122,16 +134,7 @@ public class Ship implements Runnable {
                         + " контейнер(ов). Всего в коробле " + containersInShip.size()
                         + " контейнер(ов). А на складе " + storage.getFilledCapacity()
                         + " контейнер (ов).");
-                // пока нет доступных контейнеров, ожидаем ограниченное число
-                // времени. Если контейнеров не появляется, то добавляем
-                // сколько есть.
-//            while (freeCapacityShip > storage.getFilledCapacity()) {
-//                condition.await();
-//            }
-//            condition.signalAll();
             }
-            LOGGER.info("!!!!!!!Корабль " + getName() + " обслужен!!!!!!!!!!");
-
         } catch (
                 InterruptedException e) {
             e.printStackTrace();
@@ -155,7 +158,7 @@ public class Ship implements Runnable {
                     LOGGER.info("<< Необходимо разгрузить корабль " + getName()
                             + ". Он содержит " + size + " контейнер (ов).");
                     for (int i = 0; i < size; i++) {
-                        Container container = containersInShip.poll();
+                        Container container = containersInShip.remove(0);
                         storage.addContainer(container);
                         count++;
                         TimeUnit.MILLISECONDS.sleep(50);
@@ -171,7 +174,7 @@ public class Ship implements Runnable {
                             + " контейнер(ов).");
 
                     for (int i = 0; i < freeCapacityStorage; i++) {
-                        Container container = containersInShip.poll();
+                        Container container = containersInShip.remove(0);
                         storage.addContainer(container);
                         count++;
                     }
@@ -181,8 +184,6 @@ public class Ship implements Runnable {
                             + " контейнер(ов).");
                 }
             }
-            LOGGER.info("!!!!!!!Корабль " + getName() + " обслужен!!!!!!!!!!");
-
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
@@ -193,12 +194,12 @@ public class Ship implements Runnable {
     @Override
     public String toString() {
         String action;
-        switch (todo) {
+        switch (shipAction) {
             case LOAD:
-                action = " загрузить";
+                action = " load";
                 break;
             case UNLOAD:
-                action = " разгрузить";
+                action = " unload";
                 break;
             default:
                 action = " error";

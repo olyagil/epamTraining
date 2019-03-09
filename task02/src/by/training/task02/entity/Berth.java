@@ -1,6 +1,5 @@
 package by.training.task02.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -12,13 +11,19 @@ public class Berth {
     private Storage storage;
     private Lock lock = new ReentrantLock();
 
-
-    public void addShip(Storage storage, Ship ship) {
-  }
-
     public Berth(int berthId, Storage storage) {
         this.berthId = berthId;
         this.storage = storage;
+    }
+
+    public void addToPortStorage(Storage shipStorage, Container container) {
+        storage.addContainer(container);
+    }
+
+    public void addToShipStorage(Storage shipStorage, Container container) {
+        if (container != null) {
+            shipStorage.addContainer(container);
+        }
     }
 
 
