@@ -1,6 +1,3 @@
-/**
- * The validator package is used to validate initial data
- */
 package by.training.task02.validator;
 
 import org.apache.logging.log4j.LogManager;

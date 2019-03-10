@@ -1,6 +1,5 @@
 package by.training.task02.parser;
 
-import by.training.task02.validator.LineValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,26 +25,18 @@ public class DataParser {
     public static final String REGEX_SPACE = "\\s+";
 
     /**
-     * For parsing the data from list of Strings.
+     * For parsing the data from the line.
      *
-     * @param lines of the file
+     * @param line of the file
      * @return list of the Circle type
      */
-    public List<Integer> parseData(final String lines) {
+    public List<Integer> parseData(final String line) {
 
         LOGGER.info("Parsing the data ");
-//        LineValidator lineValidator = new LineValidator();
-        List<List<Integer>> listDataForObject = new ArrayList<>();
         List<Integer> data = new ArrayList<>();
-//        for (String line : lines) {
-//            if (lineValidator.checkLine(line)) {
-        List<String> numbers = Arrays.asList(lines.split(REGEX_SPACE));
+        List<String> numbers = Arrays.asList(line.split(REGEX_SPACE));
         for (String number : numbers) {
             data.add(Integer.parseInt(number));
-//                }
-//                listDataForObject.add(new ArrayList<>(data));
-//                data.clear();
-//            }
         }
         return data;
     }

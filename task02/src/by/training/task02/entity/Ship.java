@@ -76,8 +76,7 @@ public class Ship implements Callable<String> {
         } else if (freeCapacityShip < storage.getFilledCapacity()) {
             LOGGER.info("Need to load " + freeCapacityShip + " containers.");
 
-            berth.moveContainersToShip(storage, containersInShip,
-                    freeCapacityShip);
+            berth.moveContainersToShip(containersInShip, freeCapacityShip);
 
             LOGGER.info("The ship has been loaded with "
                     + freeCapacityShip + " containers.");
@@ -88,11 +87,10 @@ public class Ship implements Callable<String> {
                     "containers in the storage. Let's load " + filledCapacityStorage
                     + " containers.");
 
-            berth.moveContainersToShip(storage, containersInShip,
-                    filledCapacityStorage);
+            berth.moveContainersToShip(containersInShip, filledCapacityStorage);
 
-            LOGGER.info("The ship has been loaded with " + filledCapacityStorage +
-                    " containers.");
+            LOGGER.info("The ship has been loaded with " + filledCapacityStorage
+                    + " containers.");
         }
     }
 
@@ -109,8 +107,7 @@ public class Ship implements Callable<String> {
             LOGGER.info("Need to unload " + filledCapacityShip
                     + " containers.");
 
-            berth.moveContainersFromShip(storage, containersInShip,
-                    filledCapacityShip);
+            berth.moveContainersFromShip(containersInShip, filledCapacityShip);
 
             LOGGER.info("The ship has been unloaded with "
                     + filledCapacityShip + " containers.");
@@ -118,8 +115,7 @@ public class Ship implements Callable<String> {
             LOGGER.info("The ship can be unload partly. Not enough free "
                     + "space in the storage. Let's unload "
                     + freeCapacityStorage + " containers.");
-            berth.moveContainersFromShip(storage, containersInShip,
-                    freeCapacityStorage);
+            berth.moveContainersFromShip(containersInShip, freeCapacityStorage);
 
             LOGGER.info("The ship has been unloaded with "
                     + freeCapacityStorage + " containers.");

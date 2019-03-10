@@ -48,7 +48,7 @@ public class Port {
 
         berthList = new ArrayList<>(berthAmount);
         for (int i = 0; i < berthAmount; i++) {
-            berthList.add(new Berth(i + 1, this.storage));
+            berthList.add(new Berth(i + 1, storage));
         }
         shipBerthMap = new HashMap<>();
         LOGGER.info("Port has been created with " + berthList.size() +
@@ -107,6 +107,7 @@ public class Port {
             ship.addContainer(new Container(i + 1));
         }
     }
+
     public Storage getStorage() {
         return storage;
     }

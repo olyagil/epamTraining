@@ -12,6 +12,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The {@code CreateData} class is used for creating and validating the data
+ * from user.
+ */
 public class CreateData {
 
     /**
@@ -19,12 +23,22 @@ public class CreateData {
      */
     private static final Logger LOGGER = LogManager.getLogger();
 
+    /**
+     *
+     */
     private DataReader dataReader = new DataReader();
     private FileValidator fileValidator = new FileValidator();
     private DataParser dataParser = new DataParser();
     private LineValidator lineValidator = new LineValidator();
 
-    public List<Integer> createData(String path) throws ReadFileException {
+    /**
+     * This method is creating the list of Integers from the path to the file.
+     *
+     * @param path to the file
+     * @return list of integers.
+     * @throws ReadFileException custom exception if can't read the file.
+     */
+    public List<Integer> createData(final String path) throws ReadFileException {
         List<Integer> data = new ArrayList<>();
         File file = new File(path);
         if (fileValidator.checkFile(file)) {
