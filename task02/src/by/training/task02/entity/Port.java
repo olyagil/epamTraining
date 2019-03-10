@@ -11,6 +11,8 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Port {
 
     private static final Logger LOGGER = LogManager.getLogger();
+    private static final int SHIP_ACTION = 2; // разгрузка/загрузка РАНДОМ
+
     private static Port instance;
     private List<Berth> berthList;
     private Storage storage;
@@ -80,6 +82,28 @@ public class Port {
         }
     }
 
+
+    public List<Ship> makeShips(int shipAmount, int maxShipCapacity,
+                                Port port) {
+        List<Ship> ships = new ArrayList<>(shipAmount);
+
+        // создание кораблей
+        for (int i = 0; i < shipAmount; i++) {
+            ships.add(new Ship("ship" + (i + 1),
+                    random.nextInt(maxShipCapacity) + 1,
+                    random.nextInt(SHIP_ACTION), port));
+            fillShip(ships.get(i));
+        }
+        return ships;
+    }
+
+    //рандомоное наполнение кораблей
+    private void fillShip(Ship ship) {
+        int randomFillShip = random.nextInt(ship.getCapacityShip());
+        for (int i = 0; i < randomFillShip; i++) {
+            ship.addContainer(new Container(i + 1));
+        }
+    }
 
 
     public Berth getBerth(Ship ship) {

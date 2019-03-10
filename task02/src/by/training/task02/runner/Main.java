@@ -24,7 +24,7 @@ public class Main {
     private static final int SHIP_AMOUNT = 3;// кол-во кораблей ФАЙЛ
     private static final int MAX_SHIP_CAPACITY = 15;//максимальная емкость
     // корабля ФАЙЛ
-    private static final int SHIP_ACTION = 2; // разгрузка/загрузка РАНДОМ
+//    private static final int SHIP_ACTION = 2; // разгрузка/загрузка РАНДОМ
     private static Semaphore sem = new Semaphore(1);
     private static Random random = new Random();
     private static Port port;
@@ -33,7 +33,7 @@ public class Main {
 //todo: чтение из файла
 //todo: Callable
 //todo: comments
-//todo: maybe to move 2 methods.
+
 
 //        CreateData createData = new CreateData();
 //        createData.createData(PATH);
@@ -41,7 +41,8 @@ public class Main {
         //создание порта
         port = Port.getInstance(BERTH_AMOUNT, STORAGE_CAPACITY);
         //создание кораблей
-        List<Ship> shipList = makeShips(SHIP_AMOUNT);
+        List<Ship> shipList = port.makeShips(SHIP_AMOUNT, MAX_SHIP_CAPACITY,
+                port);
 
         LOGGER.info("The capacity of the storage: " + port.getStorage().getFilledCapacity()
                 + "/" + STORAGE_CAPACITY);
@@ -49,14 +50,14 @@ public class Main {
                 + " ships: " + shipList);
 
         //создание потока для каждого корабля
-        for (int i = 0; i < shipList.size(); i++) {
-            new Thread(shipList.get(i)).start();
+        for (Ship ship : shipList) {
+            new Thread(ship).start();
         }
 
         try {
             TimeUnit.MILLISECONDS.sleep(2000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LOGGER.error("Interrupted");
         }
 
         //Вывод на экран. Отчет in Future
@@ -69,26 +70,26 @@ public class Main {
                 + "/" + port.getStorage().getCapacity());
     }
 
-    private static List<Ship> makeShips(int SHIP_AMOUNT) {
-
-        List<Ship> ships = new ArrayList<>(SHIP_AMOUNT);
-
-        // создание кораблей
-        for (int i = 0; i < SHIP_AMOUNT; i++) {
-            ships.add(new Ship(sem, "ship" + (i + 1),
-                    random.nextInt(MAX_SHIP_CAPACITY) + 1,
-                    random.nextInt(SHIP_ACTION), port));
-            fillShip(ships.get(i));
-        }
-        return ships;
-    }
-
-    //рандомоное наполнение кораблей
-    private static void fillShip(Ship ship) {
-        int randomFillShip = random.nextInt(ship.getCapacityShip());
-        for (int i = 0; i < randomFillShip; i++) {
-            ship.addContainer(new Container(i + 1));
-        }
-    }
+//    private static List<Ship> makeShips(int SHIP_AMOUNT) {
+//
+//        List<Ship> ships = new ArrayList<>(SHIP_AMOUNT);
+//
+//        // создание кораблей
+//        for (int i = 0; i < SHIP_AMOUNT; i++) {
+//            ships.add(new Ship(sem, "ship" + (i + 1),
+//                    random.nextInt(MAX_SHIP_CAPACITY) + 1,
+//                    random.nextInt(SHIP_ACTION), port));
+//            fillShip(ships.get(i));
+//        }
+//        return ships;
+//    }
+//
+//    //рандомоное наполнение кораблей
+//    private static void fillShip(Ship ship) {
+//        int randomFillShip = random.nextInt(ship.getCapacityShip());
+//        for (int i = 0; i < randomFillShip; i++) {
+//            ship.addContainer(new Container(i + 1));
+//        }
+//    }
 }
 

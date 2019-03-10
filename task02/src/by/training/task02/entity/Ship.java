@@ -28,9 +28,9 @@ public class Ship implements Runnable {
     private int capacityShip;
     private int shipAction;
 
-    public Ship(Semaphore semaphore, String name, int capacityShip,
+    public Ship(String name, int capacityShip,
                 int shipAction, Port port) {
-        this.semaphore = semaphore;
+        // this.semaphore = semaphore;
         this.name = name;
         this.capacityShip = capacityShip;
         this.shipAction = shipAction;
@@ -42,20 +42,20 @@ public class Ship implements Runnable {
 
     public void run() {
         try {
-            semaphore.acquire();
+//            semaphore.acquire();
             port.mooreShip(this);
             LOGGER.info("\tThe ship " + getName().toUpperCase()
                     + " has been moored to the berth.");
             LOGGER.info("The capacity of the ship " + getName().toUpperCase()
                     + " : " + getFilledCapacityShip() + "/" + getCapacityShip());
             shipMoveAction();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
         } finally {
             port.unmooreShip(this);
             LOGGER.info("The ship " + getName().toUpperCase()
                     + " is unmoored from the berth.");
-            semaphore.release();
+//            semaphore.release();
         }
     }
 
