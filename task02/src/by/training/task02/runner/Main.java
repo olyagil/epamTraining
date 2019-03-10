@@ -1,6 +1,7 @@
 package by.training.task02.runner;
 
 
+import by.training.task02.creator.CreateData;
 import by.training.task02.entity.*;
 import by.training.task02.exception.ReadFileException;
 import org.apache.logging.log4j.LogManager;
@@ -23,24 +24,19 @@ public class Main {
     private static final int SHIP_AMOUNT = 3;// кол-во кораблей ФАЙЛ
     private static final int MAX_SHIP_CAPACITY = 15;//максимальная емкость
     // корабля ФАЙЛ
-//    private static final int SHIP_ACTION = 2; // разгрузка/загрузка РАНДОМ
-    private static Semaphore sem = new Semaphore(1);
-    private static Random random = new Random();
-    private static Port port;
+
 
     public static void main(String[] args) throws ReadFileException {
 //todo: чтение из файла
-//todo: Callable
 //todo: comments
 
 
-//        CreateData createData = new CreateData();
-//        createData.createData(PATH);
-
+        CreateData createData = new CreateData();
+        createData.createData(PATH);
 
 
         //создание порта
-        port = Port.getInstance(BERTH_AMOUNT, STORAGE_CAPACITY);
+        Port port = Port.getInstance(BERTH_AMOUNT, STORAGE_CAPACITY);
         //создание кораблей
         List<Ship> shipList = port.makeShips(SHIP_AMOUNT, MAX_SHIP_CAPACITY,
                 port);
@@ -51,7 +47,7 @@ public class Main {
                 + " ships: " + shipList);
 
         //создание потока для каждого корабля
-        ExecutorService es = Executors.newFixedThreadPool(BERTH_AMOUNT);
+       /* ExecutorService es = Executors.newFixedThreadPool(BERTH_AMOUNT);
         for (Ship ship : shipList) {
             Future<String> future = es.submit(ship);
             try {
@@ -66,7 +62,7 @@ public class Main {
 
         LOGGER.info("* The capacity of the storage: "
                 + port.getStorage().getFilledCapacity()
-                + "/" + port.getStorage().getCapacity());
+                + "/" + port.getStorage().getCapacity());*/
     }
 }
 

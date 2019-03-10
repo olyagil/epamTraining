@@ -25,15 +25,6 @@ public class Berth {
         }
     }
 
-    public int getBerthId() {
-        return berthId;
-    }
-
-    @Override
-    public String toString() {
-        return "berthId = " + berthId;
-    }
-
     protected void moveContainersToShip(Storage storage,
                                         List<Container> containersInShip,
                                         int capacityToMove) {
@@ -41,6 +32,10 @@ public class Berth {
             Container container = storage.getContainer();
             containersInShip.add(container);
         }
+    }
+
+    public int getBerthId() {
+        return berthId;
     }
 }
 
