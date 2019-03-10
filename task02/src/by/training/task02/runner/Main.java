@@ -48,7 +48,7 @@ public class Main {
                 + " ships: " + shipList);
 
         //создание потока для каждого корабля
- /*       ExecutorService es = Executors.newFixedThreadPool(berthAmount);
+        ExecutorService es = Executors.newFixedThreadPool(berthAmount);
         for (Ship ship : shipList) {
             Future<String> future = es.submit(ship);
             try {
@@ -64,6 +64,6 @@ public class Main {
         LOGGER.info("* The capacity of the storage: "
                 + port.getStorage().getFilledCapacity()
                 + "/" + port.getStorage().getCapacity());
-    }*/
-}}
+    }
+}
 

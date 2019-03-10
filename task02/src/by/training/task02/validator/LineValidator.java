@@ -11,9 +11,10 @@ public class LineValidator {
     private static final Logger LOGGER = LogManager.getLogger();
 
     /**
-     * The REGEX_COORDINATES is used for checking entered coordinates.
+     * The REGEX_NUMBERS_FOR_DATA is used for checking entered coordinates.
      */
-    public static final String REGEX_COORDINATES = "[\\d]+\\s+[\\d]+\\s+[\\d]+\\s+[\\d]+";
+    private static final String REGEX_NUMBERS_FOR_DATA = "\\+?[\\d]+\\s+\\+?" +
+            "[\\d]+\\s+\\+?[\\d]+\\s+\\+?[\\d]+";
 
     /**
      * Checks if the entered line is correct.
@@ -23,7 +24,7 @@ public class LineValidator {
      */
     public boolean checkLine(final String line) {
         boolean flag = false;
-        if (line.matches(REGEX_COORDINATES)) {
+        if (line.matches(REGEX_NUMBERS_FOR_DATA)) {
             flag = true;
         } else {
             LOGGER.warn(" The line is wrong: " + line);
