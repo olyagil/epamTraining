@@ -7,7 +7,7 @@ import java.util.concurrent.locks.ReentrantLock;
 //должен хранить коллекцию кораблей и пускать к складу по одному
 public class Berth {
 
-    private int berthId;
+    private Integer berthId;
     private Storage storage;
     private Lock lock = new ReentrantLock();
 
@@ -25,6 +25,15 @@ public class Berth {
         }
     }
 
+    public int getBerthId() {
+        return berthId;
+    }
+
+    @Override
+    public String toString() {
+        return "berthId = " + berthId;
+    }
+
     protected void moveContainersToShip(Storage storage,
                                         List<Container> containersInShip,
                                         int capacityToMove) {
@@ -34,6 +43,4 @@ public class Berth {
         }
     }
 }
-
-
 

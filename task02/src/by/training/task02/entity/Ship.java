@@ -5,20 +5,15 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.locks.Lock;
+import java.util.concurrent.Callable;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Ship implements Runnable {
+public class Ship implements Callable<String> {
     /**
      * Logger for writing in console and a file.
      */
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final int LOAD = 0;
-    private static final int UNLOAD = 1;
-
-    private Semaphore semaphore;
-    private Lock lock;
+    private static final int NUMBER_FOR_LOAD = 0;
 
     private List<Container> containersInShip;
     private Storage storage;
@@ -27,40 +22,41 @@ public class Ship implements Runnable {
     private String name;
     private int capacityShip;
     private int shipAction;
+    private String message;
 
-    public Ship(String name, int capacityShip,
-                int shipAction, Port port) {
-        // this.semaphore = semaphore;
+    public Ship(String name, int capacityShip, int shipAction, Port port) {
         this.name = name;
         this.capacityShip = capacityShip;
         this.shipAction = shipAction;
         this.port = port;
         containersInShip = new ArrayList<>(capacityShip);
         storage = port.getStorage();
-        lock = new ReentrantLock();
     }
 
-    public void run() {
+
+    @Override
+    public String call() throws InterruptedException {
         try {
-//            semaphore.acquire();
             port.mooreShip(this);
+            berth = port.getBerth(this);
             LOGGER.info("\tThe ship " + getName().toUpperCase()
-                    + " has been moored to the berth.");
+                    + " has been moored to the berth №" + berth.getBerthId());
             LOGGER.info("The capacity of the ship " + getName().toUpperCase()
                     + " : " + getFilledCapacityShip() + "/" + getCapacityShip());
             shipMoveAction();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
+
         } finally {
             port.unmooreShip(this);
             LOGGER.info("The ship " + getName().toUpperCase()
-                    + " is unmoored from the berth.");
-//            semaphore.release();
+                    + " is unmoored from the berth №" + berth.getBerthId());
+            message = "The capacity of the ship " + getName().toUpperCase()
+                    + " : " + getFilledCapacityShip() + "/" + getCapacityShip();
         }
+        return message;
     }
 
     private void shipMoveAction() {
-        if (shipAction == LOAD) {
+        if (shipAction == NUMBER_FOR_LOAD) {
             LOGGER.info(">>> Loading the ship " + getName().toUpperCase());
             loadShip();
         } else {
@@ -68,78 +64,67 @@ public class Ship implements Runnable {
             unloadShip();
         }
         LOGGER.info("The ship " + getName().toUpperCase() + " was served.");
-
     }
 
     private void loadShip() {
-        lock.lock();
-        berth = port.getBerth(this);
+
         int freeCapacityShip = getCapacityShip() - getFilledCapacityShip();
-        try {
-            if (freeCapacityShip == 0) {
-                LOGGER.info("The ship is full. Let's unload him.");
-                unloadShip();
 
-            } else if (freeCapacityShip < storage.getFilledCapacity()) {
-                LOGGER.info("Need to load " + freeCapacityShip + " containers.");
+        if (freeCapacityShip == 0) {
+            LOGGER.info("The ship is full. Let's unload him.");
+            unloadShip();
 
-                berth.moveContainersToShip(storage, containersInShip,
-                        freeCapacityShip);
+        } else if (freeCapacityShip < storage.getFilledCapacity()) {
+            LOGGER.info("Need to load " + freeCapacityShip + " containers.");
 
-                LOGGER.info("The ship has been loaded with "
-                        + freeCapacityShip + " containers.");
+            berth.moveContainersToShip(storage, containersInShip,
+                    freeCapacityShip);
 
-            } else if (freeCapacityShip > storage.getFilledCapacity()) {
-                int filledCapacityStorage = storage.getFilledCapacity();
-                LOGGER.info("The ship can be loaded partly. Not enough " +
-                        "containers in the storage. Let's load " + filledCapacityStorage
-                        + " containers.");
+            LOGGER.info("The ship has been loaded with "
+                    + freeCapacityShip + " containers.");
 
-                berth.moveContainersToShip(storage, containersInShip,
-                        filledCapacityStorage);
+        } else if (freeCapacityShip > storage.getFilledCapacity()) {
+            int filledCapacityStorage = storage.getFilledCapacity();
+            LOGGER.info("The ship can be loaded partly. Not enough " +
+                    "containers in the storage. Let's load " + filledCapacityStorage
+                    + " containers.");
 
-                LOGGER.info("The ship has been loaded with " + filledCapacityStorage +
-                        " containers.");
-            }
-        } finally {
-            lock.unlock();
+            berth.moveContainersToShip(storage, containersInShip,
+                    filledCapacityStorage);
+
+            LOGGER.info("The ship has been loaded with " + filledCapacityStorage +
+                    " containers.");
         }
     }
 
     private void unloadShip() {
-        lock.lock();
-        try {
-            berth = port.getBerth(this);
-            int filledCapacityShip = getFilledCapacityShip();
-            int freeCapacityStorage = storage.getCapacity() - storage.getFilledCapacity();
 
-            if (filledCapacityShip < 1) {
-                LOGGER.info("The ship does not need to be unloaded. He is "
-                        + "empty. Let's load him.");
-                loadShip();
-            } else if (filledCapacityShip < freeCapacityStorage) {
-                LOGGER.info("Need to unload " + filledCapacityShip
-                        + " containers.");
+        int filledCapacityShip = getFilledCapacityShip();
+        int freeCapacityStorage = storage.getCapacity() - storage.getFilledCapacity();
 
-                berth.moveContainersFromShip(storage, containersInShip,
-                        filledCapacityShip);
+        if (filledCapacityShip < 1) {
+            LOGGER.info("The ship does not need to be unloaded. He is "
+                    + "empty. Let's load him.");
+            loadShip();
+        } else if (filledCapacityShip < freeCapacityStorage) {
+            LOGGER.info("Need to unload " + filledCapacityShip
+                    + " containers.");
 
-                LOGGER.info("The ship has been unloaded with "
-                        + filledCapacityShip + " containers.");
-            } else {
-                LOGGER.info("The ship can be unload partly. Not enough free "
-                        + "capacity of the storage. Let's unload "
-                        + freeCapacityStorage + " containers.");
-                berth.moveContainersFromShip(storage, containersInShip,
-                        freeCapacityStorage);
+            berth.moveContainersFromShip(storage, containersInShip,
+                    filledCapacityShip);
 
-                LOGGER.info("The ship has been unloaded with "
-                        + freeCapacityStorage + " containers.");
-            }
-        } finally {
-            lock.unlock();
+            LOGGER.info("The ship has been unloaded with "
+                    + filledCapacityShip + " containers.");
+        } else {
+            LOGGER.info("The ship can be unload partly. Not enough free "
+                    + "space in the storage. Let's unload "
+                    + freeCapacityStorage + " containers.");
+            berth.moveContainersFromShip(storage, containersInShip,
+                    freeCapacityStorage);
+
+            LOGGER.info("The ship has been unloaded with "
+                    + freeCapacityStorage + " containers.");
         }
-
     }
 
     public int getFilledCapacityShip() {
@@ -158,25 +143,11 @@ public class Ship implements Runnable {
         return name;
     }
 
-
     @Override
     public String toString() {
-        String action;
-        switch (shipAction) {
-            case LOAD:
-                action = " load";
-                break;
-            case UNLOAD:
-                action = " unload";
-                break;
-            default:
-                action = " error";
-        }
         return "\nName: '" + name + '\'' +
                 ", capacity = " + capacityShip
-                + ", containers in ship = " + containersInShip.size()
-                + ", " + action;
+                + ", containers in ship = " + containersInShip.size();
     }
-
 }
 

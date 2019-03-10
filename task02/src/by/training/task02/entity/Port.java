@@ -56,6 +56,9 @@ public class Port {
                 + ". \n\tThe filled capacity: " + storage.getFilledCapacity());
     }
 
+    public Berth getBerth(Ship ship) {
+        return shipBerthMap.get(ship);
+    }
 
     public void mooreShip(Ship ship) {
         Berth berth;
@@ -63,8 +66,8 @@ public class Port {
             if (!berthList.isEmpty()) {
                 lock.lock();
                 berth = berthList.get(0);
-                berthList.remove(berth);
                 shipBerthMap.put(ship, berth);
+                berthList.remove(berth);
             }
         } finally {
             lock.unlock();
@@ -75,13 +78,13 @@ public class Port {
         Berth berth = shipBerthMap.get(ship);
         lock.lock();
         try {
-            shipBerthMap.remove(ship);
             berthList.add(berth);
+            shipBerthMap.remove(ship);
+
         } finally {
             lock.unlock();
         }
     }
-
 
     public List<Ship> makeShips(int shipAmount, int maxShipCapacity,
                                 Port port) {
@@ -104,12 +107,6 @@ public class Port {
             ship.addContainer(new Container(i + 1));
         }
     }
-
-
-    public Berth getBerth(Ship ship) {
-        return shipBerthMap.get(ship);
-    }
-
     public Storage getStorage() {
         return storage;
     }
