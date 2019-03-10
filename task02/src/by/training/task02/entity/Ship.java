@@ -22,7 +22,6 @@ public class Ship implements Callable<String> {
     private String name;
     private int capacityShip;
     private int shipAction;
-    private String message;
 
     public Ship(String name, int capacityShip, int shipAction, Port port) {
         this.name = name;
@@ -49,10 +48,10 @@ public class Ship implements Callable<String> {
             port.unmooreShip(this);
             LOGGER.info("The ship " + getName().toUpperCase()
                     + " is unmoored from the berth №" + berth.getBerthId());
-            message = "The capacity of the ship " + getName().toUpperCase()
-                    + " : " + getFilledCapacityShip() + "/" + getCapacityShip();
+
         }
-        return message;
+        return "The capacity of the ship " + getName().toUpperCase()
+                + " : " + getFilledCapacityShip() + "/" + getCapacityShip();
     }
 
     private void shipMoveAction() {
@@ -145,8 +144,8 @@ public class Ship implements Callable<String> {
 
     @Override
     public String toString() {
-        return "\nName: '" + name + '\'' +
-                ", capacity = " + capacityShip
+        return "\nName: '" + name + '\''
+                + ", capacity = " + capacityShip
                 + ", containers in ship = " + containersInShip.size();
     }
 }

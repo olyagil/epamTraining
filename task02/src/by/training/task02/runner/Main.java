@@ -25,10 +25,10 @@ public class Main {
     private static final int MAX_SHIP_CAPACITY = 15;//максимальная емкость
     // корабля ФАЙЛ
 
-
     public static void main(String[] args) throws ReadFileException {
-//todo: чтение из файла
-//todo: comments
+
+        //todo: чтение из файла
+        //todo: comments
 
 
         CreateData createData = new CreateData();
