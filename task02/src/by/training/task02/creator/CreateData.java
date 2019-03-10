@@ -10,37 +10,33 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class CreateData {
+
     /**
      * Logger for writing in console and a file.
      */
     private static final Logger LOGGER = LogManager.getLogger();
 
-    DataReader dataReader = new DataReader();
-    FileValidator fileValidator = new FileValidator();
-    DataParser dataParser = new DataParser();
-    LineValidator lineValidator = new LineValidator();
+    private DataReader dataReader = new DataReader();
+    private FileValidator fileValidator = new FileValidator();
+    private DataParser dataParser = new DataParser();
+    private LineValidator lineValidator = new LineValidator();
 
     public List<Integer> createData(String path) throws ReadFileException {
-        List<Integer> dataReady = new ArrayList<>();
+        List<Integer> data = new ArrayList<>();
         File file = new File(path);
         if (fileValidator.checkFile(file)) {
             List<String> lines = dataReader.readDataFromFile(path);
-            List<List<Integer>> data = dataParser.parseData(lines);
-            for (List<Integer> line : data) {
-                dataReady = Arrays.asList(line.get(0), line.get(1), line.get(2),
-                        line.get(3));
+            for (String line : lines) {
+                if (lineValidator.checkLine(line)) {
+                    data = dataParser.parseData(line);
+                }
             }
-
         } else {
             LOGGER.warn("The file is incorrect!" + file);
-
         }
-        return dataReady;
+        return data;
     }
-
-
 }

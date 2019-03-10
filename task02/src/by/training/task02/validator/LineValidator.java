@@ -21,7 +21,7 @@ public class LineValidator {
      * @param line The line of the file that needed to be checked
      * @return true if the line matches the template
      */
-    public boolean checkCircle(final String line) {
+    public boolean checkLine(final String line) {
         boolean flag = false;
         if (line.matches(REGEX_COORDINATES)) {
             flag = true;

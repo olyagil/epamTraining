@@ -18,36 +18,37 @@ public class Main {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String PATH = "data//data.txt";
+    private static final int NUMBER_FOR_STORAGE_CAPACITY = 0;
+    private static final int NUMBER_FOR_BERTH_AMOUNT = 1;
+    private static final int NUMBER_FOR_SHIP_AMOUNT = 2;
+    private static final int NUMBER_FOR_MAX_SHIP_CAPACITY = 3;
 
-    private static final int STORAGE_CAPACITY = 20; // емкость склада ФАЙЛ
-    private static final int BERTH_AMOUNT = 2; //кол-во причалов у порта ФАЙЛ
-    private static final int SHIP_AMOUNT = 3;// кол-во кораблей ФАЙЛ
-    private static final int MAX_SHIP_CAPACITY = 15;//максимальная емкость
-    // корабля ФАЙЛ
 
     public static void main(String[] args) throws ReadFileException {
 
-        //todo: чтение из файла
         //todo: comments
 
-
         CreateData createData = new CreateData();
-        createData.createData(PATH);
+        List<Integer> data = createData.createData(PATH);
+        int storageCapacity = data.get(NUMBER_FOR_STORAGE_CAPACITY);
+        int berthAmount = data.get(NUMBER_FOR_BERTH_AMOUNT);
+        int shipAmount = data.get(NUMBER_FOR_SHIP_AMOUNT);
+        int maxShipCapacity = data.get(NUMBER_FOR_MAX_SHIP_CAPACITY);
+
 
 
         //создание порта
-        Port port = Port.getInstance(BERTH_AMOUNT, STORAGE_CAPACITY);
+        Port port = Port.getInstance(berthAmount, storageCapacity);
         //создание кораблей
-        List<Ship> shipList = port.makeShips(SHIP_AMOUNT, MAX_SHIP_CAPACITY,
-                port);
+        List<Ship> shipList = port.makeShips(shipAmount, maxShipCapacity, port);
 
         LOGGER.info("The capacity of the storage: " + port.getStorage().getFilledCapacity()
-                + "/" + STORAGE_CAPACITY);
+                + "/" + storageCapacity);
         LOGGER.info("The Queue for the loading/unloading are " + shipList.size()
                 + " ships: " + shipList);
 
         //создание потока для каждого корабля
-       /* ExecutorService es = Executors.newFixedThreadPool(BERTH_AMOUNT);
+ /*       ExecutorService es = Executors.newFixedThreadPool(berthAmount);
         for (Ship ship : shipList) {
             Future<String> future = es.submit(ship);
             try {
@@ -62,7 +63,7 @@ public class Main {
 
         LOGGER.info("* The capacity of the storage: "
                 + port.getStorage().getFilledCapacity()
-                + "/" + port.getStorage().getCapacity());*/
-    }
-}
+                + "/" + port.getStorage().getCapacity());
+    }*/
+}}
 

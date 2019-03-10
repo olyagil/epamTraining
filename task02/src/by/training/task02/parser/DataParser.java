@@ -31,23 +31,23 @@ public class DataParser {
      * @param lines of the file
      * @return list of the Circle type
      */
-    public List<List<Integer>> parseData(final List<String> lines) {
+    public List<Integer> parseData(final String lines) {
 
         LOGGER.info("Parsing the data ");
-        LineValidator lineValidator = new LineValidator();
+//        LineValidator lineValidator = new LineValidator();
         List<List<Integer>> listDataForObject = new ArrayList<>();
         List<Integer> data = new ArrayList<>();
-        for (String line : lines) {
-            if (lineValidator.checkCircle(line)) {
-                List<String> numbers = Arrays.asList(line.split(REGEX_SPACE));
-                for (String number : numbers) {
-                    data.add(Integer.parseInt(number));
-                }
-                listDataForObject.add(new ArrayList<>(data));
-                data.clear();
-            }
+//        for (String line : lines) {
+//            if (lineValidator.checkLine(line)) {
+        List<String> numbers = Arrays.asList(lines.split(REGEX_SPACE));
+        for (String number : numbers) {
+            data.add(Integer.parseInt(number));
+//                }
+//                listDataForObject.add(new ArrayList<>(data));
+//                data.clear();
+//            }
         }
-        return listDataForObject;
+        return data;
     }
 }
 
