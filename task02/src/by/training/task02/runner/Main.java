@@ -58,6 +58,7 @@ class Main {
         //todo: if need to load and unload
         //todo: UML
         //todo: README
+        //todo: sonorLint
 
         CreateData createData = new CreateData();
         List<Integer> data = createData.createData(PATH);
