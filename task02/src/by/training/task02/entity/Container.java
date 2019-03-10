@@ -2,6 +2,8 @@ package by.training.task02.entity;
 
 /**
  * The {@code Container} class is used for initialization the container.
+ *
+ * @author Gil Olga
  */
 public class Container {
 
@@ -22,8 +24,8 @@ public class Container {
     /**
      * Overriding method equals for comparison.
      *
-     * @param o
-     * @return
+     * @param o object
+     * @return true if equals
      */
     @Override
     public boolean equals(final Object o) {
@@ -42,7 +44,7 @@ public class Container {
     /**
      * Overriding method to count hashCode.
      *
-     * @return
+     * @return hashCode
      */
     @Override
     public int hashCode() {
@@ -52,7 +54,7 @@ public class Container {
     /**
      * Overriding method toString.
      *
-     * @return
+     * @return string
      */
     @Override
     public String toString() {

@@ -4,24 +4,64 @@ package by.training.task02.entity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Port {
+/**
+ * The {@code Port} class is used for creating port with berths and ships.
+ * For mooring and unmooring the ships from the berths.
+ *
+ * @author Gil Olga
+ */
+public final class Port {
 
+    /**
+     * Logger for writing in console and a file.
+     */
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final int SHIP_ACTION = 2; // разгрузка/загрузка РАНДОМ
-
+    /**
+     * The constant for variety of the ship action.
+     */
+    private static final int SHIP_ACTION = 2;
+    /**
+     * Single instance of the port.
+     */
     private static Port instance;
+    /**
+     * List of the berths.
+     */
     private List<Berth> berthList;
+    /**
+     * The storage in the port.
+     */
     private Storage storage;
+    /**
+     * The map of the ship and berths.
+     */
     private Map<Ship, Berth> shipBerthMap;
+    /**
+     * Lock for synchronization.
+     */
     private static Lock lock = new ReentrantLock();
-    private List<Container> containerList;
+    /**
+     * The random initialization.
+     */
     private Random random = new Random();
 
-    public static Port getInstance(int berthAmount, int storageCapacity) {
+    /**
+     * Singleton realization.
+     *
+     * @param berthAmount     amount of berths
+     * @param storageCapacity capacity if the storage
+     * @return the single instance of the port
+     */
+    public static Port getInstance(final int berthAmount,
+                                   final int storageCapacity) {
         if (instance == null) {
             try {
                 lock.lock();
@@ -33,12 +73,17 @@ public class Port {
         return instance;
     }
 
-    private Port(int berthAmount, int storageCapacity) {
-
+    /**
+     * The constructor for initialization the port.
+     *
+     * @param berthAmount     amount of berths
+     * @param storageCapacity capacity if the storage
+     */
+    private Port(final int berthAmount, final int storageCapacity) {
         int randomFilledCapacity = random.nextInt(storageCapacity);
 
-        // создание коллекции контейнеров для склада, наполняем склад
-        containerList = new ArrayList<>(storageCapacity);
+        // creating the collection of the containers and fill it.
+        List<Container> containerList = new ArrayList<>(storageCapacity);
         for (int i = 0; i < randomFilledCapacity; i++) {
             containerList.add(new Container(i + 1));
         }
@@ -51,16 +96,28 @@ public class Port {
             berthList.add(new Berth(i + 1, storage));
         }
         shipBerthMap = new HashMap<>();
-        LOGGER.info("Port has been created with " + berthList.size() +
-                " berth. \n\tAnd the capacity of the storage: " + storage.getCapacity()
-                + ". \n\tThe filled capacity: " + storage.getFilledCapacity());
+        LOGGER.info("Port has been created with " + berthList.size()
+                + " berth. \n\tAnd the capacity of the storage: "
+                + storage.getCapacity() + ". \n\tThe filled capacity: "
+                + storage.getFilledCapacity());
     }
 
-    public Berth getBerth(Ship ship) {
+    /**
+     * The getter for the berth.
+     *
+     * @param ship current ship
+     * @return the berth with the ship
+     */
+    Berth getBerth(final Ship ship) {
         return shipBerthMap.get(ship);
     }
 
-    public void mooreShip(Ship ship) {
+    /**
+     * Mooring the ship to the berths.
+     *
+     * @param ship current ship
+     */
+    void mooreShip(final Ship ship) {
         Berth berth;
         try {
             if (!berthList.isEmpty()) {
@@ -74,7 +131,12 @@ public class Port {
         }
     }
 
-    public void unmooreShip(Ship ship) {
+    /**
+     * Unmooring the ship from the berth.
+     *
+     * @param ship current ship
+     */
+    void unmooreShip(final Ship ship) {
         Berth berth = shipBerthMap.get(ship);
         lock.lock();
         try {
@@ -86,28 +148,46 @@ public class Port {
         }
     }
 
-    public List<Ship> makeShips(int shipAmount, int maxShipCapacity,
-                                Port port) {
+    /**
+     * Method for making the ships for the port.
+     *
+     * @param shipAmount      amount of the ship
+     * @param maxShipCapacity maximum ship capacity
+     * @return list of ships
+     */
+    public List<Ship> makeShips(final int shipAmount,
+                                final int maxShipCapacity) {
         List<Ship> ships = new ArrayList<>(shipAmount);
 
         // создание кораблей
         for (int i = 0; i < shipAmount; i++) {
             ships.add(new Ship("ship" + (i + 1),
                     random.nextInt(maxShipCapacity) + 1,
-                    random.nextInt(SHIP_ACTION), port));
+                    random.nextInt(SHIP_ACTION), instance));
             fillShip(ships.get(i));
         }
         return ships;
     }
 
     //рандомоное наполнение кораблей
-    private void fillShip(Ship ship) {
+
+    /**
+     * The method for random filling the capacity of the ship.
+     *
+     * @param ship current ship
+     */
+    private void fillShip(final Ship ship) {
         int randomFillShip = random.nextInt(ship.getCapacityShip());
         for (int i = 0; i < randomFillShip; i++) {
             ship.addContainer(new Container(i + 1));
         }
     }
 
+    /**
+     * The getter for storage.
+     *
+     * @return port storage
+     */
     public Storage getStorage() {
         return storage;
     }

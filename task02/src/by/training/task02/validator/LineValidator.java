@@ -3,6 +3,11 @@ package by.training.task02.validator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * The {@code LineValidator} class checks if entered data is correct.
+ *
+ * @author Gil Olga
+ */
 public class LineValidator {
 
     /**
@@ -13,8 +18,8 @@ public class LineValidator {
     /**
      * The REGEX_NUMBERS_FOR_DATA is used for checking entered coordinates.
      */
-    private static final String REGEX_NUMBERS_FOR_DATA = "\\+?[\\d]+\\s+\\+?" +
-            "[\\d]+\\s+\\+?[\\d]+\\s+\\+?[\\d]+";
+    private static final String REGEX_NUMBERS_FOR_DATA = "\\+?[\\d]+\\s+\\+?"
+            + "[\\d]+\\s+\\+?[\\d]+\\s+\\+?[\\d]+";
 
     /**
      * Checks if the entered line is correct.

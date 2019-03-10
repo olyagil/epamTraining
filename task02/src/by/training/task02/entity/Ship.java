@@ -6,33 +6,74 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * The {@code Ship} method is used for loading and unloading the ship.
+ *
+ * @author Gil Olga
+ */
 public class Ship implements Callable<String> {
     /**
      * Logger for writing in console and a file.
      */
     private static final Logger LOGGER = LogManager.getLogger();
+    /**
+     * The constant for loading action.
+     */
     private static final int NUMBER_FOR_LOAD = 0;
-
+    /**
+     * The list of containers in the ship.
+     */
     private List<Container> containersInShip;
+    /**
+     * The port storage.
+     */
     private Storage storage;
+    /**
+     * The port.
+     */
     private Port port;
+    /**
+     * The berth.
+     */
     private Berth berth;
+    /**
+     * The name of the ship.
+     */
     private String name;
+    /**
+     * The capacity of the ship.
+     */
     private int capacityShip;
+    /**
+     * The action for the ship.
+     */
     private int shipAction;
 
-    public Ship(String name, int capacityShip, int shipAction, Port port) {
-        this.name = name;
-        this.capacityShip = capacityShip;
-        this.shipAction = shipAction;
-        this.port = port;
-        containersInShip = new ArrayList<>(capacityShip);
-        storage = port.getStorage();
+    /**
+     * The constructor for initialization the ship.
+     *
+     * @param nameOfShip   of the ship
+     * @param capacity     of the ship
+     * @param action       for the ship
+     * @param portForShips port
+     */
+    public Ship(final String nameOfShip, final int capacity, final int action,
+                final Port portForShips) {
+        this.name = nameOfShip;
+        this.capacityShip = capacity;
+        this.shipAction = action;
+        this.port = portForShips;
+        containersInShip = new ArrayList<>(capacity);
+        storage = portForShips.getStorage();
     }
 
-
+    /**
+     * Overriding method for starting point in the thread.
+     *
+     * @return The statistics of action in the ship
+     * @throws InterruptedException if thread is interrupted
+     */
     @Override
     public String call() throws InterruptedException {
         try {
@@ -41,7 +82,7 @@ public class Ship implements Callable<String> {
             LOGGER.info("\tThe ship " + getName().toUpperCase()
                     + " has been moored to the berth №" + berth.getBerthId());
             LOGGER.info("The capacity of the ship " + getName().toUpperCase()
-                    + " : " + getFilledCapacityShip() + "/" + getCapacityShip());
+                    + ": " + getFilledCapacityShip() + "/" + getCapacityShip());
             shipMoveAction();
 
         } finally {
@@ -54,6 +95,9 @@ public class Ship implements Callable<String> {
                 + " : " + getFilledCapacityShip() + "/" + getCapacityShip();
     }
 
+    /**
+     * Method for choosing the action for the ship.
+     */
     private void shipMoveAction() {
         if (shipAction == NUMBER_FOR_LOAD) {
             LOGGER.info(">>> Loading the ship " + getName().toUpperCase());
@@ -65,6 +109,9 @@ public class Ship implements Callable<String> {
         LOGGER.info("The ship " + getName().toUpperCase() + " was served.");
     }
 
+    /**
+     * The method for loading the containers onto the ship.
+     */
     private void loadShip() {
 
         int freeCapacityShip = getCapacityShip() - getFilledCapacityShip();
@@ -83,9 +130,9 @@ public class Ship implements Callable<String> {
 
         } else if (freeCapacityShip > storage.getFilledCapacity()) {
             int filledCapacityStorage = storage.getFilledCapacity();
-            LOGGER.info("The ship can be loaded partly. Not enough " +
-                    "containers in the storage. Let's load " + filledCapacityStorage
-                    + " containers.");
+            LOGGER.info("The ship can be loaded partly. Not enough "
+                    + "containers in the storage. Let's load "
+                    + filledCapacityStorage + " containers.");
 
             berth.moveContainersToShip(containersInShip, filledCapacityStorage);
 
@@ -94,10 +141,14 @@ public class Ship implements Callable<String> {
         }
     }
 
+    /**
+     * The method for unloading the containers from the ship.
+     */
     private void unloadShip() {
 
         int filledCapacityShip = getFilledCapacityShip();
-        int freeCapacityStorage = storage.getCapacity() - storage.getFilledCapacity();
+        int freeCapacityStorage = storage.getCapacity()
+                - storage.getFilledCapacity();
 
         if (filledCapacityShip < 1) {
             LOGGER.info("The ship does not need to be unloaded. He is "
@@ -122,22 +173,47 @@ public class Ship implements Callable<String> {
         }
     }
 
-    public int getFilledCapacityShip() {
+    /**
+     * The method for getting the filled capacity of the ship.
+     *
+     * @return capacity of the ship
+     */
+    private int getFilledCapacityShip() {
         return containersInShip.size();
     }
 
-    public void addContainer(Container container) {
+    /**
+     * The method for adding the container to the ship.
+     *
+     * @param container specific container
+     */
+    void addContainer(final Container container) {
         containersInShip.add(container);
     }
 
-    public int getCapacityShip() {
+    /**
+     * The getter for the capacity of the ship.
+     *
+     * @return capacityShip
+     */
+    int getCapacityShip() {
         return capacityShip;
     }
 
+    /**
+     * The getter for the name.
+     *
+     * @return name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * The overriding method toString.
+     *
+     * @return ship in the string
+     */
     @Override
     public String toString() {
         return "\nName: '" + name + '\''

@@ -15,6 +15,8 @@ import java.util.List;
 /**
  * The {@code CreateData} class is used for creating and validating the data
  * from user.
+ *
+ * @author Gil Olga
  */
 public class CreateData {
 
@@ -24,11 +26,20 @@ public class CreateData {
     private static final Logger LOGGER = LogManager.getLogger();
 
     /**
-     *
+     * The instance of the DataReader class.
      */
     private DataReader dataReader = new DataReader();
+    /**
+     * The instance of the FileValidator class.
+     */
     private FileValidator fileValidator = new FileValidator();
+    /**
+     * The instance of the DataParser class.
+     */
     private DataParser dataParser = new DataParser();
+    /**
+     * The instance of the LineValidator class.
+     */
     private LineValidator lineValidator = new LineValidator();
 
     /**
@@ -38,7 +49,8 @@ public class CreateData {
      * @return list of integers.
      * @throws ReadFileException custom exception if can't read the file.
      */
-    public List<Integer> createData(final String path) throws ReadFileException {
+    public List<Integer> createData(final String path)
+            throws ReadFileException {
         List<Integer> data = new ArrayList<>();
         File file = new File(path);
         if (fileValidator.checkFile(file)) {
