@@ -7,10 +7,12 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * The {@code Berth} class is used for creating the berth. And moving
  * containers from port's storage and back.
+ *
+ * @author Gil Olga
  */
 public class Berth {
     /**
-     * Number for caclulating the hashCode.
+     * Number for calculating the hashCode.
      */
     private static final int PRIME = 31;
     /**
@@ -91,8 +93,8 @@ public class Berth {
     /**
      * Overriding method equals for comparison.
      *
-     * @param o
-     * @return
+     * @param o object
+     * @return true if equals
      */
     @Override
     public boolean equals(final Object o) {
@@ -114,7 +116,7 @@ public class Berth {
     /**
      * Overriding method to count hashCode.
      *
-     * @return
+     * @return hashCode
      */
     @Override
     public int hashCode() {
@@ -126,7 +128,7 @@ public class Berth {
     /**
      * Overriding method toString.
      *
-     * @return
+     * @return string
      */
     @Override
     public String toString() {

@@ -8,6 +8,7 @@ import by.training.task02.exception.ReadFileException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -55,17 +56,12 @@ class Main {
      */
     public static void main(final String[] args) throws ReadFileException {
 
-        //todo: UML
-        //todo: README
-        //todo: sonarLint
-
         CreateData createData = new CreateData();
         List<Integer> data = createData.createData(PATH);
         int storageCapacity = data.get(NUMBER_FOR_STORAGE_CAPACITY);
         int berthAmount = data.get(NUMBER_FOR_BERTH_AMOUNT);
         int shipAmount = data.get(NUMBER_FOR_SHIP_AMOUNT);
         int maxShipCapacity = data.get(NUMBER_FOR_MAX_SHIP_CAPACITY);
-
 
         //creating the port
         Port port = Port.getInstance(berthAmount, storageCapacity);
@@ -77,20 +73,24 @@ class Main {
                 + "/" + storageCapacity);
         LOGGER.info("The Queue for the loading/unloading are " + shipList.size()
                 + " ships: " + shipList);
-
+        List<Future<String>> futures = new ArrayList<>();
         //creating the threads for each ship
         ExecutorService es = Executors.newFixedThreadPool(berthAmount);
         for (Ship ship : shipList) {
             Future<String> future = es.submit(ship);
+            futures.add(future);
             try {
                 LOGGER.info(future.get());
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                LOGGER.error("The thread was interrupted: "
+                        + Thread.currentThread(), e);
             } catch (ExecutionException e) {
-                e.printStackTrace();
+                LOGGER.error("Can't retrieve the result from thread: "
+                        + Thread.currentThread());
             }
         }
         es.shutdown();
+
 
         LOGGER.info("* The capacity of the storage: "
                 + port.getStorage().getFilledCapacity()
