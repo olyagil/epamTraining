@@ -63,9 +63,8 @@ class Main {
         int shipAmount = data.get(NUMBER_FOR_SHIP_AMOUNT);
         int maxShipCapacity = data.get(NUMBER_FOR_MAX_SHIP_CAPACITY);
 
-        //creating the port
         Port port = Port.getInstance(berthAmount, storageCapacity);
-        //creating the ships
+
         List<Ship> shipList = port.createShips(shipAmount, maxShipCapacity);
 
         LOGGER.info("The capacity of the storage: "
@@ -74,7 +73,7 @@ class Main {
         LOGGER.info("The Queue for the loading/unloading are " + shipList.size()
                 + " ships: " + shipList);
         List<Future<String>> futures = new ArrayList<>();
-        //creating the threads for each ship
+
         ExecutorService es = Executors.newFixedThreadPool(berthAmount);
         for (Ship ship : shipList) {
             Future<String> future = es.submit(ship);
