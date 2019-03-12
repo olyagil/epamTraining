@@ -27,3 +27,8 @@
 может пришвартоваться другой корабль.
 
 В результате Callable возвращаем информацию о заполненности корабля.
+
+Ссылка на UML класса DataCreator
+https://github.com/olyagil/epamTraining/blob/master/task02/uml/creator.png
+Ссылка на UML пакета entity
+https://github.com/olyagil/epamTraining/blob/master/task02/uml/entity.png
