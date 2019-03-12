@@ -22,6 +22,10 @@ public class Ship implements Callable<String> {
      */
     private static final int NUMBER_FOR_LOAD = 0;
     /**
+     * The constant for the prime number 31.
+     */
+    public static final int PRIME_NUMBER = 31;
+    /**
      * The list of containers in the ship.
      */
     private List<Container> containersInShip;
@@ -207,6 +211,52 @@ public class Ship implements Callable<String> {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Overriding equals method.
+     *
+     * @param o
+     * @return
+     */
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Ship ship = (Ship) o;
+        if (getCapacityShip() != ship.getCapacityShip()) {
+            return false;
+        }
+        if (shipAction != ship.shipAction) {
+            return false;
+        }
+        if (getName() != null) {
+            return getName().equals(ship.getName());
+        } else {
+            return ship.getName() == null;
+        }
+    }
+
+    /**
+     * Overriding hashcode method.
+     *
+     * @return
+     */
+    @Override
+    public int hashCode() {
+        int result;
+        if (getName() != null) {
+            result = getName().hashCode();
+        } else {
+            result = 0;
+        }
+        result = PRIME_NUMBER * result + getCapacityShip();
+        result = PRIME_NUMBER * result + shipAction;
+        return result;
     }
 
     /**

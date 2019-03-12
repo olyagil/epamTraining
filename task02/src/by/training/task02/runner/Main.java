@@ -55,10 +55,9 @@ class Main {
      */
     public static void main(final String[] args) throws ReadFileException {
 
-        //todo: if need to load and unload
         //todo: UML
         //todo: README
-        //todo: sonorLint
+        //todo: sonarLint
 
         CreateData createData = new CreateData();
         List<Integer> data = createData.createData(PATH);
@@ -71,7 +70,7 @@ class Main {
         //creating the port
         Port port = Port.getInstance(berthAmount, storageCapacity);
         //creating the ships
-        List<Ship> shipList = port.makeShips(shipAmount, maxShipCapacity);
+        List<Ship> shipList = port.createShips(shipAmount, maxShipCapacity);
 
         LOGGER.info("The capacity of the storage: "
                 + port.getStorage().getFilledCapacity()

@@ -87,8 +87,7 @@ public final class Port {
         for (int i = 0; i < randomFilledCapacity; i++) {
             containerList.add(new Container(i + 1));
         }
-
-        // создание склада в порту
+        // creating the storage in the port
         this.storage = new Storage(storageCapacity, containerList);
 
         berthList = new ArrayList<>(berthAmount);
@@ -119,9 +118,9 @@ public final class Port {
      */
     void mooreShip(final Ship ship) {
         Berth berth;
+        lock.lock();
         try {
             if (!berthList.isEmpty()) {
-                lock.lock();
                 berth = berthList.get(0);
                 shipBerthMap.put(ship, berth);
                 berthList.remove(berth);
@@ -155,11 +154,11 @@ public final class Port {
      * @param maxShipCapacity maximum ship capacity
      * @return list of ships
      */
-    public List<Ship> makeShips(final int shipAmount,
-                                final int maxShipCapacity) {
+    public List<Ship> createShips(final int shipAmount,
+                                  final int maxShipCapacity) {
         List<Ship> ships = new ArrayList<>(shipAmount);
 
-        // создание кораблей
+        // creating ships
         for (int i = 0; i < shipAmount; i++) {
             ships.add(new Ship("ship" + (i + 1),
                     random.nextInt(maxShipCapacity) + 1,
@@ -168,8 +167,6 @@ public final class Port {
         }
         return ships;
     }
-
-    //рандомоное наполнение кораблей
 
     /**
      * The method for random filling the capacity of the ship.
