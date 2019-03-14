@@ -29,7 +29,10 @@ public class ParseParagraph extends Parser {
         while (matcher.find()) {
             listParagraph.add(matcher.group());
         }
-        LOGGER.info("The paragraph's of the text:\n" + listParagraph);
-        data = listParagraph;
+
+        LOGGER.info(listParagraph.size() + " paragraphs: " + listParagraph);
+//        for (String paragraph : listParagraph) {
+//            nextParser.parse(paragraph);
+//        }
     }
 }
