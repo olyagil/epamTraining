@@ -1,33 +1,33 @@
 package by.training.task03.composite;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class Composite implements Component {
+public class Composite implements InterfaceComponent {
 
-    //    Component component;
-    List<Component> children;
+    List<InterfaceComponent> children;
 
     public Composite() {
         children = new ArrayList<>();
     }
 
-    @Override
-    public void execute() {
-
+    public void add(InterfaceComponent... components) {
+        children.addAll(Arrays.asList(components));
     }
 
-    public void add(Component component) {
-        children.add(component);
-    }
-
-    public void remove(Component component) {
+    public void remove(InterfaceComponent component) {
         children.remove(component);
     }
 
-//    Component getChildren() {
-//        return;
-//    }
+    InterfaceComponent getChildren(int index) {
+        return children.get(index);
+    }
 
-
+    @Override
+    public void gather() {
+        for (InterfaceComponent component : children) {
+            component.gather();
+        }
+    }
 }

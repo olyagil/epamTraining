@@ -4,6 +4,7 @@ public abstract class Parser {
 
     Parser nextParser;
 
+
     void setNextParser(Parser parser) {
         nextParser = parser;
     }

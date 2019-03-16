@@ -52,8 +52,8 @@ public class ParseWord extends Parser {
         LOGGER.info(listWords.size() + " words: " + listWords);
         LOGGER.info(listExpressions.size() + " expressions: " + listExpressions);
         LOGGER.info(listPunctuationMarks.size() + " punctuation marks: " + listPunctuationMarks);
-//        for (String word : listWords) {
-//            nextParser.parse(word);
-//        }
+        for (String word : listWords) {
+            nextParser.parse(word);
+        }
     }
 }

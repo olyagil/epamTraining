@@ -13,9 +13,6 @@ public class ParseSentence extends Parser {
     //todo: regex for ...
     private static final Logger LOGGER = LogManager.getLogger();
 
-    //    private static final String REGEX_SENTENCE = "[A-Z].+(\\.|!|\\?|" +
-//            "\\.{3})";
-
     private static final String REGEX_SENTENCE = "[.!?]";
     private List<String> listSentence;
 
@@ -30,8 +27,8 @@ public class ParseSentence extends Parser {
         Pattern pattern = Pattern.compile(REGEX_SENTENCE);
         listSentence = Arrays.asList(pattern.split(paragraph.trim()));
         LOGGER.info(listSentence.size() + " sentences: " + listSentence);
-//        for (String sentence : listSentence) {
-//            nextParser.parse(sentence);
-//        }
+        for (String sentence : listSentence) {
+            nextParser.parse(sentence);
+        }
     }
 }

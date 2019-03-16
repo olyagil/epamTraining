@@ -1,8 +1,15 @@
 package by.training.task03.composite;
 
-public class Leaf implements Component {
-    @Override
-    public void execute() {
+public class Leaf implements InterfaceComponent {
 
+    String symbol;
+
+    public Leaf() {
+        this.symbol = symbol;
+    }
+
+    @Override
+    public void gather() {
+        System.out.println("Symbol (leaf) : " + symbol);
     }
 }

@@ -25,8 +25,8 @@ public class ParseLexeme extends Parser {
         listLexeme = Arrays.asList(pattern.split(sentence.trim()));
         LOGGER.info(listLexeme.size() + " lexemes: " + listLexeme);
 
-//        for(String lexeme : listLexeme){
-//            nextParser.parse(lexeme);
-//        }
+        for(String lexeme : listLexeme){
+            nextParser.parse(lexeme);
+        }
     }
 }

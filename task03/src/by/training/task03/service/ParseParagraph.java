@@ -31,8 +31,8 @@ public class ParseParagraph extends Parser {
         }
 
         LOGGER.info(listParagraph.size() + " paragraphs: " + listParagraph);
-//        for (String paragraph : listParagraph) {
-//            nextParser.parse(paragraph);
-//        }
+        for (String paragraph : listParagraph) {
+            nextParser.parse(paragraph);
+        }
     }
 }
