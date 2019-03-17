@@ -2,5 +2,5 @@ package by.training.task03.composite;
 
 public interface Component {
 
-     void gather();
+     void gather(String path);
 }

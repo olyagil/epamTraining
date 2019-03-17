@@ -6,14 +6,10 @@ import java.util.List;
 
 public class CompositeText implements Component {
 
-    ComponentType type;
-    List<Component> children;
+    private ComponentType type;
+    private List<Component> children;
 
-    public CompositeText() {
-        children = new ArrayList<>();
-    }
-
-    public CompositeText(ComponentType type) {
+    public CompositeText(final ComponentType type) {
         this.type = type;
         children = new ArrayList<>();
     }
@@ -22,34 +18,29 @@ public class CompositeText implements Component {
         children.add(component);
     }
 
-    public void add(Component... components) {
+    public void add(final Component... components) {
         children.addAll(Arrays.asList(components));
     }
 
-    public void remove(Component component) {
+    public void remove(final Component component) {
         children.remove(component);
     }
 
-    public Component getChildren(int index) {
+    public Component getChildren(final int index) {
         return children.get(index);
     }
 
 
     @Override
-    public void gather() {
-        System.out.println(children);
+    public void gather(final String path) {
         for (Component component : children) {
-            System.out.println(component);
-            component.gather();
+            component.gather(path);
         }
-
     }
 
     @Override
     public String toString() {
-        return "CompositeText{" +
-                "children=" + children.size() +
-                ", type=" + type +
-                '}';
+        return "CompositeText{" + "children=" + children.size()
+                + ", type=" + type + '}';
     }
 }

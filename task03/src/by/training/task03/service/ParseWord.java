@@ -9,13 +9,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ParseWord extends Parser {
-    //todo: кавычки куда? (слова, препинания)
+    //todo: кавычку куда? (слова, препинания)
     //todo: слово в скобочках
 
     private static final Logger LOGGER = LogManager.getLogger();
@@ -34,14 +33,15 @@ public class ParseWord extends Parser {
     private static final String REGEX_PUNCTUATION_MARK = "[,.!?]+";
 
     @Override
-    public Component parseData(String lexeme) {
-        LOGGER.info("Parsing the sentence into the words, expression or the " +
-                "punctuation mark.");
+    public Component parseData(final String lexeme) {
+        LOGGER.info("Parsing the sentence into the words, expression or the "
+                +                "punctuation mark.");
         CompositeText wordComponent = new CompositeText(ComponentType.WORD);
 
         Pattern patternWord = Pattern.compile(REGEX_WORD);
         Pattern patternExpression = Pattern.compile(REGEX_EXPRESSION);
-        Pattern patternPunctuationMark = Pattern.compile(REGEX_PUNCTUATION_MARK);
+        Pattern patternPunctuationMark =
+                Pattern.compile(REGEX_PUNCTUATION_MARK);
 
         Matcher matcherWord = patternWord.matcher(lexeme.trim());
         Matcher matcherExpression = patternExpression.matcher(lexeme.trim());
@@ -61,11 +61,13 @@ public class ParseWord extends Parser {
             wordComponent.add(new Leaf(ComponentType.EXPRESSION,
                     matcherExpression.group()));
         }
-        System.out.println("WORD COMPONENT: " + wordComponent);
 
+        LOGGER.info("WORD COMPONENT: " + wordComponent);
         LOGGER.info(listWords.size() + " words: " + listWords);
-        LOGGER.info(listExpressions.size() + " expressions: " + listExpressions);
-        LOGGER.info(listPunctuationMarks.size() + " punctuation marks: " + listPunctuationMarks);
+        LOGGER.info(listExpressions.size() + " expressions: "
+                + listExpressions);
+        LOGGER.info(listPunctuationMarks.size() + " punctuation marks: "
+                + listPunctuationMarks);
 
         return wordComponent;
     }

@@ -8,7 +8,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,15 +16,16 @@ public class ParseLexeme extends Parser {
 
     private static final Logger LOGGER = LogManager.getLogger();
     private static final String REGEX_LEXEME = ".+?[\\s.,!?]+";
+    private static final String SPACE = " ";
 
-    List<String> listLexeme;
+    private List<String> listLexeme;
 
     ParseLexeme() {
         listLexeme = new ArrayList<>();
     }
 
     @Override
-    public Component parseData(String sentence) {
+    public Component parseData(final String sentence) {
         LOGGER.info("Parsing the sentence into the lexemes.");
 
         CompositeText lexemeComponent = new CompositeText(ComponentType.LEXEME);
@@ -34,9 +34,9 @@ public class ParseLexeme extends Parser {
         while (matcher.find()) {
             listLexeme.add(matcher.group());
             lexemeComponent.add(parse(matcher.group()),
-                    new Leaf(ComponentType.SPACE, " "));
+                    new Leaf(ComponentType.SPACE, SPACE));
         }
-        System.out.println("LEXEME COMPONENT: " + lexemeComponent);
+        LOGGER.info("LEXEME COMPONENT: " + lexemeComponent);
         LOGGER.info(listLexeme.size() + " lexemes: " + listLexeme);
         return lexemeComponent;
     }
