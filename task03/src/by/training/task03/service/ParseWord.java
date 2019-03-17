@@ -22,7 +22,7 @@ public class ParseWord extends Parser {
     private List<String> listExpressions;
     private List<String> listPunctuationMarks;
 
-    ParseWord() {
+    public ParseWord() {
         listWords = new ArrayList<>();
         listExpressions = new ArrayList<>();
         listPunctuationMarks = new ArrayList<>();
@@ -35,7 +35,7 @@ public class ParseWord extends Parser {
     @Override
     public Component parseData(final String lexeme) {
         LOGGER.info("Parsing the sentence into the words, expression or the "
-                +                "punctuation mark.");
+                + "punctuation mark.");
         CompositeText wordComponent = new CompositeText(ComponentType.WORD);
 
         Pattern patternWord = Pattern.compile(REGEX_WORD);

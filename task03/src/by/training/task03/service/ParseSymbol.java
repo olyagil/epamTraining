@@ -19,7 +19,7 @@ public class ParseSymbol extends Parser {
 
     private List<String> listSymbol;
 
-    ParseSymbol() {
+    public ParseSymbol() {
         listSymbol = new ArrayList<>();
     }
 

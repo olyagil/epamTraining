@@ -11,7 +11,7 @@ public class Reader {
     private static final Logger LOGGER = LogManager.getLogger();
     private String text;
 
-    String read(final String path) {
+    public String read(final String path) {
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
@@ -28,7 +28,7 @@ public class Reader {
 
     }
 
-//    List<String> read(String path) throws ReadFileException {
+//   public List<String> read(String path) throws ReadFileException {
 //        LOGGER.info("Reading from file " + path);
 //        try {
 ////           text = Files.lines(Paths.get(path)).collect(Collectors.toList());
@@ -39,7 +39,7 @@ public class Reader {
 //        return text;
 //    }
 
-    public static void write(final String string,  final String filePath)
+    public static void write(final String string, final String filePath)
             throws IOException {
 //        LOGGER.debug("Writing data to " + filePath);
         FileWriter writer = new FileWriter(filePath, true);

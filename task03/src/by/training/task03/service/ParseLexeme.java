@@ -20,7 +20,7 @@ public class ParseLexeme extends Parser {
 
     private List<String> listLexeme;
 
-    ParseLexeme() {
+    public ParseLexeme() {
         listLexeme = new ArrayList<>();
     }
 

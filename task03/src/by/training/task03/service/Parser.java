@@ -10,11 +10,11 @@ public abstract class Parser {
     CompositeText component = new CompositeText(ComponentType.TEXT);
     private Parser nextParser;
 
-    void setNextParser(final Parser parser) {
+    public void setNextParser(final Parser parser) {
         nextParser = parser;
     }
 
-    Component parse(final String text) {
+    public Component parse(final String text) {
         return nextParser.parseData(text);
     }
 

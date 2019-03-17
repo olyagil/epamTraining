@@ -17,7 +17,7 @@ public class ParseSentence extends Parser {
     private static final String REGEX_SENTENCE = "[A-Z].+?[.!?]";
     private List<String> listSentence;
 
-    ParseSentence() {
+    public ParseSentence() {
         listSentence = new ArrayList<>();
     }
 

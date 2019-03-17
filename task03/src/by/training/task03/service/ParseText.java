@@ -13,7 +13,7 @@ public class ParseText extends Parser {
     private static final Logger LOGGER = LogManager.getLogger();
     private List<String> listParagraph;
 
-    ParseText() {
+    public ParseText() {
         listParagraph = new ArrayList<>();
     }
 
