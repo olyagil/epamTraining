@@ -1,4 +1,4 @@
-package by.training.task03.service;
+package by.training.task03.parser;
 
 import by.training.task03.composite.Component;
 import by.training.task03.composite.ComponentType;
@@ -12,33 +12,31 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ParseSymbol extends Parser {
+public class ParseWord extends Parser {
 
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final String REGEX_ANY_SYMBOL = ".";
+    private static final Pattern PATTERN_FOR_SYMBOL = Pattern.compile(".");
 
     private List<String> listSymbol;
 
-    public ParseSymbol() {
+    public ParseWord(Parser nextParser) {
+        super(nextParser);
         listSymbol = new ArrayList<>();
     }
 
     @Override
-    public Component parseData(final String word) {
+    public Component parseData(final String word,
+                               final CompositeText compositeWord) {
         LOGGER.info("Parsing the word into the symbol");
-
-        CompositeText symbolComponent =
-                new CompositeText(ComponentType.SYMBOL);
-        Pattern pattern = Pattern.compile(REGEX_ANY_SYMBOL);
-        Matcher matcher = pattern.matcher(word);
+        Matcher matcher = PATTERN_FOR_SYMBOL.matcher(word);
 
         while (matcher.find()) {
             listSymbol.add(matcher.group());
-            symbolComponent.add(new Leaf(ComponentType.SYMBOL, matcher.group()));
+            compositeWord.add(new Leaf(ComponentType.SYMBOL, matcher.group()));
         }
 
-        LOGGER.info(listSymbol.size() + " symbols: " + listSymbol);
-        LOGGER.info("SYMBOL COMPONENT: " + symbolComponent);
-        return symbolComponent;
+//        LOGGER.info(listSymbol.size() + " symbols: " + listSymbol);
+//        LOGGER.info("SYMBOL COMPONENT: " + compositeWord);
+        return compositeWord;
     }
 }
