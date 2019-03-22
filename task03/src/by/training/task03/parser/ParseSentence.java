@@ -27,14 +27,15 @@ public class ParseSentence extends Parser {
     public Component parseData(final String sentence,
                                final CompositeText compositeSentence) {
 
-        LOGGER.info("Parsing the sentence into the lexemes.");
+//        LOGGER.info("Parsing the sentence into the lexemes.");
         Matcher matcher = PATTERN_FOR_LEXEME.matcher(sentence);
         while (matcher.find()) {
             listLexeme.add(matcher.group());
-            CompositeText compositeLexeme =
-                    new CompositeText(ComponentType.LEXEME);
-            compositeSentence.add(parse(matcher.group(), compositeLexeme));
+            compositeSentence.add(parse(matcher.group(),
+                    new CompositeText(ComponentType.LEXEME)));
         }
+//        System.out.println("SENTENCE has " + compositeSentence.getSize()  +
+//                " lexemes.");
         return compositeSentence;
     }
 }

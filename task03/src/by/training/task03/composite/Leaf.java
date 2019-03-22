@@ -1,11 +1,13 @@
 package by.training.task03.composite;
 
-public class Leaf implements Component {
+import by.training.task03.interpreter.Client;
+import by.training.task03.interpreter.ReversePolishNotation;
 
-    private String symbol;
+public class Leaf implements Component {
+    private char symbol;
     private ComponentType type;
 
-    public Leaf(final ComponentType type, final String symbol) {
+    public Leaf(final ComponentType type, final char symbol) {
         this.type = type;
         this.symbol = symbol;
     }

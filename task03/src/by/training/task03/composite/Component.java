@@ -7,6 +7,10 @@ public interface Component {
     default void add(Component component) {
     }
 
+    default int getSize() {
+        return -1;
+    }
+
     default void add(Component... components) {
     }
 

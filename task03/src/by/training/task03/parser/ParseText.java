@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//todo:
 public class ParseText extends Parser {
     private static final Logger LOGGER = LogManager.getLogger();
     private List<String> listParagraph;
@@ -26,14 +25,14 @@ public class ParseText extends Parser {
     public Component parseData(final String text,
                                final CompositeText compositeText) {
 
-        LOGGER.info("Parsing the text into the paragraphs.");
+//        LOGGER.info("Parsing the text into the paragraphs.");
         Matcher matcher = PATTERN_FOR_PARAGRAPH.matcher(text);
         while (matcher.find()) {
             listParagraph.add(matcher.group());
-            CompositeText compositeParagraph =
-                    new CompositeText(ComponentType.PARAGRAPH);
-            compositeText.add(parse(matcher.group(), compositeParagraph));
+            compositeText.add(parse(matcher.group(),
+                    new CompositeText(ComponentType.PARAGRAPH)));
         }
+       LOGGER.info("TEXT has " + compositeText.getSize() + " para.");
         return compositeText;
     }
 }

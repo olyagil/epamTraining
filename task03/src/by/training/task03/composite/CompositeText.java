@@ -1,5 +1,8 @@
 package by.training.task03.composite;
 
+import by.training.task03.interpreter.Client;
+import by.training.task03.interpreter.ReversePolishNotation;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,6 +15,14 @@ public class CompositeText implements Component {
     public CompositeText(final ComponentType type) {
         this.type = type;
         componentList = new ArrayList<>();
+    }
+
+    public ComponentType getType() {
+        return type;
+    }
+
+    public List<Component> getComponentList() {
+        return componentList;
     }
 
     @Override
@@ -29,14 +40,28 @@ public class CompositeText implements Component {
         componentList.remove(component);
     }
 
-    public Component getChildren(final int index) {
+        public Component getChildren(final int index) {
         return componentList.get(index);
+    }
+//    public List<Component> getChildren() {
+//        return componentList;
+//    }
+
+    public int getSize() {
+        return componentList.size();
     }
 
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
         for (Component component : componentList) {
+//            if (type == ComponentType.EXPRESSION) {
+//                ReversePolishNotation rpn = new ReversePolishNotation();
+//                String expression = rpn.create(());
+//                Client interpreter = new Client(expression);
+//                result.append(interpreter.calculate());
+//            }
+            //   System.out.println(type + " : " + component);
             result.append(type.getDelimiter());
             result.append(component.toString());
         }

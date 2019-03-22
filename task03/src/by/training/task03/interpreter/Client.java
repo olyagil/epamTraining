@@ -2,17 +2,17 @@ package by.training.task03.interpreter;
 
 import java.util.ArrayList;
 
-class Client {
+public class Client {
 
     private static final String REGEX_EXPRESSION = "\\p{Blank}+";
     private ArrayList<Expression> expressionList;
 
-    Client(String expression) {
+    public Client(final String expression) {
         expressionList = new ArrayList<>();
         parse(expression);
     }
 
-    private void parse(String expression) {
+    private void parse(final String expression) {
         for (String lexeme : expression.trim().split(REGEX_EXPRESSION)) {
             if (Character.isDigit(lexeme.charAt(0))) {
                 expressionList.add(c -> c.pushValue(Integer.parseInt(lexeme)));
@@ -63,7 +63,7 @@ class Client {
         }
     }
 
-    Number calculate() {
+    public Number calculate() {
         Context context = new Context();
         expressionList.forEach(c -> c.interpret(context));
         return context.popValue();

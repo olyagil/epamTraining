@@ -2,18 +2,14 @@ package by.training.task03.composite;
 
 public enum ComponentType {
     //todo: изменить конструктор
-    TEXT(""),
-    PARAGRAPH("\n\t"),
-    SENTENCE(""),
-    LEXEME(" "),
+    TEXT("\n\t"),
+    PARAGRAPH(""),
+    SENTENCE(" "),
+    LEXEME(""),
     WORD(""),
     EXPRESSION(""),
     PUNCTUATION_MARK(""),
     SYMBOL("");
-
-    ComponentType() {
-
-    }
 
     private String delimiter;
 
@@ -21,7 +17,7 @@ public enum ComponentType {
         return delimiter;
     }
 
-    ComponentType(String delimiter) {
+    ComponentType(final String delimiter) {
         this.delimiter = delimiter;
     }
 }

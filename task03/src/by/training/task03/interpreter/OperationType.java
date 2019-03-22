@@ -2,20 +2,21 @@ package by.training.task03.interpreter;
 
 public enum OperationType {
 
-    OPEN_BRACKET("(", 0),
-    CLOSE_BRACKET(")", 0),
-    OR("|", 1),
-    XOR("^", 2),
-    AND("&", 3),
+    NOT("~", 5),
     LEFT_SHIFT("<<", 4),
     RIGHT_SHIFT(">>", 4),
     UNSIGNED_RIGHT_SHIFT(">>>", 4),
-    NOT("~", 5);
+    AND("&", 3),
+    XOR("^", 2),
+    OR("|", 1),
+    OPEN_BRACKET("(", 0),
+    CLOSE_BRACKET(")", 0);
 
-    String operation;
-    int priority;
 
-    OperationType(String operation, int priority) {
+    private String operation;
+    private int priority;
+
+    OperationType(final String operation, final int priority) {
         this.operation = operation;
         this.priority = priority;
     }

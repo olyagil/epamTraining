@@ -18,6 +18,7 @@ public class ParseParagraph extends Parser {
             + ".+?[.!?]|(\\.\\.\\.)");
     private List<String> listSentence;
 
+
     public ParseParagraph(Parser nextParser) {
         super(nextParser);
         listSentence = new ArrayList<>();
@@ -27,14 +28,18 @@ public class ParseParagraph extends Parser {
     public Component parseData(final String paragraph,
                                final CompositeText compositeParagraph) {
 
-        LOGGER.info("Parsing the paragraph into the sentences. ");
+//        LOGGER.info("Parsing the paragraph into the sentences. ");
         Matcher matcher = PATTERN_FOR_SENTENCE.matcher(paragraph);
         while (matcher.find()) {
             listSentence.add(matcher.group());
-            CompositeText compositeSentence =
-                    new CompositeText(ComponentType.SENTENCE);
-            compositeParagraph.add(parse(matcher.group(), compositeSentence));
+//            CompositeText compositeSentence =
+//                    new CompositeText(ComponentType.SENTENCE);
+            compositeParagraph.add(parse(matcher.group(),
+                    new CompositeText(ComponentType.SENTENCE)));
         }
+        System.out.println("PARAGRAPH has " + compositeParagraph.getSize()  +
+                " sentences.");
+
         return compositeParagraph;
     }
 }

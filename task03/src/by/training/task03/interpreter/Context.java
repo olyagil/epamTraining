@@ -10,7 +10,7 @@ class Context {
         return contextValues.pop();
     }
 
-    void pushValue(Integer value) {
+    void pushValue(final Integer value) {
         this.contextValues.push(value);
     }
 }
