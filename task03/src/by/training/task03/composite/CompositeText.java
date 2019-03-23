@@ -21,8 +21,9 @@ public class CompositeText implements Component {
         return type;
     }
 
-    public List<Component> getComponentList() {
-        return componentList;
+    @Override
+    public CompositeText get(int index) {
+        return (CompositeText) componentList.get(index);
     }
 
     @Override
@@ -40,30 +41,45 @@ public class CompositeText implements Component {
         componentList.remove(component);
     }
 
-        public Component getChildren(final int index) {
+    public Component getChildren(final int index) {
         return componentList.get(index);
     }
-//    public List<Component> getChildren() {
-//        return componentList;
-//    }
+
+    public List<Component> getChildren() {
+        return componentList;
+    }
 
     public int getSize() {
         return componentList.size();
     }
 
+    //TODO change to better method
+    //TODO change sentence to lexeme
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        for (Component component : componentList) {
-//            if (type == ComponentType.EXPRESSION) {
-//                ReversePolishNotation rpn = new ReversePolishNotation();
-//                String expression = rpn.create(());
-//                Client interpreter = new Client(expression);
-//                result.append(interpreter.calculate());
-//            }
-            //   System.out.println(type + " : " + component);
-            result.append(type.getDelimiter());
-            result.append(component.toString());
+
+        if (type == ComponentType.EXPRESSION) {
+            StringBuilder str = new StringBuilder();
+            for (int i = 0; i < componentList.size(); i++) {
+                str.append(componentList.get(i));
+            }
+            ReversePolishNotation rpn = new ReversePolishNotation();
+            String expression = rpn.create(str.toString());
+            Client interpreter = new Client(expression);
+            result.append(interpreter.calculate());
+        } else {
+            for (Component component : componentList) {
+                switch (type) {
+                    case TEXT:
+                        result.append("\n\t");
+                        break;
+                    case SENTENCE:
+                        result.append(" ");
+                        break;
+                }
+                result.append(component.toString());
+            }
         }
         return result.toString();
     }

@@ -1,22 +1,30 @@
 package by.training.task03.interpreter;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Map;
+import java.util.TreeMap;
 
 //todo: refactor completely
 public class ReversePolishNotation {
 
     private static final Character LEFT_SHIFT_SYMBOL = '<';
     private static final Character RIGHT_SHIFT_SYMBOL = '>';
-
-    private Deque<String> deque;
-    private StringBuilder polishNotation;
+    private static final Logger LOGGER = LogManager.getLogger();
+    private Deque<String> deque = new ArrayDeque<>();
+    private StringBuilder polishNotation = new StringBuilder();
 
     public ReversePolishNotation() {
-        deque = new ArrayDeque<>();
-        polishNotation = new StringBuilder();
+        deque.clear();
+        for (OperationType operation : OperationType.values()) {
+            operationMap.put(operation.getOperation(), operation.getPriority());
+        }
     }
-//
+
+    private Map<String, Integer> operationMap = new TreeMap<>();
 
     public String create(String input) {
 
@@ -33,18 +41,14 @@ public class ReversePolishNotation {
                 polishNotation.append(input.substring(start, current) + " ");
             } else {
                 int current = i;
-                int right = 0;
                 String temp;
-                if (input.charAt(i) == RIGHT_SHIFT_SYMBOL) {
-                    while (right < input.length() && (input.charAt(i) == RIGHT_SHIFT_SYMBOL)) {
-                        i++;
-                        right++;
-                    }
-                    if (right == 3) {
-                        temp = OperationType.UNSIGNED_RIGHT_SHIFT.getOperation();
-                    } else {
-                        temp = OperationType.RIGHT_SHIFT.getOperation();
-                    }
+                if (input.charAt(i) == RIGHT_SHIFT_SYMBOL
+                        && input.charAt(i + 2) == RIGHT_SHIFT_SYMBOL) {
+                    temp = OperationType.UNSIGNED_RIGHT_SHIFT.getOperation();
+                    i = i + 2;
+                } else if (input.charAt(i) == RIGHT_SHIFT_SYMBOL) {
+                    temp = OperationType.RIGHT_SHIFT.getOperation();
+                    i++;
                 } else if (input.charAt(i) == LEFT_SHIFT_SYMBOL) {
                     temp = OperationType.LEFT_SHIFT.getOperation();
                     i++;
@@ -58,12 +62,12 @@ public class ReversePolishNotation {
                         peek = deque.pop();
                     }
                 } else if (!deque.isEmpty()
-                        && Character.toString(ch).equals(OperationType.CLOSE_BRACKET.getOperation())
-                        && OperationType.valueOf(temp).getPriority() <= OperationType.valueOf(deque.peek()).getPriority()) {
+                        && !temp.equals(OperationType.OPEN_BRACKET.getOperation())
+                        && operationMap.get(temp) <= operationMap.get(deque.peek())) {
                     do {
                         polishNotation.append(deque.pop() + " ");
-                    } while (!deque.isEmpty() && OperationType.valueOf(temp).getPriority()
-                            <= (OperationType.valueOf(deque.peek()).getPriority()));
+                    } while (!deque.isEmpty() && operationMap.get(temp)
+                            <= operationMap.get(deque.peek()));
                     deque.push(temp);
                 } else {
                     deque.push(temp);

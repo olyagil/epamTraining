@@ -11,6 +11,10 @@ public interface Component {
         return -1;
     }
 
+    default CompositeText get(int index) {
+        return null;
+    }
+
     default void add(Component... components) {
     }
 
