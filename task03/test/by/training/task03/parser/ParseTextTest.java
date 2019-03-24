@@ -7,26 +7,17 @@ import by.training.task03.reader.DataReader;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
-
-public class ParseLexemeTest {
-
-    private static final String PATH = "data//lab3-text.txt";
+public class ParseTextTest {
     private Parser parser;
     private DataReader dataReader;
     private CompositeText compositeText;
 
-    /**
-     * Composite of the first lexeme in the text
-     */
-    private CompositeText composite;
-
-    @BeforeClass
-    public void setUp() throws ReadFileException {
+    @BeforeMethod
+    public void setUp() {
         dataReader = new DataReader();
-        parser = new ParseLexeme(new ParseToSymbol(null));
-        compositeText = new CompositeText(ComponentType.LEXEME);
-        String text = dataReader.readFromFile(PATH);
-        composite = parser.parseData(text, compositeText);
+        parser = new ParseText(new ParseParagraph(new ParseSentence
+                (new ParseLexeme(new ParseToSymbol(null)))));
+        compositeText = new CompositeText(ComponentType.TEXT);
     }
 
     @AfterClass
@@ -36,18 +27,20 @@ public class ParseLexemeTest {
         compositeText = null;
     }
 
-    //parsing lexeme into word and punctuation mark
     @DataProvider(name = "data")
     public Object[][] data() {
         return new Object[][]{
-                {composite.getChildren(0), 2},
-                {composite.getChildren(1), 1},
+                {"data//lab3-text.txt", 4},
+                {"data//test_data.txt", 1},
+                {"data//test.txt", 2},
         };
     }
 
     @Test(dataProvider = "data")
-    public void testParseData(CompositeText compositeLexeme, int expected) {
-        int actual = compositeLexeme.getSize();
+    public void testParseData(String path, int expected) throws ReadFileException {
+        String text = dataReader.readFromFile(path);
+        CompositeText composite = parser.parseData(text, compositeText);
+        int actual = composite.getSize();
         Assert.assertEquals(actual, expected);
     }
 }
