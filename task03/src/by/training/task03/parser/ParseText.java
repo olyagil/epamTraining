@@ -19,8 +19,8 @@ public class ParseText extends Parser {
     }
 
     @Override
-    public Component parseData(final String text,
-                               final CompositeText compositeText) {
+    public CompositeText parseData(final String text,
+                                   final CompositeText compositeText) {
 
 //        LOGGER.info("Parsing the text into the paragraphs.");
         Matcher matcher = PATTERN_FOR_PARAGRAPH.matcher(text);
@@ -28,6 +28,7 @@ public class ParseText extends Parser {
             compositeText.add(parse(matcher.group(),
                     new CompositeText(ComponentType.PARAGRAPH)));
         }
+
         return compositeText;
     }
 }

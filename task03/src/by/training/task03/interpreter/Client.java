@@ -2,6 +2,8 @@ package by.training.task03.interpreter;
 
 import java.util.ArrayList;
 
+//TODO each class
+//TODO functional interface which implements BinaryOperations
 public class Client {
 
     private static final String REGEX_EXPRESSION = "\\p{Blank}+";
@@ -63,7 +65,7 @@ public class Client {
         }
     }
 
-    public Number calculate() {
+    public int calculate() {
         Context context = new Context();
         expressionList.forEach(c -> c.interpret(context));
         return context.popValue();

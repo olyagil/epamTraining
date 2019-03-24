@@ -20,8 +20,8 @@ public class ParseSentence extends Parser {
     }
 
     @Override
-    public Component parseData(final String sentence,
-                               final CompositeText compositeSentence) {
+    public CompositeText parseData(final String sentence,
+                                   final CompositeText compositeSentence) {
 
 //        LOGGER.info("Parsing the sentence into the lexemes.");
         Matcher matcher = PATTERN_FOR_LEXEME.matcher(sentence);
@@ -29,6 +29,7 @@ public class ParseSentence extends Parser {
             compositeSentence.add(parse(matcher.group(),
                     new CompositeText(ComponentType.LEXEME)));
         }
+
         return compositeSentence;
     }
 }

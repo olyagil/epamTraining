@@ -8,12 +8,11 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-//todo; change method to the better one.
 
-public class Reader {
+public class DataReader {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public String read(final String path) throws ReadFileException {
+    public String readFromFile(final String path) throws ReadFileException {
         LOGGER.info("Reading from file " + path);
         String text;
         try {

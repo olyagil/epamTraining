@@ -23,7 +23,7 @@ public class ParseLexeme extends Parser {
     private static final Pattern PATTERN_FOR_PUNCTUATION_MARK = Pattern.compile("[,.!?]+");
 
     @Override
-    public Component parseData(final String lexeme,
+    public CompositeText parseData(final String lexeme,
                                final CompositeText compositeLexeme) {
 //        LOGGER.info("Parsing the sentence into the words, expression or the "
 //                + "punctuation mark.");

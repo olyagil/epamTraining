@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+//TODO make 3 task
+//TODO refactor 1 and 2 task
+//TODO create test
+//TODO consider visitor pattern
 public class Action {
 
     private static final Logger LOGGER = LogManager.getLogger();
@@ -100,33 +104,5 @@ public class Action {
         return result;
     }
 
-//    public void sortParagraphByNumberOfSentence(CompositeText compositeText) {
-//
-//        CompositeText newCompositeText = new CompositeText(ComponentType.TEXT);
-//        LOGGER.info(compositeText.getSize());
-//        for (int i = 0; i < compositeText.getSize(); i++) {
-//            newCompositeText.add(compositeText.getChildren(i));
-//        }
-//        LOGGER.info(newCompositeText.getType() + " " + newCompositeText.getSize() +
-//                " : " + newCompositeText);
-////        for (int i = 0; i < compositeText.getSize(); i++) {
-////            CompositeText paragraph =
-////                    (CompositeText) newCompositeText.getComponentList().get(i);
-////            System.out.println("Para #" + i + " : " + paragraph.getSize() +
-////                    " sentences");
-////            for (int j = 0; j < paragraph.getSize(); j++) {
-////                CompositeText sentence =
-////                        (CompositeText) paragraph.getChildren(j);
-////                System.out.println(sentence);
-////                for (int z = 0; z < sentence.getSize(); z++) {
-////                    CompositeText lexeme =
-////                            (CompositeText) sentence.getChildren(z);
-////                    System.out.println(lexeme.getSize() + " : " + lexeme);
-////                }
-////            }
-////        }
-//
-//        System.out.println(compositeText.getComponentList());
-//
-//    }
+
 }

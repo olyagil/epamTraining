@@ -1,6 +1,5 @@
 package by.training.task03.parser;
 
-import by.training.task03.composite.Component;
 import by.training.task03.composite.ComponentType;
 import by.training.task03.composite.CompositeText;
 import org.apache.logging.log4j.LogManager;
@@ -18,16 +17,17 @@ public class ParseParagraph extends Parser {
         super(nextParser);
     }
 
-    @Override
-    public Component parseData(final String paragraph,
-                               final CompositeText compositeParagraph) {
 
+    @Override
+    public CompositeText parseData(final String paragraph,
+                                   final CompositeText compositeParagraph) {
 //        LOGGER.info("Parsing the paragraph into the sentences. ");
         Matcher matcher = PATTERN_FOR_SENTENCE.matcher(paragraph);
         while (matcher.find()) {
             compositeParagraph.add(parse(matcher.group(),
                     new CompositeText(ComponentType.SENTENCE)));
         }
+
         return compositeParagraph;
     }
 }

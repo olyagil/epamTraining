@@ -1,7 +1,7 @@
 package by.training.task03.exception;
 
 /**
- * Exceptions occur when trying to read data file.
+ * Exceptions occur when trying to readFromFile data file.
  */
 public class ReadFileException extends Exception {
 

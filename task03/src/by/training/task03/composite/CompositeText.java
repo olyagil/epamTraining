@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+//TODO delete unnecessary methods
 public class CompositeText implements Component {
 
     private ComponentType type;

@@ -8,7 +8,7 @@ import java.util.Deque;
 import java.util.Map;
 import java.util.TreeMap;
 
-//todo: refactor completely
+//TODO refactor completely
 public class ReversePolishNotation {
 
     private static final Character LEFT_SHIFT_SYMBOL = '<';

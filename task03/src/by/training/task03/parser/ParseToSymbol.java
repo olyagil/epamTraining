@@ -1,6 +1,5 @@
 package by.training.task03.parser;
 
-import by.training.task03.composite.Component;
 import by.training.task03.composite.ComponentType;
 import by.training.task03.composite.CompositeText;
 import by.training.task03.composite.Leaf;
@@ -16,7 +15,7 @@ public class ParseToSymbol extends Parser {
     }
 
     @Override
-    public Component parseData(final String word,
+    public CompositeText parseData(final String word,
                                final CompositeText compositeWord) {
 //        LOGGER.info("Parsing into the symbol");
         char[] chars = word.toCharArray();

@@ -18,7 +18,7 @@ public abstract class Parser {
         return nextParser.parseData(text, compositeText);
     }
 
-    public abstract Component parseData(String data, CompositeText compositeText);
+    public abstract CompositeText parseData(String data, CompositeText compositeText);
 }
 
 
