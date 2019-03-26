@@ -8,23 +8,50 @@ import java.util.Deque;
 import java.util.Map;
 import java.util.TreeMap;
 
-//TODO refactor completely
-//TODO maiby объединить с другим классом
+/**
+ * The {@code ReversePolishNotation} class for creating the polish notation.
+ */
 public class ReversePolishNotation {
-
+    /**
+     * The constant for the < operation.
+     */
     private static final Character LEFT_SHIFT_SYMBOL = '<';
+    /**
+     * The constant for the > operation.
+     */
     private static final Character RIGHT_SHIFT_SYMBOL = '>';
+    /**
+     * The constant for logging.
+     */
     private static final Logger LOGGER = LogManager.getLogger();
+    /**
+     * The constant for the space.
+     */
     public static final String SPACE = " ";
+    /**
+     * The stack.
+     */
     private Deque<String> stack = new ArrayDeque<>();
+    /**
+     * The expression in the polish notation form.
+     */
     private StringBuilder polishNotation = new StringBuilder();
+    /**
+     * Map for the operation and his priority.
+     */
     private Map<String, Integer> operationPrecedenceMap = new TreeMap<>();
 
+    /**
+     * The constructor with no parameters.
+     */
     public ReversePolishNotation() {
         stack.clear();
         createMap();
     }
 
+    /**
+     * Method for creating the the map.
+     */
     private void createMap() {
         for (OperationType operation : OperationType.values()) {
             operationPrecedenceMap.put(operation.getOperation(),
@@ -32,47 +59,59 @@ public class ReversePolishNotation {
         }
     }
 
-    public String create(String input) {
-        for (int i = 0; i < input.length(); i++) {
-            char ch = input.charAt(i);
+    /**
+     * Method for creating the polish notation form.
+     *
+     * @param expression expression
+     * @return expression int the polish notation form
+     */
+    public String create(final String expression) {
+        LOGGER.info("Converting the expression to the polish notation form.");
+        for (int i = 0; i < expression.length(); i++) {
+            char ch = expression.charAt(i);
             if (Character.isDigit(ch)) {
                 int current = i;
-                while (current < input.length()
-                        && Character.isDigit(input.charAt(current))) {
+                while (current < expression.length()
+                        && Character.isDigit(expression.charAt(current))) {
                     current++;
                 }
                 if (current != i) {
-                    polishNotation.append(input.substring(i, current)).append(SPACE);
+                    polishNotation.append(expression.substring(i, current))
+                            .append(SPACE);
                     i = current - 1;
                 }
             } else {
                 String temp;
-                if (RIGHT_SHIFT_SYMBOL.equals(input.charAt(i))
-                        && RIGHT_SHIFT_SYMBOL.equals(input.charAt(i + 2))) {
+                if (RIGHT_SHIFT_SYMBOL.equals(expression.charAt(i))
+                        && RIGHT_SHIFT_SYMBOL.equals(expression
+                        .charAt(i + 2))) {
                     temp = OperationType.UNSIGNED_RIGHT_SHIFT.getOperation();
                     i = i + 2;
-                } else if (RIGHT_SHIFT_SYMBOL.equals(input.charAt(i))) {
+                } else if (RIGHT_SHIFT_SYMBOL.equals(expression.charAt(i))) {
                     temp = OperationType.RIGHT_SHIFT.getOperation();
                     i++;
-                } else if (LEFT_SHIFT_SYMBOL.equals(input.charAt(i))) {
+                } else if (LEFT_SHIFT_SYMBOL.equals(expression.charAt(i))) {
                     temp = OperationType.LEFT_SHIFT.getOperation();
                     i++;
                 } else {
-                    temp = Character.toString(input.charAt(i));
+                    temp = Character.toString(expression.charAt(i));
                 }
                 if (temp.equals(OperationType.CLOSE_BRACKET.getOperation())) {
                     String peek = stack.pop();
-                    while (!peek.equals(OperationType.OPEN_BRACKET.getOperation())) {
+                    while (!peek.equals(OperationType
+                            .OPEN_BRACKET.getOperation())) {
                         polishNotation.append(peek).append(SPACE);
                         peek = stack.pop();
                     }
                 } else if (!stack.isEmpty()
-                        && !temp.equals(OperationType.OPEN_BRACKET.getOperation())
+                        && !temp.equals(OperationType
+                        .OPEN_BRACKET.getOperation())
                         && operationPrecedenceMap.get(temp)
                         <= operationPrecedenceMap.get(stack.peek())) {
                     do {
                         polishNotation.append(stack.pop()).append(SPACE);
-                    } while (!stack.isEmpty() && operationPrecedenceMap.get(temp)
+                    } while (!stack.isEmpty()
+                            && operationPrecedenceMap.get(temp)
                             <= operationPrecedenceMap.get(stack.peek()));
                     stack.push(temp);
                 } else {
@@ -85,59 +124,5 @@ public class ReversePolishNotation {
         }
         return polishNotation.toString();
     }
-//    public String create(String input) {
-//
-//        for (int i = 0; i < input.length(); i++) {
-//            char ch = input.charAt(i);
-//            if (Character.isDigit(ch)) {
-//                int start = i;
-//                int current = i;
-//                while (current < input.length() && Character.isDigit(input.charAt(i))) {
-//                    current++;
-//                    i++;
-//                }
-//                i--;
-//                polishNotation.append(input.substring(start, current) + " ");
-//            } else {
-//                int current = i;
-//                String temp;
-//                if (RIGHT_SHIFT_SYMBOL.equals(input.charAt(i))
-//                        && RIGHT_SHIFT_SYMBOL.equals(input.charAt(i + 2))) {
-//                    temp = OperationType.UNSIGNED_RIGHT_SHIFT.getOperation();
-//                    i = i + 2;
-//                } else if (RIGHT_SHIFT_SYMBOL.equals(input.charAt(i))) {
-//                    temp = OperationType.RIGHT_SHIFT.getOperation();
-//                    i++;
-//                } else if (LEFT_SHIFT_SYMBOL.equals(input.charAt(i))) {
-//                    temp = OperationType.LEFT_SHIFT.getOperation();
-//                    i++;
-//                } else {
-//                    temp = Character.toString(input.charAt(current));
-//                }
-//                if (temp.equals(OperationType.CLOSE_BRACKET.getOperation())) {
-//                    String peek = stack.pop();
-//                    while (!peek.equals(OperationType.OPEN_BRACKET.getOperation())) {
-//                        polishNotation.append(peek + " ");
-//                        peek = stack.pop();
-//                    }
-//                } else if (!stack.isEmpty()
-//                        && !temp.equals(OperationType.OPEN_BRACKET.getOperation())
-//                        && operationPrecedenceMap.get(temp) <= operationPrecedenceMap.get(stack.peek())) {
-//                    do {
-//                        polishNotation.append(stack.pop() + " ");
-//                    } while (!stack.isEmpty() && operationPrecedenceMap.get(temp)
-//                            <= operationPrecedenceMap.get(stack.peek()));
-//                    stack.push(temp);
-//                } else {
-//                    stack.push(temp);
-//                }
-//            }
-//        }
-//        while (!stack.isEmpty()) {
-//            polishNotation.append(stack.pop() + " ");
-//        }
-//        return polishNotation.toString();
-//    }
-
 }
 

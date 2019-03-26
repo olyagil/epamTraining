@@ -10,17 +10,32 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class Action {
-    private static final CompositeClone CLONE = new CompositeClone();
-
+/**
+ * The {@code Sorter} is used for sorting the composite text.
+ */
+public class Sorter {
+    /**
+     * The constant for cloning the composite text.
+     */
+    private static final ComponentCloner CLONE = new ComponentCloner();
+    /**
+     * The constant for logging.
+     */
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public Component sortParagraphByNumberOfSentence(Component compositeText) {
+    /**
+     * Method for sorting paragraphs by the number of the sentences.
+     *
+     * @param compositeText text which needed to be sorted
+     * @return sorted text
+     */
+    public Component sortParagraphByNumberOfSentence(final Component
+                                                             compositeText) {
         LOGGER.info("Sorting paragraphs by the number of sentence.");
 
         Component clonedComposite = CLONE.clone(compositeText);
-        Component sortedCompositeText = new CompositeText(ComponentType.TEXT);
         List<Component> componentList = new ArrayList<>();
+        Component sortedCompositeText = new CompositeText(ComponentType.TEXT);
 
         for (int i = 0; i < clonedComposite.getSize(); i++) {
             componentList.add(clonedComposite.getChild(i));
@@ -32,8 +47,14 @@ public class Action {
         return sortedCompositeText;
     }
 
-    private List<Component> getLexeme(CompositeText compositeText) {
-
+    /**
+     * Method for getting the list of lexemes from the text.
+     *
+     * @param compositeText given text
+     * @return list of lexemes
+     */
+    private List<Component> getLexeme(final Component compositeText) {
+        LOGGER.info("Getting the list of lexemes from the text.");
         List<Component> listLexeme = new ArrayList<>();
 
         if (ComponentType.SENTENCE.equals(compositeText.getType())) {
@@ -42,18 +63,25 @@ public class Action {
             }
         } else {
             for (int i = 0; i < compositeText.getSize(); i++) {
-                listLexeme.addAll(getLexeme((CompositeText) compositeText.getChild(i)));
+                listLexeme.addAll(getLexeme(compositeText.getChild(i)));
             }
         }
         return listLexeme;
     }
 
-    public Component sortSentencesByLengthOfLexeme(Component component) {
+    /**
+     * Method for sorting lexemes by the length.
+     *
+     * @param component text which needed to be sorted
+     * @return sorted text
+     */
+    public Component sortSentencesByLengthOfLexeme(final Component component) {
+        LOGGER.info("Sorting lexemes by the length.");
 
         Component clonedComposite = CLONE.clone(component);
         Component sortedCompositeSentence =
                 new CompositeText(ComponentType.SENTENCE);
-        List<Component> lexemeList = getLexeme((CompositeText) clonedComposite);
+        List<Component> lexemeList = getLexeme(clonedComposite);
         lexemeList.sort(Comparator.comparingInt(lexeme ->
                 lexeme.toString().length()));
 
@@ -63,11 +91,18 @@ public class Action {
         return sortedCompositeSentence;
     }
 
-
-    public Component sortLexeme(Component compositeText, char ch) {
+    /**
+     * Method for sorting the lexemes by the number of entered symbol.
+     * If the number of symbols is equals the sort alphabetically.
+     *
+     * @param compositeText text which needed to be sorted
+     * @param ch            given symbol
+     * @return sorted text
+     */
+    public Component sortLexeme(final Component compositeText, final char ch) {
         CompositeText sortedCompositeText =
                 new CompositeText(ComponentType.SENTENCE);
-        List<Component> lexemeList = getLexeme((CompositeText) compositeText);
+        List<Component> lexemeList = getLexeme(compositeText);
 
         lexemeList.sort((lexeme1, lexeme2) -> {
             String str1 = lexeme1.toString();
@@ -89,13 +124,22 @@ public class Action {
         return sortedCompositeText;
     }
 
-    private int countOfSymbol(String string, Character ch) {
-        int result = 0;
-        for (int i = 0; i < string.length(); i++) {
-            if (string.toLowerCase().charAt(i) == ch) {
-                result++;
+    /**
+     * Method which counts the number of given symbol.
+     *
+     * @param lexeme the lexeme which is viewed
+     * @param symbol given symbol
+     * @return the number of characters encountered
+     */
+    private int countOfSymbol(final String lexeme, final Character symbol) {
+        LOGGER.info("Counting the number of symbol: " + symbol
+                + " in the lexeme: " + lexeme);
+        int count = 0;
+        for (int i = 0; i < lexeme.length(); i++) {
+            if (lexeme.toLowerCase().charAt(i) == symbol) {
+                count++;
             }
         }
-        return result;
+        return count;
     }
 }

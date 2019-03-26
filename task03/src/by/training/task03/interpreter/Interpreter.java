@@ -7,24 +7,68 @@ import java.util.ArrayList;
 import java.util.function.BinaryOperator;
 import java.util.function.UnaryOperator;
 
-public class Client {
+/**
+ * The {@code Interpreter} class for the interpreting the expression.
+ */
+public class Interpreter {
+    /**
+     * The constant for logging.
+     */
     private static final Logger LOGGER = LogManager.getLogger();
+    /**
+     * List of expressions.
+     */
     private ArrayList<Expression> expressionList;
-
+    /**
+     * Functional interface for the ~ operation.
+     */
     private UnaryOperator<Integer> not = number -> ~number;
-    private BinaryOperator<Integer> and = (number1, number2) -> number1 & number2;
-    private BinaryOperator<Integer> or = (number1, number2) -> number1 | number2;
-    private BinaryOperator<Integer> xor = (number1, number2) -> number1 ^ number2;
-    private BinaryOperator<Integer> rightShift = (number1, number2) -> number1 >> number2;
-    private BinaryOperator<Integer> leftShift = (number1, number2) -> number1 << number2;
+    /**
+     * Functional interface for the & operation.
+     */
+    private BinaryOperator<Integer> and = (number1, number2)
+            -> number1 & number2;
+    /**
+     * Functional interface for the | operation.
+     */
+    private BinaryOperator<Integer> or = (number1, number2)
+            -> number1 | number2;
+    /**
+     * Functional interface for the ^ operation.
+     */
+    private BinaryOperator<Integer> xor = (number1, number2)
+            -> number1 ^ number2;
+    /**
+     * Functional interface for the >> operation.
+     */
+    private BinaryOperator<Integer> rightShift = (number1, number2)
+            -> number1 >> number2;
+    /**
+     * Functional interface for the << operation.
+     */
+    private BinaryOperator<Integer> leftShift = (number1, number2)
+            -> number1 << number2;
+    /**
+     * Functional interface for the >>> operation.
+     */
     private BinaryOperator<Integer> unspecifiedRightShift =
             (number1, number2) -> number1 >>> number2;
 
-    public Client(final String expression) {
+    /**
+     * The constructor with one parameter.
+     *
+     * @param expression given expression
+     */
+    public Interpreter(final String expression) {
         expressionList = new ArrayList<>();
         parse(expression);
     }
 
+    /**
+     * Method for parsing the expression.
+     *
+     * @param expression given expression
+     */
     private void parse(final String expression) {
         for (String symbol : expression.split(" ")) {
             if (Character.isDigit(symbol.charAt(0))) {
@@ -85,6 +129,11 @@ public class Client {
         }
     }
 
+    /**
+     * Method  for calculating the each expression in the expression list.
+     *
+     * @return result
+     */
     public int calculate() {
         Context context = new Context();
         expressionList.forEach(c -> c.interpret(context));

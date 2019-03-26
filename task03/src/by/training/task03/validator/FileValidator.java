@@ -23,7 +23,7 @@ public class FileValidator {
      * @param file entered file
      * @return true if file is exist
      */
-    public boolean checkFile(File file) {
+    public boolean checkFile(final File file) {
         if (file == null) {
             LOGGER.error("The file is null.");
         } else if (!file.exists()) {

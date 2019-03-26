@@ -9,10 +9,22 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompositeClone {
+/**
+ * The {@code ComponentCloner} od used for cloning the component text.
+ */
+public class ComponentCloner {
+    /**
+     * The constant for logging.
+     */
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public Component clone(Component component) {
+    /**
+     * Method is used for cloning the given text.
+     *
+     * @param component given text
+     * @return new cloned text
+     */
+    public Component clone(final Component component) {
         LOGGER.info("Cloning the component " + component);
         Component newComponent = new CompositeText(ComponentType.TEXT);
 
