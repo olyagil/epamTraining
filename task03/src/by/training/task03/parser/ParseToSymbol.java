@@ -16,11 +16,11 @@ public class ParseToSymbol extends Parser {
 
     @Override
     public CompositeText parseData(final String word,
-                               final CompositeText compositeWord) {
+                                   final CompositeText compositeWord) {
 //        LOGGER.info("Parsing into the symbol");
         char[] chars = word.toCharArray();
         for (char ch : chars) {
-            compositeWord.add(new Leaf(ComponentType.SYMBOL, ch));
+            compositeWord.add(new Leaf(ch));
         }
         return compositeWord;
     }

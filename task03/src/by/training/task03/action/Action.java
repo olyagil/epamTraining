@@ -10,99 +10,92 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-//TODO make 3 task
-//TODO refactor 1 and 2 task
-//TODO create test
-//TODO consider visitor pattern
 public class Action {
+    private static final CompositeClone CLONE = new CompositeClone();
 
     private static final Logger LOGGER = LogManager.getLogger();
 
+    public Component sortParagraphByNumberOfSentence(Component compositeText) {
+        LOGGER.info("Sorting paragraphs by the number of sentence.");
 
-    public CompositeText sortParagraphByNumberOfSentence(CompositeText compositeText) {
-        CompositeText newCompositeText = new CompositeText(ComponentType.TEXT);
-        if (compositeText.getType() == ComponentType.TEXT) {
-            CompositeText paragraph;
-            List<Component> componentList = new ArrayList<>();
-            LOGGER.info(compositeText.getSize());
+        Component clonedComposite = CLONE.clone(compositeText);
+        Component sortedCompositeText = new CompositeText(ComponentType.TEXT);
+        List<Component> componentList = new ArrayList<>();
+
+        for (int i = 0; i < clonedComposite.getSize(); i++) {
+            componentList.add(clonedComposite.getChild(i));
+        }
+        componentList.sort(Comparator.comparingInt(Component::getSize));
+        for (Component component : componentList) {
+            sortedCompositeText.add(component);
+        }
+        return sortedCompositeText;
+    }
+
+    private List<Component> getLexeme(CompositeText compositeText) {
+
+        List<Component> listLexeme = new ArrayList<>();
+
+        if (ComponentType.SENTENCE.equals(compositeText.getType())) {
             for (int i = 0; i < compositeText.getSize(); i++) {
-                paragraph = (CompositeText) compositeText.getChildren().get(i);
-                componentList.add(paragraph);
-                LOGGER.info("Para #" + i + " : " + paragraph.getSize() +
-                        " sentences");
-            }
-//            LOGGER.info(componentList);
-            componentList.sort(Comparator.comparingInt(Component::getSize));
-//            LOGGER.info(componentList);
-            for (Component component : componentList) {
-                newCompositeText.add(component);
+                listLexeme.add(compositeText.getChild(i));
             }
         } else {
-            LOGGER.warn("The incorrect type " + compositeText.getType());
+            for (int i = 0; i < compositeText.getSize(); i++) {
+                listLexeme.addAll(getLexeme((CompositeText) compositeText.getChild(i)));
+            }
         }
-        return newCompositeText;
+        return listLexeme;
     }
 
-    //TODO change to sorting by lexeme, but not words
-    public CompositeText sortSentencesByLengthOfLexeme(CompositeText compositeSentence) {
-        CompositeText newCompositeSentence =
+    public Component sortSentencesByLengthOfLexeme(Component component) {
+
+        Component clonedComposite = CLONE.clone(component);
+        Component sortedCompositeSentence =
                 new CompositeText(ComponentType.SENTENCE);
-        List<Component> lexemeList = new ArrayList<>();
-        if (compositeSentence.getType() == ComponentType.SENTENCE) {
-            CompositeText lexeme;
-            for (int i = 0; i < compositeSentence.getSize(); i++) {
-                lexeme = (CompositeText) compositeSentence.getChildren(i);
-                for (int j = 0; j < lexeme.getSize(); j++) {
-                    if (lexeme.get(j).getType() == ComponentType.WORD) {
-                        lexemeList.add(lexeme.get(j));
-                    }
-                }
-            }
-            lexemeList.sort(Comparator.comparing(Component::getSize));
-            for (Component component : lexemeList) {
-                newCompositeSentence.add(component);
-            }
-//            LOGGER.info(newCompositeSentence);
-        } else {
-            LOGGER.warn("The incorrect type " + compositeSentence.getType());
+        List<Component> lexemeList = getLexeme((CompositeText) clonedComposite);
+        lexemeList.sort(Comparator.comparingInt(lexeme ->
+                lexeme.toString().length()));
+
+        for (Component lexeme : lexemeList) {
+            sortedCompositeSentence.add(lexeme);
         }
-        return newCompositeSentence;
+        return sortedCompositeSentence;
     }
 
-    public CompositeText sortLexeme(CompositeText compositeSentence, char ch) {
-        CompositeText newCompositeText =
+
+    public Component sortLexeme(Component compositeText, char ch) {
+        CompositeText sortedCompositeText =
                 new CompositeText(ComponentType.SENTENCE);
-        List<CompositeText> lexemeList = new ArrayList<>();
-        CompositeText lexeme;
-        if (compositeSentence.getType() == ComponentType.SENTENCE) {
-            for (int i = 0; i < compositeSentence.getSize(); i++) {
-                lexeme = (CompositeText) compositeSentence.getChildren(i);
-                lexemeList.add(lexeme);
+        List<Component> lexemeList = getLexeme((CompositeText) compositeText);
 
+        lexemeList.sort((lexeme1, lexeme2) -> {
+            String str1 = lexeme1.toString();
+            String str2 = lexeme2.toString();
+            int count1 = countOfSymbol(str1, ch);
+            int count2 = countOfSymbol(str2, ch);
+            if (count1 > count2) {
+                return -1;
             }
-        } else {
-            LOGGER.warn("The incorrect type " + compositeSentence.getType());
-        }
+            if (count1 == count2) {
+                return str1.compareToIgnoreCase(str2);
+            }
+            return 1;
+        });
 
-        lexemeList.sort(((Comparator<CompositeText>)
-                (o1, o2) -> Integer.compare(countOfSymbol(o1, ch),
-                        countOfSymbol(o2, ch))).thenComparing(Comparator.comparing(o -> o.toString())));
         for (Component component : lexemeList) {
-            newCompositeText.add(component);
+            sortedCompositeText.add(component);
         }
-        LOGGER.info(newCompositeText);
-
-
-        return newCompositeText;
+        return sortedCompositeText;
     }
 
-    public int countOfSymbol(CompositeText composite, Character ch) {
+    private int countOfSymbol(String string, Character ch) {
         int result = 0;
-        for (int i = 0; i < composite.getSize(); i++) {
-            result += countOfSymbol(composite.get(i), ch);
+        for (int i = 0; i < string.length(); i++) {
+            if (string.toLowerCase().charAt(i) == ch) {
+                result++;
+            }
         }
         return result;
     }
-
-
 }

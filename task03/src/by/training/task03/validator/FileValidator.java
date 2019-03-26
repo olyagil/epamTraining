@@ -23,13 +23,16 @@ public class FileValidator {
      * @param file entered file
      * @return true if file is exist
      */
-    public boolean checkFile(final File file) {
-        boolean flag = false;
-        if (file != null || file.exists() || file.length() != 0) {
-            flag = true;
+    public boolean checkFile(File file) {
+        if (file == null) {
+            LOGGER.error("The file is null.");
+        } else if (!file.exists()) {
+            LOGGER.error("The file doesn't exist: " + file);
+        } else if (file.length() == 0) {
+            LOGGER.error("The file is empty: " + file);
         } else {
-            LOGGER.warn("The file is wrong or doesn't exist" + file);
+            return true;
         }
-        return flag;
+        return false;
     }
 }

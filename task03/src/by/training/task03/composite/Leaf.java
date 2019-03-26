@@ -2,10 +2,8 @@ package by.training.task03.composite;
 
 public class Leaf implements Component {
     private char symbol;
-    private ComponentType type;
 
-    public Leaf(final ComponentType type, final char symbol) {
-        this.type = type;
+    public Leaf(final char symbol) {
         this.symbol = symbol;
     }
 

@@ -40,8 +40,8 @@ public class ParseLexemeTest {
     @DataProvider(name = "data")
     public Object[][] data() {
         return new Object[][]{
-                {composite.getChildren(0), 2},
-                {composite.getChildren(1), 1},
+                {composite.getChild(0), 2},
+                {composite.getChild(1), 1},
         };
     }
 

@@ -36,7 +36,7 @@ public class ParseToSymbolTest {
         return new Object[][]{
                 {"data//lab3-text.txt", 854},
                 {"data//test_data.txt", 47},
-                {"data//test.txt", 74},
+                {"data//test.txt", 72},
         };
     }
 
