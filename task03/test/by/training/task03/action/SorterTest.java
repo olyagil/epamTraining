@@ -16,14 +16,12 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.*;
-
-public class ActionTest {
+public class SorterTest {
     private Component component;
     private CompositeText compositeText;
     private Parser parser;
     private DataReader dataReader;
-    private Action action;
+    private Sorter sorter;
 
     @BeforeMethod
     public void setInitialComponent() {
@@ -31,7 +29,7 @@ public class ActionTest {
         parser = new ParseParagraph(new ParseSentence
                 (new ParseLexeme(new ParseToSymbol(null))));
         dataReader = new DataReader();
-        action = new Action();
+        sorter = new Sorter();
     }
 
     @AfterMethod
@@ -39,7 +37,7 @@ public class ActionTest {
         compositeText = null;
         parser = null;
         dataReader = null;
-        action = null;
+        sorter = null;
     }
 
     @DataProvider(name = "dataForSortingParagraphByNumberOfSentence")
@@ -79,7 +77,7 @@ public class ActionTest {
 
         String text = dataReader.readFromFile(path);
         component = parser.parseData(text, compositeText);
-        Component actual = action.sortParagraphByNumberOfSentence(component);
+        Component actual = sorter.sortParagraphByNumberOfSentence(component);
         Assert.assertEquals(actual.toString(), expected);
     }
 
@@ -115,7 +113,7 @@ public class ActionTest {
 
         String text = dataReader.readFromFile(path);
         component = parser.parseData(text, compositeText);
-        Component actual = action.sortSentencesByLengthOfLexeme(component);
+        Component actual = sorter.sortSentencesByLengthOfLexeme(component);
         Assert.assertEquals(actual.toString(), expected);
     }
 
@@ -149,7 +147,7 @@ public class ActionTest {
 
         String text = dataReader.readFromFile(path);
         component = parser.parseData(text, compositeText);
-        Component actual = action.sortLexeme(component, ch);
+        Component actual = sorter.sortLexeme(component, ch);
         System.out.println(actual);
         Assert.assertEquals(actual.toString(), expected);
     }

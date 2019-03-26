@@ -16,18 +16,18 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class CompositeCloneTest {
+public class ComponentClonerTest {
 
     private Component component;
     private CompositeText compositeText;
 
-    private CompositeClone cloner;
+    private ComponentCloner cloner;
     private Parser parser;
     private DataReader dataReader;
 
     @BeforeMethod
     public void setInitialComponent() {
-        cloner = new CompositeClone();
+        cloner = new ComponentCloner();
         compositeText = new CompositeText(ComponentType.TEXT);
         parser = new ParseParagraph(new ParseSentence
                 (new ParseLexeme(new ParseToSymbol(null))));

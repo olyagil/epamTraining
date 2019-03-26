@@ -1,14 +1,10 @@
 package by.training.task03.interpreter;
 
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.*;
-
-public class ClientTest {
+public class InterpreterTest {
 
     @DataProvider(name = "data")
     public Object[][] data() {
@@ -24,7 +20,7 @@ public class ClientTest {
 
     @Test(dataProvider = "data")
     public void testCalculate(String expression, int expected) {
-        Client interpreter = new Client(expression);
+        Interpreter interpreter = new Interpreter(expression);
         int actual = interpreter.calculate();
         Assert.assertEquals(actual, expected);
 
