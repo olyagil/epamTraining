@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.example.com/tourist-vouchers"
+        xmlns:tns="http://www.example.com/tourist-vouchers"
+        elementFormDefault="qualified">
+    <element name="tourist-vouchers">
+        <complexType>
+            <sequence>
+                <element ref="tns:voucher" minOccurs="1" maxOccurs="unbounded"/>
+                <element name="voucher"
+                         type="tns:Voucher"
+                         minOccurs="0"
+                         maxOccurs="unbounded"
+                />
+                <!--<element name="voucher" type="tns:Voucher" abstract="true"></element>-->
+                <element name="city-break" type="tns:CityBreak" minOccurs="0"
+                         substitutionGroup="tns:voucher"/>
+                <element name="rest" type="tns:Rest" maxOccurs="unbounded"
+                         minOccurs="0"
+                         substitutionGroup="tns:voucher"/>
+                <element name="guided-tour" type="tns:GuidedTour" minOccurs="0"
+                         substitutionGroup="tns:voucher"/>
+                <element name="pilgrimage-tour" type="tns:PilgrimageTour"
+                         minOccurs="0"
+                         substitutionGroup="tns:voucher"/>
+            </sequence>
+        </complexType>
+    </element>
+    <complexType name="Voucher">
+        <sequence>
+            <element name="name" type="string"/>
+            <element name="begin-data" type="date"/>
+            <element name="transport" type="string"/>
+            <element name="cost" type="decimal"/>
+            <element name="hotel-characteristic"
+                     type="tns:HotelCharacteristic"/>
+        </sequence>
+        <attribute name="country" type="string" use="required"/>
+        <attribute name="number-nights" type="positiveInteger" use="required"/>
+    </complexType>
+    <complexType name="HotelCharacteristic">
+        <sequence>
+            <element name="number-stars" type="positiveInteger"/>
+            <element name="feeding-type" type="string"/>
+            <element name="room-type" type="string"/>
+            <element name="additional-perks" type="string">
+
+            </element>
+        </sequence>
+    </complexType>
+
+
+    <!--Тур выходного дня-->
+    <complexType name="CityBreak">
+        <complexContent>
+            <extension base="tns:Voucher">
+                <attribute name="number-nights" use="required" default="1"/>
+
+            </extension>
+        </complexContent>
+    </complexType>
+    <!--Экскурсионный тур-->
+    <complexType name="GuidedTour">
+        <complexContent>
+            <extension base="tns:Voucher">
+                <sequence>
+                    <element name="tour-guide" type="string"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <!--Отдых-->
+    <complexType name="Rest">
+        <complexContent>
+            <extension base="tns:Voucher">
+                <sequence>
+                    <element name="rest" type="string"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <!--Паломничество-->
+    <complexType name="PilgrimageTour">
+        <complexContent>
+            <extension base="tns:Voucher">
+                <sequence>
+                    <element name="bethel" type="string"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+
+</schema>

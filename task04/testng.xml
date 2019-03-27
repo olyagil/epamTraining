@@ -1,0 +1,60 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Suite1">
+    <test name="testSorter">
+        <classes>
+            <class name="by.training.task03.action.SorterTest"/>
+        </classes>
+    </test>
+    <test name="testParseLexeme">
+        <classes>
+            <class name="by.training.task03.parser.ParseLexemeTest"/>
+        </classes>
+    </test>
+    <test name="testParseParagraph">
+        <classes>
+            <class name="by.training.task03.parser.ParseParagraphTest"/>
+        </classes>
+    </test>
+    <test name="testParseSentence">
+        <classes>
+            <class name="by.training.task03.parser.ParseSentenceTest"/>
+        </classes>
+    </test>
+    <test name="testParseToSymbol">
+        <classes>
+            <class name="by.training.task03.parser.ParseToSymbolTest"/>
+        </classes>
+    </test>
+    <test name="testParseText">
+        <classes>
+            <class name="by.training.task03.parser.ParseTextTest"/>
+        </classes>
+    </test>
+    <test name="testDataReader" enabled="false">
+        <classes>
+            <class name="by.training.task03.reader.DataReaderTest"/>
+        </classes>
+    </test>
+    <test name="testFileValidator">
+        <classes>
+            <class name="by.training.task03.validator.FileValidatorTest"/>
+        </classes>
+    </test>
+    <test name="testReversePolishNotation">
+        <classes>
+            <class name="by.training.task03.interpreter.ReversePolishNotationTest"/>
+        </classes>
+    </test>
+    <test name="testClient">
+        <classes>
+            <class name="by.training.task03.interpreter.InterpreterTest"/>
+        </classes>
+    </test>
+    <test name="testCompositeCloneTest">
+        <classes>
+            <class name="by.training.task03.action.ComponentClonerTest"/>
+        </classes>
+    </test>
+</suite>
