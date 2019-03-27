@@ -1,35 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <tourist-vouchers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                  xmlns="http://www.example.com/tourist-vouchers"
-                  xsi:schemaLocation="http://www.example.com/tourist-vouchers tourist-vouchers.xsd">
+                  xmlns="http://www.training.by/tourist-vouchers"
+                  xsi:schemaLocation="http://www.training.by/tourist-vouchers tourist-vouchers.xsd">
 
-    <voucher country="Poland" number-nights="10">
-        <!---->
-        <name>Hot Summer</name>
-        <begin-data>2019-02-12</begin-data>
-        <transport>Car</transport>
-        <cost>1150</cost>
-        <hotel-characteristic>
-            <number-stars>5</number-stars>
-            <feeding-type>HB</feeding-type>
-            <room-type>3</room-type>
-            <additional-perks>Conditioner</additional-perks>
-        </hotel-characteristic>
 
-    </voucher>
-    <city-break country="Moscow" number-nights="2">
+    <city-break country="Turkey" number-nights="2">
         <name>Good weekend</name>
         <begin-data>2019-03-20</begin-data>
         <transport>Airplane</transport>
         <cost>120</cost>
         <hotel-characteristic>
             <number-stars>3</number-stars>
-            <feeding-type>HB</feeding-type>
+            <meal-type>HB</meal-type>
             <room-type>2</room-type>
             <additional-perks>TV</additional-perks>
         </hotel-characteristic>
     </city-break>
+
+    <rest country="Poland" number-nights="10">
+        <name>Hot Summer</name>
+        <begin-data>2019-02-12</begin-data>
+        <transport>Car</transport>
+        <cost>1150</cost>
+        <hotel-characteristic>
+            <number-stars>5</number-stars>
+            <meal-type>HB</meal-type>
+            <room-type>3</room-type>
+            <additional-perks>Fan</additional-perks>
+        </hotel-characteristic>
+        <resting>true</resting>
+
+    </rest>
 
 </tourist-vouchers>
 

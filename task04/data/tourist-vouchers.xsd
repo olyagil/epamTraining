@@ -1,31 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <schema xmlns="http://www.w3.org/2001/XMLSchema"
-        targetNamespace="http://www.example.com/tourist-vouchers"
-        xmlns:tns="http://www.example.com/tourist-vouchers"
+        targetNamespace="http://www.training.by/tourist-vouchers"
+        xmlns:tns="http://www.training.by/tourist-vouchers"
         elementFormDefault="qualified">
     <element name="tourist-vouchers">
         <complexType>
             <sequence>
-                <element ref="tns:voucher" minOccurs="1" maxOccurs="unbounded"/>
-                <element name="voucher"
-                         type="tns:Voucher"
+                <element ref="tns:voucher"
                          minOccurs="0"
-                         maxOccurs="unbounded"
-                />
-                <!--<element name="voucher" type="tns:Voucher" abstract="true"></element>-->
-                <element name="city-break" type="tns:CityBreak" minOccurs="0"
-                         substitutionGroup="tns:voucher"/>
-                <element name="rest" type="tns:Rest" maxOccurs="unbounded"
-                         minOccurs="0"
-                         substitutionGroup="tns:voucher"/>
-                <element name="guided-tour" type="tns:GuidedTour" minOccurs="0"
-                         substitutionGroup="tns:voucher"/>
-                <element name="pilgrimage-tour" type="tns:PilgrimageTour"
-                         minOccurs="0"
-                         substitutionGroup="tns:voucher"/>
+                         maxOccurs="unbounded"/>
             </sequence>
         </complexType>
     </element>
+
+    <element name="voucher" type="tns:Voucher" abstract="true"/>
+    <element name="city-break" type="tns:CityBreak"
+             substitutionGroup="tns:voucher"/>
+    <element name="rest" type="tns:Rest"
+             substitutionGroup="tns:voucher"/>
+    <element name="guided-tour" type="tns:GuidedTour"
+             substitutionGroup="tns:voucher"/>
+    <element name="pilgrimage-tour" type="tns:PilgrimageTour"
+             substitutionGroup="tns:voucher"/>
+
     <complexType name="Voucher">
         <sequence>
             <element name="name" type="string"/>
@@ -41,10 +38,16 @@
     <complexType name="HotelCharacteristic">
         <sequence>
             <element name="number-stars" type="positiveInteger"/>
-            <element name="feeding-type" type="string"/>
+            <element name="meal-type" type="string"/>
             <element name="room-type" type="string"/>
-            <element name="additional-perks" type="string">
-
+            <element name="additional-perks">
+                <simpleType>
+                    <restriction base="string">
+                        <enumeration value="TV"/>
+                        <enumeration value="Fan"/>
+                        <enumeration value="Safe"/>
+                    </restriction>
+                </simpleType>
             </element>
         </sequence>
     </complexType>
@@ -55,6 +58,7 @@
         <complexContent>
             <extension base="tns:Voucher">
                 <attribute name="number-nights" use="required" default="1"/>
+                <attribute name="number-days" default="2"/>
 
             </extension>
         </complexContent>
@@ -74,7 +78,7 @@
         <complexContent>
             <extension base="tns:Voucher">
                 <sequence>
-                    <element name="rest" type="string"/>
+                    <element name="resting" type="boolean"/>
                 </sequence>
             </extension>
         </complexContent>
@@ -89,6 +93,4 @@
             </extension>
         </complexContent>
     </complexType>
-
-
 </schema>
