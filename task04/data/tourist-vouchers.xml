@@ -5,33 +5,40 @@
                   xsi:schemaLocation="http://www.training.by/tourist-vouchers tourist-vouchers.xsd">
 
 
-    <city-break country="Turkey" number-nights="2">
-        <name>Good weekend</name>
-        <begin-data>2019-03-20</begin-data>
-        <transport>Airplane</transport>
-        <cost>120</cost>
-        <hotel-characteristic>
-            <number-stars>3</number-stars>
-            <meal-type>HB</meal-type>
-            <room-type>2</room-type>
-            <additional-perks>TV</additional-perks>
+    <city-break id="qwerty2345678" country="Росссия" number-nights="1">
+        <begin-data>2019-03-20T15:30:00</begin-data>
+        <transport>ж/д</transport>
+        <cost currency="USD">
+            <price>100</price>
+            <flight-include>true</flight-include>
+            <hotel-include>true</hotel-include>
+        </cost>
+        <hotel-characteristic number-stars="3" meal-type="AL" room-type="3">
+            <tv>true</tv>
+            <fan>true</fan>
+            <safe>false</safe>
+            <wi-fi>true</wi-fi>
         </hotel-characteristic>
     </city-break>
 
-    <rest country="Poland" number-nights="10">
-        <name>Hot Summer</name>
-        <begin-data>2019-02-12</begin-data>
-        <transport>Car</transport>
-        <cost>1150</cost>
-        <hotel-characteristic>
-            <number-stars>5</number-stars>
-            <meal-type>HB</meal-type>
-            <room-type>3</room-type>
-            <additional-perks>Fan</additional-perks>
+    <guided-tour id="qwerty12345" country="Турция" number-nights="10">
+        <begin-data>2019-03-15T08:00:00</begin-data>
+        <transport>Авиа</transport>
+        <cost currency="BYN">
+            <price>1500</price>
+            <flight-include>true</flight-include>
+            <hotel-include>true</hotel-include>
+        </cost>
+        <hotel-characteristic number-stars="4" room-type="2" meal-type="AL">
+            <tv>true</tv>
+            <fan>true</fan>
+            <safe>false</safe>
+            <wi-fi>true</wi-fi>
         </hotel-characteristic>
-        <resting>true</resting>
+        <tour-guide>true</tour-guide>
+        <excursions-number>8</excursions-number>
+    </guided-tour>
 
-    </rest>
 
 </tourist-vouchers>
 
