@@ -5,9 +5,9 @@
                   xsi:schemaLocation="http://www.training.by/tourist-vouchers tourist-vouchers.xsd">
 
 
-    <city-break id="qwerty2345678" country="Росссия" number-nights="1">
+    <city-break id="qwerty2345678" country="Russia" number-nights="1">
         <begin-data>2019-03-20T15:30:00</begin-data>
-        <transport>ж/д</transport>
+        <transport>Railway</transport>
         <cost currency="USD">
             <price>100</price>
             <flight-include>true</flight-include>
@@ -19,11 +19,12 @@
             <safe>false</safe>
             <wi-fi>true</wi-fi>
         </hotel-characteristic>
+        <shopping-centers-numbers>10</shopping-centers-numbers>
     </city-break>
 
     <guided-tour id="qwerty12345" country="Турция" number-nights="10">
         <begin-data>2019-03-15T08:00:00</begin-data>
-        <transport>Авиа</transport>
+        <transport>Аir</transport>
         <cost currency="BYN">
             <price>1500</price>
             <flight-include>true</flight-include>
@@ -39,6 +40,38 @@
         <excursions-number>8</excursions-number>
     </guided-tour>
 
+    <rest id="qwerty46989" country="Poland" number-nights="5">
+        <begin-data>2019-03-30T12:16:00</begin-data>
+        <transport>Railway</transport>
+        <cost>
+            <price>400</price>
+            <flight-include>false</flight-include>
+            <hotel-include>false</hotel-include>
+        </cost>
+        <hotel-characteristic number-stars="3" room-type="1" meal-type="HB">
+            <tv>false</tv>
+            <fan>true</fan>
+            <safe>false</safe>
+            <wi-fi>true</wi-fi>
+        </hotel-characteristic>
+        <resting>true</resting>
+    </rest>
+    <pilgrimage-tour id="qwerty79895" country="India">
+        <begin-data>2018-12-25T14:25:00</begin-data>
+        <transport>Аir</transport>
+        <cost>
+            <price>1000</price>
+            <flight-include>true</flight-include>
+            <hotel-include>true</hotel-include>
+        </cost>
+        <hotel-characteristic number-stars="3" room-type="1" meal-type="HB">
+            <tv>false</tv>
+            <fan>true</fan>
+            <safe>true</safe>
+            <wi-fi>false</wi-fi>
+        </hotel-characteristic>
+        <bethel-number>6</bethel-number>
+    </pilgrimage-tour>
 
 </tourist-vouchers>
 

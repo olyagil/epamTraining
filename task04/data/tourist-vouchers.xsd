@@ -3,11 +3,12 @@
         targetNamespace="http://www.training.by/tourist-vouchers"
         xmlns:tns="http://www.training.by/tourist-vouchers"
         elementFormDefault="qualified">
+
     <element name="tourist-vouchers">
         <complexType>
             <sequence>
                 <element ref="tns:voucher"
-                         minOccurs="0"
+                         minOccurs="2"
                          maxOccurs="unbounded"/>
             </sequence>
         </complexType>
@@ -33,8 +34,7 @@
         </sequence>
         <attribute name="id" type="tns:Identification" use="required"/>
         <attribute name="country" type="string" use="required"/>
-        <attribute name="number-nights" type="positiveInteger" use="required"
-                   default="0"/>
+        <attribute name="number-nights" type="nonNegativeInteger" default="0"/>
     </complexType>
 
 
@@ -42,8 +42,15 @@
     <complexType name="CityBreak">
         <complexContent>
             <extension base="tns:Voucher">
-                <attribute name="number-nights" use="required" default="0"/>
-
+                <sequence>
+                    <element name="shopping-centers-numbers">
+                        <simpleType>
+                            <restriction base="positiveInteger">
+                                <maxInclusive value="15"></maxInclusive>
+                            </restriction>
+                        </simpleType>
+                    </element>
+                </sequence>
             </extension>
         </complexContent>
     </complexType>
@@ -101,8 +108,7 @@
             <element name="flight-include" type="boolean" default="false"/>
             <element name="hotel-include" type="boolean" default="true"/>
         </sequence>
-        <attribute name="currency" type="tns:Currency" use="required"
-                   default="USD"/>
+        <attribute name="currency" type="tns:Currency" default="EUR"/>
     </complexType>
 
     <complexType name="HotelCharacteristic">
@@ -112,8 +118,7 @@
             <element name="safe" type="boolean"/>
             <element name="wi-fi" type="boolean"/>
         </sequence>
-        <attribute name="number-stars" type="positiveInteger" use="required"
-                   default="2"/>
+        <attribute name="number-stars" type="positiveInteger" use="required"/>
         <attribute name="room-type" use="required">
             <simpleType>
                 <restriction base="positiveInteger">
@@ -121,17 +126,16 @@
                 </restriction>
             </simpleType>
         </attribute>
-        <attribute name="meal-type" use="required" default="AL"
-                   type="tns:Meal"/>
+        <attribute name="meal-type" use="required" type="tns:Meal"/>
     </complexType>
 
     <simpleType name="Transport">
         <restriction base="string">
-            <enumeration value="Автобус"/>
-            <enumeration value="Авиа"/>
-            <enumeration value="Авто"/>
-            <enumeration value="ж/д"/>
-            <enumeration value="Лайнер"/>
+            <enumeration value="Bus"/>
+            <enumeration value="Аir"/>
+            <enumeration value="Car"/>
+            <enumeration value="Railway"/>
+            <enumeration value="Liner"/>
         </restriction>
     </simpleType>
 
