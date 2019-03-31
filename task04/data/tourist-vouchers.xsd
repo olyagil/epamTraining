@@ -46,7 +46,7 @@
                     <element name="shopping-centers-numbers">
                         <simpleType>
                             <restriction base="positiveInteger">
-                                <maxInclusive value="15"></maxInclusive>
+                                <maxInclusive value="15"/>
                             </restriction>
                         </simpleType>
                     </element>
@@ -103,21 +103,21 @@
 
 
     <complexType name="Cost">
-        <sequence>
+        <all>
             <element name="price" type="decimal"/>
             <element name="flight-include" type="boolean" default="false"/>
             <element name="hotel-include" type="boolean" default="true"/>
-        </sequence>
+        </all>
         <attribute name="currency" type="tns:Currency" default="EUR"/>
     </complexType>
 
     <complexType name="HotelCharacteristic">
-        <sequence>
+        <all>
             <element name="tv" type="boolean"/>
             <element name="fan" type="boolean"/>
             <element name="safe" type="boolean"/>
             <element name="wi-fi" type="boolean"/>
-        </sequence>
+        </all>
         <attribute name="number-stars" type="positiveInteger" use="required"/>
         <attribute name="room-type" use="required">
             <simpleType>

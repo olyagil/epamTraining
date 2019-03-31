@@ -1,5 +1,7 @@
 package by.training.tourist_vouchers.entity;
 
+import by.training.tourist_vouchers.entity.enumeration.Currency;
+
 import java.math.BigDecimal;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

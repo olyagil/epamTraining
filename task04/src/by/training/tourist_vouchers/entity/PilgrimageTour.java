@@ -8,23 +8,21 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for PilgrimageTour complex type.
- *         &lt;element name="bethel-number"&gt;
- *               &lt;maxInclusive value="15"/&gt;
+ * &lt;element name="bethel-number"&gt;
+ * &lt;maxInclusive value="15"/&gt;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "PilgrimageTour", propOrder = {
-    "bethelNumber"
+        "bethelNumber"
 })
 public class PilgrimageTour
-    extends Voucher
-{
+        extends Voucher {
 
     @XmlElement(name = "bethel-number")
     protected int bethelNumber;
 
     /**
      * Gets the value of the bethelNumber property.
-     * 
      */
     public int getBethelNumber() {
         return bethelNumber;
@@ -32,7 +30,6 @@ public class PilgrimageTour
 
     /**
      * Sets the value of the bethelNumber property.
-     * 
      */
     public void setBethelNumber(int value) {
         this.bethelNumber = value;
@@ -40,15 +37,7 @@ public class PilgrimageTour
 
     @Override
     public String toString() {
-        return "PilgrimageTour{" +
-                "bethelNumber=" + bethelNumber +
-                ", beginData=" + beginData +
-                ", transport=" + transport +
-                ", cost=" + cost +
-                ", hotelCharacteristic=" + hotelCharacteristic +
-                ", id='" + id + '\'' +
-                ", country='" + country + '\'' +
-                ", numberNights=" + numberNights +
-                '}';
+        return "\nPilgrimageTour { number of bethel: " + bethelNumber
+                + super.toString() + '}';
     }
 }

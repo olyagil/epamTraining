@@ -40,10 +40,11 @@
         <excursions-number>8</excursions-number>
     </guided-tour>
 
+
     <rest id="qwerty46989" country="Poland" number-nights="5">
         <begin-data>2019-03-30T12:16:00</begin-data>
         <transport>Railway</transport>
-        <cost>
+        <cost currency="BYN">
             <price>400</price>
             <flight-include>false</flight-include>
             <hotel-include>false</hotel-include>
@@ -61,13 +62,13 @@
         <transport>Аir</transport>
         <cost>
             <price>1000</price>
-            <flight-include>true</flight-include>
             <hotel-include>true</hotel-include>
+            <flight-include>true</flight-include>
         </cost>
         <hotel-characteristic number-stars="3" room-type="1" meal-type="HB">
             <tv>false</tv>
-            <fan>true</fan>
             <safe>true</safe>
+            <fan>true</fan>
             <wi-fi>false</wi-fi>
         </hotel-characteristic>
         <bethel-number>6</bethel-number>

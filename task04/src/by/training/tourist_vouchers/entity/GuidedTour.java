@@ -8,21 +8,20 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for GuidedTour complex type.
- * 
+ * <p>
  * &lt;complexType name="GuidedTour"&gt;
- *     &lt;extension base="{http://www.training.by/tourist-vouchers}Voucher"&gt;
- *         &lt;element name="tour-guide" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
- *         &lt;element name="excursions-number"&gt;
- *               &lt;maxExclusive value="20"/&gt;
+ * &lt;extension base="{http://www.training.by/tourist-vouchers}Voucher"&gt;
+ * &lt;element name="tour-guide" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ * &lt;element name="excursions-number"&gt;
+ * &lt;maxExclusive value="20"/&gt;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "GuidedTour", propOrder = {
-    "tourGuide",
-    "excursionsNumber"
+        "tourGuide",
+        "excursionsNumber"
 })
 public class GuidedTour
-    extends Voucher
-{
+        extends Voucher {
 
     @XmlElement(name = "tour-guide")
     protected boolean tourGuide;
@@ -31,7 +30,6 @@ public class GuidedTour
 
     /**
      * Gets the value of the tourGuide property.
-     * 
      */
     public boolean isTourGuide() {
         return tourGuide;
@@ -39,7 +37,6 @@ public class GuidedTour
 
     /**
      * Sets the value of the tourGuide property.
-     * 
      */
     public void setTourGuide(boolean value) {
         this.tourGuide = value;
@@ -47,7 +44,6 @@ public class GuidedTour
 
     /**
      * Gets the value of the excursionsNumber property.
-     * 
      */
     public int getExcursionsNumber() {
         return excursionsNumber;
@@ -55,10 +51,15 @@ public class GuidedTour
 
     /**
      * Sets the value of the excursionsNumber property.
-     * 
      */
     public void setExcursionsNumber(int value) {
         this.excursionsNumber = value;
     }
 
+    @Override
+    public String toString() {
+        return "\nGuidedTour { tour guide: " + tourGuide
+                + ", number of excursions: " + excursionsNumber
+                + super.toString() + '}';
+    }
 }

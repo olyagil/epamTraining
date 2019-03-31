@@ -34,7 +34,8 @@ public class ObjectFactory {
             ".training.by/tourist-vouchers", "pilgrimage-tour");
 
     /**
-     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: by.training.tourist_vouchers
+     * Create a new ObjectFactory that can be used to create new instances
+     * of schema derived classes for package: by.training.tourist_vouchers
      */
     public ObjectFactory() {
     }

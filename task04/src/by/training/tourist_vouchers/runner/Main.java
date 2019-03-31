@@ -1,37 +1,29 @@
 package by.training.tourist_vouchers.runner;
 
-import by.training.tourist_vouchers.builder.VoucherSAXBuilder;
-import by.training.tourist_vouchers.parser.DomParser;
-import by.training.tourist_vouchers.parser.SAXParser;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
+import by.training.tourist_vouchers.builder.BaseBuilder;
+import by.training.tourist_vouchers.builder.DOMBuilder;
+import by.training.tourist_vouchers.builder.SAXBuilder;
+import by.training.tourist_vouchers.builder.StAXBuilder;
+import by.training.tourist_vouchers.entity.Voucher;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-
-import javax.xml.parsers.SAXParserFactory;
-import java.io.IOException;
+import java.util.Set;
 
 public class Main {
 
-    public static final String FILENAME = "data//tourist-vouchers.xml";
+    private static final String PATH = "data//tourist-vouchers.xml";
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    private static Set<Voucher> createVouchers(BaseBuilder builder) {
+        builder.buildVouchers(PATH);
+        return builder.getVouchers();
+    }
 
     public static void main(String[] args) {
-//SAXParser
-
-//            SAXParserFactory  factory = new SAXParserFactory.newInstance();
-//            XMLReader reader = XMLReaderFactory.createXMLReader();
-//            SAXParser parser = new SAXParser();
-//            reader.setContentHandler(parser);
-//            reader.parse("data//tourist-vouchers.xml");
-//        VoucherSAXBuilder builder = new VoucherSAXBuilder();
-//        builder.buildSetVouchers("data//tourist-vouchers.xml");
-
-
-        //DOM
-        DomParser domParser = new DomParser();
-        domParser.buildSetVouchers(FILENAME);
-        System.out.println(domParser.getVouchers());
-
+//        LOGGER.info(createVouchers(new SAXBuilder()));
+        LOGGER.info(createVouchers(new DOMBuilder()));
+//        LOGGER.info(createVouchers(new StAXBuilder()));
     }
 }
 

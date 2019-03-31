@@ -37,15 +37,8 @@ public class CityBreak extends Voucher {
 
     @Override
     public String toString() {
-        return "CityBreak{" +
-                "shoppingCentersNumbers=" + shoppingCentersNumbers +
-                ", beginData=" + beginData +
-                ", transport=" + transport +
-                ", cost=" + cost +
-                ", hotelCharacteristic=" + hotelCharacteristic +
-                ", id='" + id + '\'' +
-                ", country='" + country + '\'' +
-                ", numberNights=" + numberNights +
-                '}';
+        return "\nCityBreak { numbers of shopping centers: "
+                + shoppingCentersNumbers + super.toString() + '}';
     }
 }
+

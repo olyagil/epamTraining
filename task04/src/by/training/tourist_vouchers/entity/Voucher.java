@@ -1,12 +1,6 @@
 package by.training.tourist_vouchers.entity;
 
-import by.training.tourist_vouchers.entity.CityBreak;
-import by.training.tourist_vouchers.entity.Cost;
-import by.training.tourist_vouchers.entity.GuidedTour;
-import by.training.tourist_vouchers.entity.HotelCharacteristic;
-import by.training.tourist_vouchers.entity.PilgrimageTour;
-import by.training.tourist_vouchers.entity.Rest;
-import by.training.tourist_vouchers.entity.Transport;
+import by.training.tourist_vouchers.entity.enumeration.Transport;
 
 import java.math.BigInteger;
 import java.text.DateFormat;
@@ -225,4 +219,11 @@ public class Voucher {
         this.numberNights = BigInteger.valueOf(value);
     }
 
+    @Override
+    public String toString() {
+        return " id = '" + id + '\'' + ", start: " + beginData
+                + ", number of nights: " + numberNights + ", cost=" + cost
+                + ", transport: " + transport + ", hotel characteristic:"
+                + hotelCharacteristic + ", country: '" + country + '\'';
+    }
 }

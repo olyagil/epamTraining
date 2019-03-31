@@ -1,4 +1,4 @@
-package by.training.tourist_vouchers.entity;
+package by.training.tourist_vouchers.entity.enumeration;
 
 public enum VouchersEnum {
     TOURIST_VOUCHERS("tourist-vouchers"),
@@ -8,30 +8,32 @@ public enum VouchersEnum {
     GUIDED_TOUR("guided-tour"),
     PILGRIMAGE_TOUR("pilgrimage-tour"),
 
-    BEGIN_DATA("begin-data"),
-    TRANSPORT("transport"),
+    ID("id"),
+    COUNTRY("country"),
+    NUMBER_NIGHTS("number-nights"),
 
     CURRENCY("currency"),
-    PRICE("price"),
-    FLIGHT_INCLUDE("flight-include"),
-    HOTEL_INCLUDE("hotel-include"),
     COST("cost"),
-
     NUMBER_STARS("number-stars"),
     MEAL_TYPE("meal-type"),
     ROOM_TYPE("room-type"),
+    HOTEL_CHARACTERISTIC("hotel-characteristic"),
+
+
+    BEGIN_DATA("begin-data"),
+    TRANSPORT("transport"),
     TV("tv"),
     FAN("fan"),
     SAFE("safe"),
     WI_FI("wi-fi"),
-    HOTEL_CHARACTERISTICS("hotel-characteristics"),
 
-    ID("id"),
-    COUNTRY("country"),
-    NUMBER_NIGHTS("number-nights"),
+    PRICE("price"),
+    FLIGHT_INCLUDE("flight-include"),
+    HOTEL_INCLUDE("hotel-include"),
+
     SHOPPING_CENTERS_NUMBERS("shopping-centers-numbers"),
     TOUR_GUIDE("tour-guide"),
-    EXCURSIONS_NUMBER("excursions-numbers"),
+    EXCURSIONS_NUMBER("excursions-number"),
     RESTING("resting"),
     BETHEL_NUMBER("bethel-number");
 

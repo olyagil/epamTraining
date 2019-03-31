@@ -1,16 +1,10 @@
-package by.training.tourist_vouchers.entity;
+package by.training.tourist_vouchers.entity.enumeration;
 
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for Currency.
- * 
- * &lt;simpleType name="Currency"&gt;
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
- *     &lt;enumeration value="USD"/&gt;
- *     &lt;enumeration value="BYN"/&gt;
- *     &lt;enumeration value="EUR"/&gt;
  */
 @XmlType(name = "Currency")
 @XmlEnum

@@ -1,4 +1,4 @@
-package by.training.tourist_vouchers.entity;
+package by.training.tourist_vouchers.entity.enumeration;
 
 public enum VoucherType {
 
@@ -13,7 +13,7 @@ public enum VoucherType {
         this.type = value;
     }
 
-    public String getType() {
+    public String getValue() {
         return type;
     }
 }

@@ -1,4 +1,4 @@
-package by.training.tourist_vouchers.entity;
+package by.training.tourist_vouchers.entity.enumeration;
 
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
