@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tourist-vouchers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns="http://www.training.by/tourist-vouchers"
+                  xsi:schemaLocation="http://www.training.by/tourist-vouchers tourist-vouchers.xsd">
+
+
+    <city-break id="qwerty2345678" country="Russia" number-nights="1">
+        <begin-data>2019-03-20T15:30:00</begin-data>
+        <transport>Railway</transport>
+        <cost currency="USD">
+            <price>100</price>
+            <flight-include>true</flight-include>
+            <hotel-include>true</hotel-include>
+        </cost>
+        <hotel-characteristic number-stars="3" meal-type="AL" room-type="3">
+            <tv>true</tv>
+            <fan>true</fan>
+            <safe>false</safe>
+            <wi-fi>true</wi-fi>
+        </hotel-characteristic>
+        <shopping-centers-numbers>10</shopping-centers-numbers>
+    </city-break>
+
+
+</tourist-vouchers>
+

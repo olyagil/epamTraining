@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.training.by/tourist-vouchers"
+        xmlns:tns="http://www.training.by/tourist-vouchers"
+        elementFormDefault="qualified">
+
+    <element name="tourist-vouchers">
+        <complexType>
+            <sequence>
+                <element ref="tns:voucher"
+                         minOccurs="2"
+                         maxOccurs="unbounded"/>
+            </sequence>
+        </complexType>
+    </element>
+
+    <element name="voucher" type="tns:Voucher" abstract="true"/>
+    <element name="city-break" type="tns:CityBreak"
+             substitutionGroup="tns:voucher"/>
+    <element name="rest" type="tns:Rest"
+             substitutionGroup="tns:voucher"/>
+    <element name="guided-tour" type="tns:GuidedTour"
+             substitutionGroup="tns:voucher"/>
+    <element name="pilgrimage-tour" type="tns:PilgrimageTour"
+             substitutionGroup="tns:voucher"/>
+
+    <complexType name="Voucher">
+        <sequence>
+            <element name="begin-data" type="dateTime"/>
+            <element name="transport" type="tns:Transport"/>
+            <element name="cost" type="tns:Cost"/>
+            <element name="hotel-characteristic"
+                     type="tns:HotelCharacteristic"/>
+        </sequence>
+        <attribute name="id" type="tns:Identification" use="required"/>
+        <attribute name="country" type="string" use="required"/>
+        <attribute name="number-nights" type="nonNegativeInteger" default="0"/>
+    </complexType>
+
+
+    <!--Тур выходного дня-->
+    <complexType name="CityBreak">
+        <complexContent>
+            <extension base="tns:Voucher">
+                <sequence>
+                    <element name="shopping-centers-numbers">
+                        <simpleType>
+                            <restriction base="positiveInteger">
+                                <maxInclusive value="15"/>
+                            </restriction>
+                        </simpleType>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <!--Экскурсионный тур-->
+    <complexType name="GuidedTour">
+        <complexContent>
+            <extension base="tns:Voucher">
+                <sequence>
+                    <element name="tour-guide" type="boolean"/>
+                    <element name="excursions-number">
+                        <simpleType>
+                            <restriction base="positiveInteger">
+                                <maxExclusive value="20"/>
+                            </restriction>
+                        </simpleType>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <!--Отдых-->
+    <complexType name="Rest">
+        <complexContent>
+            <extension base="tns:Voucher">
+                <sequence>
+                    <element name="resting" type="boolean"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <!--Паломничество-->
+    <complexType name="PilgrimageTour">
+        <complexContent>
+            <extension base="tns:Voucher">
+                <sequence>
+                    <element name="bethel-number">
+                        <simpleType>
+                            <restriction base="positiveInteger">
+                                <maxInclusive value="15"/>
+                            </restriction>
+                        </simpleType>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+
+    <complexType name="Cost">
+        <all>
+            <element name="price" type="decimal"/>
+            <element name="flight-include" type="boolean" default="false"/>
+            <element name="hotel-include" type="boolean" default="true"/>
+        </all>
+        <attribute name="currency" type="tns:Currency" default="EUR"/>
+    </complexType>
+
+    <complexType name="HotelCharacteristic">
+        <all>
+            <element name="tv" type="boolean"/>
+            <element name="fan" type="boolean"/>
+            <element name="safe" type="boolean"/>
+            <element name="wi-fi" type="boolean"/>
+        </all>
+        <attribute name="number-stars" type="positiveInteger" use="required"/>
+        <attribute name="room-type" use="required">
+            <simpleType>
+                <restriction base="positiveInteger">
+                    <maxInclusive value="5"/>
+                </restriction>
+            </simpleType>
+        </attribute>
+        <attribute name="meal-type" use="required" type="tns:Meal"/>
+    </complexType>
+
+    <simpleType name="Transport">
+        <restriction base="string">
+            <enumeration value="Bus"/>
+            <enumeration value="Аir"/>
+            <enumeration value="Car"/>
+            <enumeration value="Railway"/>
+            <enumeration value="Liner"/>
+        </restriction>
+    </simpleType>
+
+
+    <simpleType name="Currency">
+        <restriction base="string">
+            <enumeration value="USD"/>
+            <enumeration value="BYN"/>
+            <enumeration value="EUR"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="Meal">
+        <restriction base="string">
+            <enumeration value="HB"/>
+            <enumeration value="BB"/>
+            <enumeration value="AL"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="Identification">
+        <restriction base="string">
+            <pattern value="([a-zA-Z])[a-zA-Z0-9]{7,19}"/>
+        </restriction>
+    </simpleType>
+</schema>
