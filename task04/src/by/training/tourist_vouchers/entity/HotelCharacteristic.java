@@ -156,6 +156,35 @@ public class HotelCharacteristic {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        HotelCharacteristic that = (HotelCharacteristic) o;
+
+        if (isTv() != that.isTv()) return false;
+        if (isFan() != that.isFan()) return false;
+        if (isSafe() != that.isSafe()) return false;
+        if (isWiFi() != that.isWiFi()) return false;
+        if (getRoomType() != that.getRoomType()) return false;
+        if (getNumberStars() != null ? !getNumberStars().equals(that.getNumberStars()) : that.getNumberStars() != null)
+            return false;
+        return getMealType() == that.getMealType();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (isTv() ? 1 : 0);
+        result = 31 * result + (isFan() ? 1 : 0);
+        result = 31 * result + (isSafe() ? 1 : 0);
+        result = 31 * result + (isWiFi() ? 1 : 0);
+        result = 31 * result + (getNumberStars() != null ? getNumberStars().hashCode() : 0);
+        result = 31 * result + getRoomType();
+        result = 31 * result + (getMealType() != null ? getMealType().hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return " tv=" + tv + ", fan=" + fan + ", safe=" + safe + ", wiFi="
                 + wiFi + ", numberStars=" + numberStars + ", roomType="

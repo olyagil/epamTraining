@@ -78,7 +78,6 @@ public class SAXHandler extends DefaultHandler {
         ) {
             currentVoucher.setId(attributes.getValue("id"));
             currentVoucher.setCountry(attributes.getValue("country"));
-            LOGGER.info(currentVoucher.getNumberNights());
 
             if (attributes.getValue("number-nights") != null) {
                 currentVoucher.setNumberNights(Integer.parseInt(attributes.getValue("number-nights")));

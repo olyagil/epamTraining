@@ -21,9 +21,9 @@ public class Main {
     }
 
     public static void main(String[] args) {
-//        LOGGER.info(createVouchers(new SAXBuilder()));
+        LOGGER.info(createVouchers(new SAXBuilder()));
         LOGGER.info(createVouchers(new DOMBuilder()));
-//        LOGGER.info(createVouchers(new StAXBuilder()));
+        LOGGER.info(createVouchers(new StAXBuilder()));
     }
 }
 

@@ -48,21 +48,21 @@ public class Voucher {
 
     @XmlElement(name = "begin-data", required = true)
     @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar beginData;
+    private XMLGregorianCalendar beginData;
     @XmlElement(required = true)
     @XmlSchemaType(name = "string")
-    protected Transport transport;
+    private Transport transport;
     @XmlElement(required = true)
     protected Cost cost;
     @XmlElement(name = "hotel-characteristic", required = true)
-    protected HotelCharacteristic hotelCharacteristic;
+    private HotelCharacteristic hotelCharacteristic;
     @XmlAttribute(name = "id", required = true)
     protected String id;
     @XmlAttribute(name = "country", required = true)
     protected String country;
     @XmlAttribute(name = "number-nights")
     @XmlSchemaType(name = "nonNegativeInteger")
-    protected BigInteger numberNights;
+    private BigInteger numberNights;
 
     /**
      * Gets the value of the beginData property.
@@ -83,16 +83,15 @@ public class Voucher {
     public void setBeginData(String value) {
         GregorianCalendar calendar = new GregorianCalendar();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        XMLGregorianCalendar date = null;
         try {
             calendar.setTime(format.parse(value));
-            date = DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar);
+            beginData =
+                    DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar);
         } catch (ParseException e) {
             e.printStackTrace();
         } catch (DatatypeConfigurationException e) {
             e.printStackTrace();
         }
-        beginData = date;
     }
 
     /**
@@ -217,6 +216,39 @@ public class Voucher {
      */
     public void setNumberNights(int value) {
         this.numberNights = BigInteger.valueOf(value);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Voucher voucher = (Voucher) o;
+
+        if (getBeginData() != null ? !getBeginData().equals(voucher.getBeginData()) : voucher.getBeginData() != null)
+            return false;
+        if (getTransport() != voucher.getTransport()) return false;
+        if (getCost() != null ? !getCost().equals(voucher.getCost()) : voucher.getCost() != null)
+            return false;
+        if (getHotelCharacteristic() != null ? !getHotelCharacteristic().equals(voucher.getHotelCharacteristic()) : voucher.getHotelCharacteristic() != null)
+            return false;
+        if (getId() != null ? !getId().equals(voucher.getId()) : voucher.getId() != null)
+            return false;
+        if (getCountry() != null ? !getCountry().equals(voucher.getCountry()) : voucher.getCountry() != null)
+            return false;
+        return getNumberNights() != null ? getNumberNights().equals(voucher.getNumberNights()) : voucher.getNumberNights() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getBeginData() != null ? getBeginData().hashCode() : 0;
+        result = 31 * result + (getTransport() != null ? getTransport().hashCode() : 0);
+        result = 31 * result + (getCost() != null ? getCost().hashCode() : 0);
+        result = 31 * result + (getHotelCharacteristic() != null ? getHotelCharacteristic().hashCode() : 0);
+        result = 31 * result + (getId() != null ? getId().hashCode() : 0);
+        result = 31 * result + (getCountry() != null ? getCountry().hashCode() : 0);
+        result = 31 * result + (getNumberNights() != null ? getNumberNights().hashCode() : 0);
+        return result;
     }
 
     @Override

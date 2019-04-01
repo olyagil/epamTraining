@@ -38,6 +38,7 @@ public class DOMBuilder extends BaseBuilder {
 
     @Override
     public void buildVouchers(String path) {
+        LOGGER.info("Parsing by the DOM parser. ");
         Document document;
         try {
             document = documentBuilder.parse(path);
@@ -48,7 +49,6 @@ public class DOMBuilder extends BaseBuilder {
                 Voucher voucher = null;
                 for (int i = 0; i < elements.getLength(); i++) {
                     Element element = (Element) elements.item(i);
-                    LOGGER.info(element);
                     switch (type) {
                         case PILGRIMAGE_TOUR:
                             voucher = buildPilgrimageTour(element);
@@ -63,7 +63,6 @@ public class DOMBuilder extends BaseBuilder {
                             voucher = buildGuidedTour(element);
                             break;
                     }
-                    LOGGER.info(voucher);
                     vouchers.add(voucher);
                 }
             }
@@ -75,7 +74,6 @@ public class DOMBuilder extends BaseBuilder {
     private Voucher buildGuidedTour(Element element) {
         GuidedTour guidedVoucher = new GuidedTour();
         buildVoucher(guidedVoucher, element);
-        LOGGER.info(element);
 
         guidedVoucher.setTourGuide(Boolean
                 .valueOf(getElementTextContent(element,

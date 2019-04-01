@@ -110,6 +110,29 @@ public class Cost {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Cost cost = (Cost) o;
+
+        if (isFlightInclude() != cost.isFlightInclude()) return false;
+        if (isHotelInclude() != cost.isHotelInclude()) return false;
+        if (getPrice() != null ? !getPrice().equals(cost.getPrice()) : cost.getPrice() != null)
+            return false;
+        return getCurrency() == cost.getCurrency();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getPrice() != null ? getPrice().hashCode() : 0;
+        result = 31 * result + (isFlightInclude() ? 1 : 0);
+        result = 31 * result + (isHotelInclude() ? 1 : 0);
+        result = 31 * result + (getCurrency() != null ? getCurrency().hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Cost{" +
                 "price=" + price +
