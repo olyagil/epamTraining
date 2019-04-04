@@ -2,19 +2,23 @@ package by.training.tourist_vouchers.builder;
 
 import by.training.tourist_vouchers.entity.Voucher;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class BaseBuilder {
 
-    protected Set<Voucher> vouchers;
+    protected List<Voucher> vouchers;
 
     BaseBuilder() {
-        vouchers = new HashSet<>();
+        vouchers = new ArrayList<>();
     }
 
-    public Set<Voucher> getVouchers() {
-        return vouchers;
+    public int getSize() {
+        return vouchers.size();
+    }
+
+    public Voucher getVoucher(int index) {
+        return vouchers.get(index);
     }
 
     public abstract void buildVouchers(String path);

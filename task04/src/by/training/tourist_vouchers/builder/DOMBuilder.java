@@ -1,6 +1,12 @@
 package by.training.tourist_vouchers.builder;
 
-import by.training.tourist_vouchers.entity.*;
+import by.training.tourist_vouchers.entity.CityBreak;
+import by.training.tourist_vouchers.entity.Cost;
+import by.training.tourist_vouchers.entity.GuidedTour;
+import by.training.tourist_vouchers.entity.HotelCharacteristic;
+import by.training.tourist_vouchers.entity.PilgrimageTour;
+import by.training.tourist_vouchers.entity.Rest;
+import by.training.tourist_vouchers.entity.Voucher;
 import by.training.tourist_vouchers.entity.enumeration.Currency;
 import by.training.tourist_vouchers.entity.enumeration.Meal;
 import by.training.tourist_vouchers.entity.enumeration.Transport;
@@ -20,14 +26,14 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.HashSet;
+import java.util.ArrayList;
 
 public class DOMBuilder extends BaseBuilder {
     private static final Logger LOGGER = LogManager.getLogger();
     private DocumentBuilder documentBuilder;
 
     public DOMBuilder() {
-        vouchers = new HashSet<>();
+        vouchers = new ArrayList<>();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
             documentBuilder = factory.newDocumentBuilder();
@@ -38,7 +44,7 @@ public class DOMBuilder extends BaseBuilder {
 
     @Override
     public void buildVouchers(String path) {
-        LOGGER.info("Parsing by the DOM parser. ");
+//        LOGGER.info("Parsing by the DOM parser. ");
         Document document;
         try {
             document = documentBuilder.parse(path);

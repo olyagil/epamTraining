@@ -5,7 +5,7 @@
                   xsi:schemaLocation="http://www.training.by/tourist-vouchers tourist-vouchers.xsd">
 
 
-    <city-break id="qwerty11" country="Russia" number-nights="1">
+    <city-break id="qwerty11" country="Россия" number-nights="1">
         <begin-data>2019-03-20T15:30:00</begin-data>
         <transport>Railway</transport>
         <cost currency="USD">
@@ -24,7 +24,7 @@
 
     <guided-tour id="qwerty12" country="Турция" number-nights="10">
         <begin-data>2019-03-15T08:00:00</begin-data>
-        <transport>Аir</transport>
+        <transport>Air</transport>
         <cost currency="BYN">
             <price>1500</price>
             <flight-include>true</flight-include>
@@ -59,7 +59,7 @@
     </rest>
     <pilgrimage-tour id="qwerty14" country="India">
         <begin-data>2018-12-25T14:25:00</begin-data>
-        <transport>Аir</transport>
+        <transport>Air</transport>
         <cost>
             <price>1000</price>
             <hotel-include>true</hotel-include>
@@ -76,7 +76,7 @@
 
     <city-break id="qwerty15" country="Польша" number-nights="2">
         <begin-data>2019-01-20T14:30:00</begin-data>
-        <transport>Аir</transport>
+        <transport>Air</transport>
         <cost currency="USD">
             <price>200</price>
             <flight-include>true</flight-include>
@@ -93,7 +93,7 @@
 
     <guided-tour id="qwerty16" country="Египет" number-nights="12">
         <begin-data>2019-02-01T09:00:00</begin-data>
-        <transport>Аir</transport>
+        <transport>Air</transport>
         <cost currency="USD">
             <price>1600</price>
             <flight-include>true</flight-include>
@@ -128,7 +128,7 @@
     </rest>
     <pilgrimage-tour id="qwerty18" country="Китай" number-nights="6">
         <begin-data>2018-10-10T12:15:00</begin-data>
-        <transport>Аir</transport>
+        <transport>Air</transport>
         <cost>
             <price>800</price>
             <hotel-include>true</hotel-include>
@@ -266,7 +266,7 @@
 
     <pilgrimage-tour id="qwerty25" country="Япония" number-nights="5">
         <begin-data>2019-02-20T14:25:00</begin-data>
-        <transport>Аir</transport>
+        <transport>Air</transport>
         <cost>
             <price>1000</price>
             <hotel-include>true</hotel-include>
@@ -300,7 +300,7 @@
     </guided-tour>
     <rest id="qwerty27" country="Великобритания" number-nights="6">
         <begin-data>2019-05-29T14:16:00</begin-data>
-        <transport>Аir</transport>
+        <transport>Air</transport>
         <cost currency="USD">
             <price>2000</price>
             <flight-include>true</flight-include>

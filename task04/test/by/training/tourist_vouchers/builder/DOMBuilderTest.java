@@ -10,15 +10,14 @@ import by.training.tourist_vouchers.entity.enumeration.Transport;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-
-import static org.testng.Assert.*;
 
 public class DOMBuilderTest {
 
@@ -69,8 +68,10 @@ public class DOMBuilderTest {
     @Test
     public void testBuildVouchers() {
         domBuilder.buildVouchers(PATH);
-        Set<Voucher> actual = domBuilder.getVouchers();
-
+        List<Voucher> actual = new ArrayList<>();
+        for (int i = 0; i < domBuilder.getSize(); i++) {
+            actual.add(domBuilder.getVoucher(i));
+        }
         Assert.assertEquals(actual, expected);
     }
 

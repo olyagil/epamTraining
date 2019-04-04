@@ -14,7 +14,9 @@ import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class SAXBuilderTest {
@@ -66,7 +68,10 @@ public class SAXBuilderTest {
     @Test
     public void testBuildVouchers() {
         saxBuilder.buildVouchers(PATH);
-        Set<Voucher> actual = saxBuilder.getVouchers();
+        List<Voucher> actual = new ArrayList<>();
+        for (int i = 0; i < saxBuilder.getSize(); i++) {
+            actual.add(saxBuilder.getVoucher(i));
+        }
         Assert.assertEquals(actual, expected);
     }
 }

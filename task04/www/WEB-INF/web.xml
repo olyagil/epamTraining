@@ -8,20 +8,37 @@
          metadata-complete="true">
 
     <description>
-      First Web Application - Hello Word!!!
+        Application for parsing the .xml file.
     </description>
-    <display-name>Hello Word app</display-name>
+    <display-name>Parser app</display-name>
 
     <request-character-encoding>UTF-8</request-character-encoding>
-
+    <welcome-file-list>
+        <welcome-file>parse</welcome-file>
+    </welcome-file-list>
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
     <servlet>
-        <servlet-name>HelloName</servlet-name>
-        <servlet-class>by.training.tourist_vouchers.helloword.HelloWorld</servlet-class>
+        <servlet-name>parsing</servlet-name>
+        <servlet-class>by.training.tourist_vouchers.servlet.Servlet
+        </servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>HelloName</servlet-name>
-        <url-pattern>/Hello</url-pattern>
+        <servlet-name>parsing</servlet-name>
+        <url-pattern>/parse</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>timeaction</servlet-name>
+        <servlet-class>by.training.tourist_vouchers.servlet.TimeServlet
+        </servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>timeaction</servlet-name>
+        <url-pattern>/timeaction</url-pattern>
     </servlet-mapping>
 
 

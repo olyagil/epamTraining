@@ -1,37 +1,45 @@
 package by.training.tourist_vouchers.parser;
 
-import by.training.tourist_vouchers.entity.*;
+import by.training.tourist_vouchers.entity.CityBreak;
+import by.training.tourist_vouchers.entity.Cost;
+import by.training.tourist_vouchers.entity.GuidedTour;
+import by.training.tourist_vouchers.entity.HotelCharacteristic;
+import by.training.tourist_vouchers.entity.PilgrimageTour;
+import by.training.tourist_vouchers.entity.Rest;
+import by.training.tourist_vouchers.entity.Voucher;
 import by.training.tourist_vouchers.entity.enumeration.Currency;
 import by.training.tourist_vouchers.entity.enumeration.Meal;
 import by.training.tourist_vouchers.entity.enumeration.Transport;
 import by.training.tourist_vouchers.entity.enumeration.VoucherType;
 import by.training.tourist_vouchers.entity.enumeration.VouchersEnum;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 public class SAXHandler extends DefaultHandler {
-    private static final Logger LOGGER = LogManager.getLogger();
-    private Set<Voucher> vouchers;
+    //    private static final Logger LOGGER = LogManager.getLogger();
+    private List<Voucher> vouchers;
     private Voucher currentVoucher;
     private VouchersEnum currentEnum;
     private EnumSet<VouchersEnum> withText;
 
     public SAXHandler() {
-        vouchers = new HashSet<>();
+        vouchers = new ArrayList<>();
         withText = EnumSet.range(VouchersEnum.BEGIN_DATA,
                 VouchersEnum.BETHEL_NUMBER);
     }
 
-    public Set<Voucher> getVouchers() {
-        return vouchers;
+    public Voucher getVoucher(int index) {
+        return vouchers.get(index);
+    }
+
+    public int getSize() {
+        return vouchers.size();
     }
 
     @Override
@@ -48,20 +56,22 @@ public class SAXHandler extends DefaultHandler {
             currentVoucher = new PilgrimageTour();
         } else if (VouchersEnum.COST.getValue().equals(localName)) {
             Cost cost = new Cost();
-            if (attributes.getValue("currency") != null) {
+            if (attributes.getValue(VouchersEnum.CURRENCY.getValue()) != null) {
                 cost.setCurrency(Currency.valueOf(attributes.getValue(
-                        "currency")));
+                        VouchersEnum.CURRENCY.getValue())));
             } else {
                 cost.setCurrency(Currency.EUR);
             }
             currentVoucher.setCost(cost);
         } else if (VouchersEnum.HOTEL_CHARACTERISTIC.getValue().equals(localName)) {
             HotelCharacteristic hotelCharacteristic = new HotelCharacteristic();
-            hotelCharacteristic.setRoomType(Integer.parseInt(attributes.getValue("room-type")));
+            hotelCharacteristic.setRoomType(Integer.parseInt(attributes
+                    .getValue(VouchersEnum.ROOM_TYPE.getValue())));
             hotelCharacteristic.setMealType(Meal.valueOf(attributes.getValue(
-                    "meal-type")));
+                    VouchersEnum.MEAL_TYPE.getValue())));
             hotelCharacteristic.setNumberStars(BigInteger.valueOf(
-                    Integer.parseInt(attributes.getValue("number-stars"))));
+                    Integer.parseInt(attributes.getValue(VouchersEnum
+                            .NUMBER_STARS.getValue()))));
             currentVoucher.setHotelCharacteristic(hotelCharacteristic);
         } else {
             VouchersEnum temp =
@@ -76,11 +86,13 @@ public class SAXHandler extends DefaultHandler {
                 || VoucherType.PILGRIMAGE_TOUR.getValue().equals(localName)
                 || VoucherType.REST.getValue().equals(localName)
         ) {
-            currentVoucher.setId(attributes.getValue("id"));
-            currentVoucher.setCountry(attributes.getValue("country"));
+            currentVoucher.setId(attributes.getValue(VouchersEnum.ID.getValue()));
+            currentVoucher.setCountry(attributes.getValue(VouchersEnum
+                    .COUNTRY.getValue()));
 
-            if (attributes.getValue("number-nights") != null) {
-                currentVoucher.setNumberNights(Integer.parseInt(attributes.getValue("number-nights")));
+            if (attributes.getValue(VouchersEnum.NUMBER_NIGHTS.getValue()) != null) {
+                currentVoucher.setNumberNights(Integer.parseInt(attributes
+                        .getValue(VouchersEnum.NUMBER_NIGHTS.getValue())));
             } else {
                 currentVoucher.setNumberNights(0);
             }

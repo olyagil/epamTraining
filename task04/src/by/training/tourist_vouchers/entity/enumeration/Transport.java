@@ -22,7 +22,7 @@ public enum Transport {
     @XmlEnumValue("\u0410\u0432\u0442\u043e\u0431\u0443\u0441")
     BUS("\u0410\u0432\u0442\u043e\u0431\u0443\u0441"),
     @XmlEnumValue("\u0410\u0432\u0438\u0430")
-    АIR("Air"),
+   AIR("Air"),
     @XmlEnumValue("\u0410\u0432\u0442\u043e")
     CAR("\u0410\u0432\u0442\u043e"),
     @XmlEnumValue("\u0436/\u0434")

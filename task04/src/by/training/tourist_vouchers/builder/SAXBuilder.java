@@ -1,8 +1,6 @@
 package by.training.tourist_vouchers.builder;
 
 import by.training.tourist_vouchers.parser.SAXHandler;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
@@ -10,7 +8,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 import java.io.IOException;
 
 public class SAXBuilder extends BaseBuilder {
-    private static final Logger LOGGER = LogManager.getLogger();
+//    private static final Logger LOGGER = LogManager.getLogger();
 
     private SAXHandler saxHandler;
     private XMLReader reader;
@@ -27,7 +25,7 @@ public class SAXBuilder extends BaseBuilder {
 
     @Override
     public void buildVouchers(String path) {
-        LOGGER.info("Parsing by the SAX parser. ");
+//        LOGGER.info("Parsing by the SAX parser. ");
         try {
             reader.parse(path);
         } catch (SAXException e) {
@@ -35,6 +33,7 @@ public class SAXBuilder extends BaseBuilder {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        vouchers = saxHandler.getVouchers();
+        for (int i = 0; i < saxHandler.getSize(); i++)
+            vouchers.add(saxHandler.getVoucher(i));
     }
 }

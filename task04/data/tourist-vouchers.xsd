@@ -8,7 +8,7 @@
         <complexType>
             <sequence>
                 <element ref="tns:voucher"
-                         minOccurs="2"
+                         minOccurs="16"
                          maxOccurs="unbounded"/>
             </sequence>
         </complexType>
@@ -132,7 +132,7 @@
     <simpleType name="Transport">
         <restriction base="string">
             <enumeration value="Bus"/>
-            <enumeration value="Аir"/>
+            <enumeration value="Air"/>
             <enumeration value="Car"/>
             <enumeration value="Railway"/>
             <enumeration value="Liner"/>
