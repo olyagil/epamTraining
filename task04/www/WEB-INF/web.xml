@@ -14,7 +14,7 @@
 
     <request-character-encoding>UTF-8</request-character-encoding>
     <welcome-file-list>
-        <welcome-file>parse</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
     <session-config>
         <session-timeout>30</session-timeout>
@@ -31,14 +31,14 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>timeaction</servlet-name>
+        <servlet-name>test</servlet-name>
         <servlet-class>by.training.tourist_vouchers.servlet.TimeServlet
         </servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>timeaction</servlet-name>
-        <url-pattern>/timeaction</url-pattern>
+        <servlet-name>test</servlet-name>
+        <url-pattern>/test</url-pattern>
     </servlet-mapping>
 
 
