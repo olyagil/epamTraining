@@ -21,15 +21,30 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 public class StAXBuilder extends BaseBuilder {
+
+    /**
+     * The constant for logger.
+     */
     private static final Logger LOGGER = LogManager.getLogger();
+    /**
+     * The variable of XMLInputFactory type.
+     */
     private XMLInputFactory inputFactory;
 
+    /**
+     * The constructor without parameters.
+     */
     public StAXBuilder() {
         inputFactory = XMLInputFactory.newInstance();
     }
 
+    /**
+     * Overriding method for building the vouchers from file.
+     *
+     * @param path to file
+     */
     @Override
-    public void buildVouchers(String path) {
+    public void buildVouchers(final String path) {
         LOGGER.info("Parsing by the StAX parser. ");
         try (FileInputStream inputStream =
                      new FileInputStream(new File(path))) {
@@ -56,7 +71,17 @@ public class StAXBuilder extends BaseBuilder {
         }
     }
 
-    private Voucher buildVoucher(String voucherType, XMLStreamReader reader) throws XMLStreamException {
+    /**
+     * Method for building the voucher
+     *
+     * @param voucherType type
+     * @param reader      reader
+     * @return voucher
+     * @throws XMLStreamException if don't have element
+     */
+    private Voucher buildVoucher(final String voucherType,
+                                 final XMLStreamReader reader)
+            throws XMLStreamException {
         Voucher voucher = null;
         switch (VouchersEnum.valueOf(voucherType.toUpperCase().replaceAll("-",
                 "_"))) {
@@ -75,8 +100,10 @@ public class StAXBuilder extends BaseBuilder {
             default:
                 break;
         }
-        voucher.setId(reader.getAttributeValue(null, VouchersEnum.ID.getValue()));
-        voucher.setCountry(reader.getAttributeValue(null, VouchersEnum.COUNTRY.getValue()));
+        voucher.setId(reader.getAttributeValue(null,
+                VouchersEnum.ID.getValue()));
+        voucher.setCountry(reader.getAttributeValue(null,
+                VouchersEnum.COUNTRY.getValue()));
         if (reader.getAttributeValue(null,
                 VouchersEnum.NUMBER_NIGHTS.getValue()) != null) {
             voucher.setNumberNights(Integer.parseInt(reader.getAttributeValue(
@@ -89,18 +116,21 @@ public class StAXBuilder extends BaseBuilder {
             switch (reader.next()) {
                 case XMLStreamConstants.START_ELEMENT:
                     String name = reader.getLocalName();
-                    switch (VouchersEnum.valueOf(name.toUpperCase().replaceAll("-", "_"))) {
+                    switch (VouchersEnum.valueOf(name.toUpperCase()
+                            .replaceAll("-", "_"))) {
                         case BEGIN_DATA:
                             voucher.setBeginData(getXMLText(reader));
                             break;
                         case TRANSPORT:
-                            voucher.setTransport(Transport.valueOf(getXMLText(reader).toUpperCase()));
+                            voucher.setTransport(Transport
+                                    .valueOf(getXMLText(reader).toUpperCase()));
                             break;
                         case COST:
                             voucher.setCost(getXMLCost(reader));
                             break;
                         case HOTEL_CHARACTERISTIC:
-                            voucher.setHotelCharacteristic(getXMLHotelCharacteristic(reader));
+                            voucher.setHotelCharacteristic(
+                                    getXMLHotelCharacteristic(reader));
                             break;
                         case SHOPPING_CENTERS_NUMBERS:
                             ((CityBreak) voucher)
@@ -141,15 +171,19 @@ public class StAXBuilder extends BaseBuilder {
     }
 
 
-    private HotelCharacteristic getXMLHotelCharacteristic(XMLStreamReader reader) throws XMLStreamException {
+    private HotelCharacteristic getXMLHotelCharacteristic(final XMLStreamReader
+                                                                  reader)
+            throws XMLStreamException {
         HotelCharacteristic hotelCharacteristic = new HotelCharacteristic();
         hotelCharacteristic.setNumberStars(BigInteger.valueOf(Integer
                 .parseInt(reader.getAttributeValue(null,
                         VouchersEnum.NUMBER_STARS.getValue()))));
         hotelCharacteristic.setMealType(Meal.valueOf(reader.
-                getAttributeValue(null, VouchersEnum.MEAL_TYPE.getValue())));
+                getAttributeValue(null,
+                        VouchersEnum.MEAL_TYPE.getValue())));
         hotelCharacteristic.setRoomType(Integer.parseInt(reader.
-                getAttributeValue(null, VouchersEnum.ROOM_TYPE.getValue())));
+                getAttributeValue(null,
+                        VouchersEnum.ROOM_TYPE.getValue())));
 
         while (reader.hasNext()) {
             switch (reader.next()) {
@@ -188,9 +222,11 @@ public class StAXBuilder extends BaseBuilder {
 
     private Cost getXMLCost(XMLStreamReader reader) throws XMLStreamException {
         Cost cost = new Cost();
-        if (reader.getAttributeValue(null, VouchersEnum.CURRENCY.getValue()) != null) {
-            cost.setCurrency(Currency.valueOf(reader.getAttributeValue(null,
-                    VouchersEnum.CURRENCY.getValue())));
+        if (reader.getAttributeValue(null,
+                VouchersEnum.CURRENCY.getValue()) != null) {
+            cost.setCurrency(Currency.valueOf(reader
+                    .getAttributeValue(null,
+                            VouchersEnum.CURRENCY.getValue())));
         } else {
             cost.setCurrency(Currency.EUR);
         }
@@ -206,15 +242,18 @@ public class StAXBuilder extends BaseBuilder {
                                     .parseDouble(getXMLText(reader))));
                             break;
                         case HOTEL_INCLUDE:
-                            cost.setHotelInclude(Boolean.valueOf(getXMLText(reader)));
+                            cost.setHotelInclude(Boolean
+                                    .valueOf(getXMLText(reader)));
                             break;
                         case FLIGHT_INCLUDE:
-                            cost.setFlightInclude(Boolean.valueOf(getXMLText(reader)));
+                            cost.setFlightInclude(Boolean
+                                    .valueOf(getXMLText(reader)));
                             break;
                     }
                     break;
                 case XMLStreamConstants.END_ELEMENT:
-                    if (VouchersEnum.COST.getValue().equals(reader.getLocalName())) {
+                    if (VouchersEnum.COST.getValue()
+                            .equals(reader.getLocalName())) {
                         return cost;
                     }
                     break;
@@ -223,7 +262,15 @@ public class StAXBuilder extends BaseBuilder {
         throw new XMLStreamException("Unknown element in tag Cost");
     }
 
-    private String getXMLText(XMLStreamReader reader) throws XMLStreamException {
+    /**
+     * Method for getting the xml text.
+     *
+     * @param reader reader
+     * @return xml text
+     * @throws XMLStreamException thrown if can't read
+     */
+    private String getXMLText(final XMLStreamReader reader)
+            throws XMLStreamException {
         String text = null;
         if (reader.hasNext()) {
             reader.next();

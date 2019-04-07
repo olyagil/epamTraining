@@ -12,6 +12,8 @@ import by.training.tourist_vouchers.entity.enumeration.Meal;
 import by.training.tourist_vouchers.entity.enumeration.Transport;
 import by.training.tourist_vouchers.entity.enumeration.VoucherType;
 import by.training.tourist_vouchers.entity.enumeration.VouchersEnum;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -21,30 +23,70 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+/**
+ * The {@code SAXHandler} is used for handling the data.
+ */
 public class SAXHandler extends DefaultHandler {
-    //    private static final Logger LOGGER = LogManager.getLogger();
+    /**
+     * The constant for logger.
+     */
+    private static final Logger LOGGER = LogManager.getLogger();
+    /**
+     * The list of vouchers.
+     */
     private List<Voucher> vouchers;
+    /**
+     * The current voucher.
+     */
     private Voucher currentVoucher;
+    /**
+     * The current enum.
+     */
     private VouchersEnum currentEnum;
+    /**
+     * The range of enum.
+     */
     private EnumSet<VouchersEnum> withText;
 
+    /**
+     * The constructor without parameters.
+     */
     public SAXHandler() {
         vouchers = new ArrayList<>();
         withText = EnumSet.range(VouchersEnum.BEGIN_DATA,
                 VouchersEnum.BETHEL_NUMBER);
     }
 
-    public Voucher getVoucher(int index) {
+    /**
+     * The method for getting the the voucher by the specific index.
+     *
+     * @param index of the voucher int the list
+     * @return voucher
+     */
+    public Voucher getVoucher(final int index) {
         return vouchers.get(index);
     }
 
+    /**
+     * The method foe getting the size of the voucher list.
+     *
+     * @return size
+     */
     public int getSize() {
         return vouchers.size();
     }
 
+    /**
+     * Method for parsing the xml text.
+     *
+     * @param uri        of the element
+     * @param localName  of the element
+     * @param qName      of the element
+     * @param attributes of the element
+     */
     @Override
-    public void startElement(String uri, String localName,
-                             String qName, Attributes attributes) {
+    public void startElement(final String uri, final String localName,
+                             final String qName, final Attributes attributes) {
 
         if (VouchersEnum.CITY_BREAK.getValue().equals(localName)) {
             currentVoucher = new CityBreak();
@@ -63,7 +105,8 @@ public class SAXHandler extends DefaultHandler {
                 cost.setCurrency(Currency.EUR);
             }
             currentVoucher.setCost(cost);
-        } else if (VouchersEnum.HOTEL_CHARACTERISTIC.getValue().equals(localName)) {
+        } else if (VouchersEnum.HOTEL_CHARACTERISTIC.getValue()
+                .equals(localName)) {
             HotelCharacteristic hotelCharacteristic = new HotelCharacteristic();
             hotelCharacteristic.setRoomType(Integer.parseInt(attributes
                     .getValue(VouchersEnum.ROOM_TYPE.getValue())));
@@ -86,11 +129,13 @@ public class SAXHandler extends DefaultHandler {
                 || VoucherType.PILGRIMAGE_TOUR.getValue().equals(localName)
                 || VoucherType.REST.getValue().equals(localName)
         ) {
-            currentVoucher.setId(attributes.getValue(VouchersEnum.ID.getValue()));
+            currentVoucher.setId(attributes.getValue(VouchersEnum
+                    .ID.getValue()));
             currentVoucher.setCountry(attributes.getValue(VouchersEnum
                     .COUNTRY.getValue()));
 
-            if (attributes.getValue(VouchersEnum.NUMBER_NIGHTS.getValue()) != null) {
+            if (attributes
+                    .getValue(VouchersEnum.NUMBER_NIGHTS.getValue()) != null) {
                 currentVoucher.setNumberNights(Integer.parseInt(attributes
                         .getValue(VouchersEnum.NUMBER_NIGHTS.getValue())));
             } else {
@@ -99,9 +144,15 @@ public class SAXHandler extends DefaultHandler {
         }
     }
 
-
+    /**
+     * Method for getting the xml text.
+     *
+     * @param ch     text
+     * @param start  of the element's text
+     * @param length of the element's text
+     */
     @Override
-    public void characters(char[] ch, int start, int length) {
+    public void characters(final char[] ch, final int start, final int length) {
         String s = new String(ch, start, length).trim();
         if (currentEnum != null) {
             switch (currentEnum) {
@@ -109,17 +160,21 @@ public class SAXHandler extends DefaultHandler {
                     currentVoucher.setBeginData(s);
                     break;
                 case TRANSPORT:
-                    currentVoucher.setTransport(Transport.valueOf(s.toUpperCase()));
+                    currentVoucher.setTransport(Transport
+                            .valueOf(s.toUpperCase()));
                     break;
                 case PRICE:
                     currentVoucher.getCost()
-                            .setPrice(BigDecimal.valueOf(Double.parseDouble(s)));
+                            .setPrice(BigDecimal
+                                    .valueOf(Double.parseDouble(s)));
                     break;
                 case FLIGHT_INCLUDE:
-                    currentVoucher.getCost().setFlightInclude(Boolean.valueOf(s));
+                    currentVoucher.getCost()
+                            .setFlightInclude(Boolean.valueOf(s));
                     break;
                 case HOTEL_INCLUDE:
-                    currentVoucher.getCost().setHotelInclude(Boolean.valueOf(s));
+                    currentVoucher.getCost()
+                            .setHotelInclude(Boolean.valueOf(s));
                     break;
                 case TV:
                     currentVoucher.getHotelCharacteristic()
@@ -158,15 +213,23 @@ public class SAXHandler extends DefaultHandler {
                             .setBethelNumber(Integer.parseInt(s));
                     break;
                 default:
-                    throw new EnumConstantNotPresentException(currentEnum.getDeclaringClass(),
-                            currentEnum.name());
+                    throw new EnumConstantNotPresentException(currentEnum
+                            .getDeclaringClass(), currentEnum.name());
             }
         }
         currentEnum = null;
     }
 
+    /**
+     * Method for action when elements is finished.
+     *
+     * @param uri       of the element
+     * @param localName of the element
+     * @param qName     of the element
+     */
     @Override
-    public void endElement(String uri, String localName, String qName) {
+    public void endElement(final String uri, final String localName,
+                           final String qName) {
         switch (VouchersEnum.valueOf(localName.toUpperCase().replaceAll("-",
                 "_"))) {
             case CITY_BREAK:

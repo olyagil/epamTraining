@@ -9,17 +9,22 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "Currency")
 @XmlEnum
 public enum Currency {
-
+    /**
+     * The constant for USD currency.
+     */
     USD,
+    /**
+     * The constant for BYN currency.
+     */
     BYN,
+    /**
+     * The constant for EUR currency.
+     */
     EUR;
+
 
     public String value() {
         return name();
-    }
-
-    public static Currency fromValue(String v) {
-        return valueOf(v);
     }
 
 }

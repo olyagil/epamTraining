@@ -17,12 +17,16 @@ import javax.xml.bind.annotation.XmlType;
         "shoppingCentersNumbers"
 })
 public class CityBreak extends Voucher {
-
+    /**
+     * The variable for number of shopping centers in the city break voucher.
+     */
     @XmlElement(name = "shopping-centers-numbers")
-    protected int shoppingCentersNumbers;
+    private int shoppingCentersNumbers;
 
     /**
      * Gets the value of the shoppingCentersNumbers property.
+     *
+     * @return number of shopping centers
      */
     public int getShoppingCentersNumbers() {
         return shoppingCentersNumbers;
@@ -30,11 +34,18 @@ public class CityBreak extends Voucher {
 
     /**
      * Sets the value of the shoppingCentersNumbers property.
+     *
+     * @param value another value
      */
-    public void setShoppingCentersNumbers(int value) {
+    public void setShoppingCentersNumbers(final int value) {
         this.shoppingCentersNumbers = value;
     }
 
+    /**
+     * Method to represent class as a string.
+     *
+     * @return string
+     */
     @Override
     public String toString() {
         return "\nCityBreak { numbers of shopping centers: "

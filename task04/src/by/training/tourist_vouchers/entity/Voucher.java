@@ -2,11 +2,6 @@ package by.training.tourist_vouchers.entity;
 
 import by.training.tourist_vouchers.entity.enumeration.Transport;
 
-import java.math.BigInteger;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.GregorianCalendar;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -17,19 +12,25 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.math.BigInteger;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
 
 
 /**
  * <p>Java class for Voucher complex type.
  *
- * <p>The following schema fragment specifies the expected         content contained within this class.
- * &lt;element name="begin-data" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
- * &lt;element name="transport" type="{http://www.training.by/tourist-vouchers}Transport"/&gt;
- * &lt;element name="cost" type="{http://www.training.by/tourist-vouchers}Cost"/&gt;
- * &lt;element name="hotel-characteristic" type="{http://www.training.by/tourist-vouchers}HotelCharacteristic"/&gt;
- * &lt;attribute name="id" use="required" type="{http://www.training.by/tourist-vouchers}Identification" /&gt;
- * &lt;attribute name="country" use="required" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
- * &lt;attribute name="number-nights" type="{http://www.w3.org/2001/XMLSchema}nonNegativeInteger" default="0" /&gt;
+ * <p>The following schema fragment specifies the expected
+ * content contained within this class.
+ * &lt;element name="begin-data" type="dateTime"/&gt;
+ * &lt;element name="transport" type="Transport"/&gt;
+ * &lt;element name="cost" type="Cost"/&gt;
+ * &lt;element name="hotel-characteristic" type="HotelCharacteristic"/&gt;
+ * &lt;attribute name="id" use="required" type="Identification" /&gt;
+ * &lt;attribute name="country" use="required" type="string" /&gt;
+ * &lt;attribute name="number-nights" type="nonNegativeInteger" default="0" ;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Voucher", propOrder = {
@@ -45,21 +46,45 @@ import javax.xml.datatype.XMLGregorianCalendar;
         PilgrimageTour.class
 })
 public class Voucher {
-
+    /**
+     * The variable for hashCode.
+     */
+    private static final int PRIME = 31;
+    /**
+     * The variable for begin date.
+     */
     @XmlElement(name = "begin-data", required = true)
     @XmlSchemaType(name = "dateTime")
     private XMLGregorianCalendar beginData;
+    /**
+     * The variable for transport.
+     */
     @XmlElement(required = true)
     @XmlSchemaType(name = "string")
     private Transport transport;
+    /**
+     * The variable for cost.
+     */
     @XmlElement(required = true)
-    protected Cost cost;
+    private Cost cost;
+    /**
+     * The variable for hotel characteristic.
+     */
     @XmlElement(name = "hotel-characteristic", required = true)
     private HotelCharacteristic hotelCharacteristic;
+    /**
+     * The variable for id.
+     */
     @XmlAttribute(name = "id", required = true)
-    protected String id;
+    private String id;
+    /**
+     * The variable for country.
+     */
     @XmlAttribute(name = "country", required = true)
-    protected String country;
+    private String country;
+    /**
+     * The variable for number nights..
+     */
     @XmlAttribute(name = "number-nights")
     @XmlSchemaType(name = "nonNegativeInteger")
     private BigInteger numberNights;
@@ -150,7 +175,7 @@ public class Voucher {
      * @param value allowed object is
      *              {@link HotelCharacteristic }
      */
-    public void setHotelCharacteristic(HotelCharacteristic value) {
+    public void setHotelCharacteristic(final HotelCharacteristic value) {
         this.hotelCharacteristic = value;
     }
 
@@ -170,7 +195,7 @@ public class Voucher {
      * @param value allowed object is
      *              {@link String }
      */
-    public void setId(String value) {
+    public void setId(final String value) {
         this.id = value;
     }
 
@@ -190,7 +215,7 @@ public class Voucher {
      * @param value allowed object is
      *              {@link String }
      */
-    public void setCountry(String value) {
+    public void setCountry(final String value) {
         this.country = value;
     }
 
@@ -214,43 +239,72 @@ public class Voucher {
      * @param value allowed object is
      *              {@link BigInteger }
      */
-    public void setNumberNights(int value) {
+    public void setNumberNights(final int value) {
         this.numberNights = BigInteger.valueOf(value);
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Voucher voucher = (Voucher) o;
 
-        if (getBeginData() != null ? !getBeginData().equals(voucher.getBeginData()) : voucher.getBeginData() != null)
+        if (getBeginData() != null
+                ? !getBeginData().equals(voucher.getBeginData())
+                : voucher.getBeginData() != null)
             return false;
-        if (getTransport() != voucher.getTransport()) return false;
-        if (getCost() != null ? !getCost().equals(voucher.getCost()) : voucher.getCost() != null)
+        if (getTransport() != voucher.getTransport()) {
             return false;
-        if (getHotelCharacteristic() != null ? !getHotelCharacteristic().equals(voucher.getHotelCharacteristic()) : voucher.getHotelCharacteristic() != null)
+        }
+        if (getCost() != null ? !getCost().equals(voucher.getCost())
+                : voucher.getCost() != null) {
             return false;
-        if (getId() != null ? !getId().equals(voucher.getId()) : voucher.getId() != null)
+        }
+        if (getHotelCharacteristic() != null
+                ? !getHotelCharacteristic().equals(voucher.getHotelCharacteristic())
+                : voucher.getHotelCharacteristic() != null) {
             return false;
-        if (getCountry() != null ? !getCountry().equals(voucher.getCountry()) : voucher.getCountry() != null)
+        }
+        if (getId() != null ? !getId().equals(voucher.getId())
+                : voucher.getId() != null) {
             return false;
-        return getNumberNights() != null ? getNumberNights().equals(voucher.getNumberNights()) : voucher.getNumberNights() == null;
+        }
+        if (getCountry() != null ? !getCountry().equals(voucher.getCountry())
+                : voucher.getCountry() != null) {
+            return false;
+        }
+        return getNumberNights() != null
+                ? getNumberNights().equals(voucher.getNumberNights())
+                : voucher.getNumberNights() == null;
     }
 
     @Override
     public int hashCode() {
         int result = getBeginData() != null ? getBeginData().hashCode() : 0;
-        result = 31 * result + (getTransport() != null ? getTransport().hashCode() : 0);
-        result = 31 * result + (getCost() != null ? getCost().hashCode() : 0);
-        result = 31 * result + (getHotelCharacteristic() != null ? getHotelCharacteristic().hashCode() : 0);
-        result = 31 * result + (getId() != null ? getId().hashCode() : 0);
-        result = 31 * result + (getCountry() != null ? getCountry().hashCode() : 0);
-        result = 31 * result + (getNumberNights() != null ? getNumberNights().hashCode() : 0);
+        result = PRIME * result + (getTransport() != null
+                ? getTransport().hashCode() : 0);
+        result = PRIME * result + (getCost() != null
+                ? getCost().hashCode() : 0);
+        result = PRIME * result + (getHotelCharacteristic() != null
+                ? getHotelCharacteristic().hashCode() : 0);
+        result = PRIME * result + (getId() != null ? getId().hashCode() : 0);
+        result = PRIME * result + (getCountry() != null
+                ? getCountry().hashCode() : 0);
+        result = PRIME * result + (getNumberNights() != null
+                ? getNumberNights().hashCode() : 0);
         return result;
     }
 
+    /**
+     * Method to represent class as a string.
+     *
+     * @return string
+     */
     @Override
     public String toString() {
         return " id = '" + id + '\'' + ", start: " + beginData

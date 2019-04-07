@@ -15,14 +15,17 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "PilgrimageTour", propOrder = {
         "bethelNumber"
 })
-public class PilgrimageTour
-        extends Voucher {
-
+public class PilgrimageTour extends Voucher {
+    /**
+     * The variable for number of bethels.
+     */
     @XmlElement(name = "bethel-number")
-    protected int bethelNumber;
+    private int bethelNumber;
 
     /**
      * Gets the value of the bethelNumber property.
+     *
+     * @return number of bethel
      */
     public int getBethelNumber() {
         return bethelNumber;
@@ -30,11 +33,18 @@ public class PilgrimageTour
 
     /**
      * Sets the value of the bethelNumber property.
+     *
+     * @param value specific value
      */
-    public void setBethelNumber(int value) {
+    public void setBethelNumber(final int value) {
         this.bethelNumber = value;
     }
 
+    /**
+     * Method to represent class as a string.
+     *
+     * @return string
+     */
     @Override
     public String toString() {
         return "\nPilgrimageTour { number of bethel: " + bethelNumber

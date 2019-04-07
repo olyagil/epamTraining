@@ -30,16 +30,5 @@
         <url-pattern>/parse</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>test</servlet-name>
-        <servlet-class>by.training.tourist_vouchers.servlet.TimeServlet
-        </servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>test</servlet-name>
-        <url-pattern>/test</url-pattern>
-    </servlet-mapping>
-
 
 </web-app>

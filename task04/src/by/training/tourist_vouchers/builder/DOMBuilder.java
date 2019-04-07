@@ -28,10 +28,23 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
+/**
+ * THe {@code DOMBuilder} id used for creating the list of vouchers by the
+ * DOM parser.
+ */
 public class DOMBuilder extends BaseBuilder {
+    /**
+     * The constant for the logger.
+     */
     private static final Logger LOGGER = LogManager.getLogger();
+    /**
+     * The variable of the DocumentBuilder type.
+     */
     private DocumentBuilder documentBuilder;
 
+    /**
+     * The constructor with no parameters.
+     */
     public DOMBuilder() {
         vouchers = new ArrayList<>();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -42,9 +55,14 @@ public class DOMBuilder extends BaseBuilder {
         }
     }
 
+    /**
+     * Overriding method for building vouchers by the DOM parser.
+     *
+     * @param path to file
+     */
     @Override
-    public void buildVouchers(String path) {
-//        LOGGER.info("Parsing by the DOM parser. ");
+    public void buildVouchers(final String path) {
+        LOGGER.info("Parsing by the DOM parser. ");
         Document document;
         try {
             document = documentBuilder.parse(path);
@@ -72,12 +90,20 @@ public class DOMBuilder extends BaseBuilder {
                     vouchers.add(voucher);
                 }
             }
-        } catch (SAXException | IOException e) {
+        } catch (SAXException e) {
+            LOGGER.error(e);
+        } catch (IOException e) {
             LOGGER.error(e);
         }
     }
 
-    private Voucher buildGuidedTour(Element element) {
+    /**
+     * Method for building vouchers of the guided tour type.
+     *
+     * @param element of the nodeList
+     * @return voucher
+     */
+    private Voucher buildGuidedTour(final Element element) {
         GuidedTour guidedVoucher = new GuidedTour();
         buildVoucher(guidedVoucher, element);
 
@@ -90,7 +116,13 @@ public class DOMBuilder extends BaseBuilder {
         return guidedVoucher;
     }
 
-    private Voucher buildCityBreakTour(Element element) {
+    /**
+     * Method for building vouchers of the city break type.
+     *
+     * @param element of the nodeList
+     * @return voucher
+     */
+    private Voucher buildCityBreakTour(final Element element) {
         CityBreak cityBreakVoucher = new CityBreak();
         buildVoucher(cityBreakVoucher, element);
         cityBreakVoucher.setShoppingCentersNumbers(Integer.parseInt(
@@ -99,7 +131,13 @@ public class DOMBuilder extends BaseBuilder {
         return cityBreakVoucher;
     }
 
-    private Voucher buildRestTour(Element element) {
+    /**
+     * Method for building vouchers of the rest tour type.
+     *
+     * @param element of the nodeList
+     * @return voucher
+     */
+    private Voucher buildRestTour(final Element element) {
         Rest restVoucher = new Rest();
         buildVoucher(restVoucher, element);
         restVoucher.setResting(Boolean.valueOf(getElementTextContent(element,
@@ -107,7 +145,13 @@ public class DOMBuilder extends BaseBuilder {
         return restVoucher;
     }
 
-    private Voucher buildPilgrimageTour(Element element) {
+    /**
+     * Method for building vouchers of the pilgrimage tour type.
+     *
+     * @param element of the nodeList
+     * @return voucher
+     */
+    private Voucher buildPilgrimageTour(final Element element) {
         PilgrimageTour pilgrimageVoucher = new PilgrimageTour();
         buildVoucher(pilgrimageVoucher, element);
         pilgrimageVoucher.setBethelNumber(Integer
@@ -116,10 +160,18 @@ public class DOMBuilder extends BaseBuilder {
         return pilgrimageVoucher;
     }
 
-    private void buildVoucher(Voucher voucher, Element element) {
+    /**
+     * Method for building basic voucher.
+     *
+     * @param voucher to build
+     * @param element of the nodeList
+     */
+    private void buildVoucher(final Voucher voucher, final Element element) {
         voucher.setId(element.getAttribute(VouchersEnum.ID.getValue()));
-        voucher.setCountry(element.getAttribute(VouchersEnum.COUNTRY.getValue()));
-        if (!element.getAttribute(VouchersEnum.NUMBER_NIGHTS.getValue()).isEmpty()) {
+        voucher.setCountry(element
+                .getAttribute(VouchersEnum.COUNTRY.getValue()));
+        if (!element.getAttribute(VouchersEnum
+                .NUMBER_NIGHTS.getValue()).isEmpty()) {
             voucher.setNumberNights(Integer.parseInt(element.getAttribute(
                     VouchersEnum.NUMBER_NIGHTS.getValue())));
         } else {
@@ -135,9 +187,11 @@ public class DOMBuilder extends BaseBuilder {
         voucher.setCost(cost);
         Element costElement = (Element) element.getElementsByTagName(
                 VouchersEnum.COST.getValue()).item(0);
-        if (!costElement.getAttribute(VouchersEnum.CURRENCY.getValue()).isEmpty()) {
+        if (!costElement
+                .getAttribute(VouchersEnum.CURRENCY.getValue()).isEmpty()) {
             cost.setCurrency(Currency.valueOf(costElement
-                    .getAttribute(VouchersEnum.CURRENCY.getValue()).toUpperCase()));
+                    .getAttribute(VouchersEnum.CURRENCY.getValue())
+                    .toUpperCase()));
         } else {
             cost.setCurrency(Currency.EUR);
         }
@@ -153,12 +207,13 @@ public class DOMBuilder extends BaseBuilder {
         Element hotelElement = (Element) element.getElementsByTagName(
                 VouchersEnum.HOTEL_CHARACTERISTIC.getValue()).item(0);
         voucher.setHotelCharacteristic(hotelCharacteristic);
-        hotelCharacteristic.setRoomType(Integer
-                .parseInt(hotelElement.getAttribute(VouchersEnum.ROOM_TYPE.getValue())));
-        hotelCharacteristic.setMealType(Meal
-                .valueOf(hotelElement.getAttribute(VouchersEnum.MEAL_TYPE.getValue())));
+        hotelCharacteristic.setRoomType(Integer.parseInt(hotelElement
+                .getAttribute(VouchersEnum.ROOM_TYPE.getValue())));
+        hotelCharacteristic.setMealType(Meal.valueOf(hotelElement
+                .getAttribute(VouchersEnum.MEAL_TYPE.getValue())));
         hotelCharacteristic.setNumberStars(BigInteger.valueOf(Integer
-                .parseInt(hotelElement.getAttribute(VouchersEnum.NUMBER_STARS.getValue()))));
+                .parseInt(hotelElement.getAttribute(VouchersEnum.NUMBER_STARS
+                        .getValue()))));
         hotelCharacteristic.setWiFi(Boolean
                 .valueOf(getElementTextContent(hotelElement,
                         VouchersEnum.WI_FI.getValue())));
@@ -173,7 +228,15 @@ public class DOMBuilder extends BaseBuilder {
                         VouchersEnum.TV.getValue())));
     }
 
-    private String getElementTextContent(Element element, String name) {
+    /**
+     * Method for getting the text of element.
+     *
+     * @param element of the node.
+     * @param name    of the tag
+     * @return parameter
+     */
+    private String getElementTextContent(final Element element,
+                                         final String name) {
         NodeList nodeList = element.getElementsByTagName(name);
         Node node = nodeList.item(0);
         return node.getTextContent();

@@ -10,8 +10,8 @@ import javax.xml.bind.annotation.XmlType;
  * <p>Java class for GuidedTour complex type.
  * <p>
  * &lt;complexType name="GuidedTour"&gt;
- * &lt;extension base="{http://www.training.by/tourist-vouchers}Voucher"&gt;
- * &lt;element name="tour-guide" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ * &lt;extension base="Voucher"&gt;
+ * &lt;element name="tour-guide" type="boolean"/&gt;
  * &lt;element name="excursions-number"&gt;
  * &lt;maxExclusive value="20"/&gt;
  */
@@ -22,14 +22,21 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class GuidedTour
         extends Voucher {
-
+    /**
+     * The variable for determining if it is a guided tour.
+     */
     @XmlElement(name = "tour-guide")
-    protected boolean tourGuide;
+    private boolean tourGuide;
+    /**
+     * The variable for number of excursions.
+     */
     @XmlElement(name = "excursions-number")
-    protected int excursionsNumber;
+    private int excursionsNumber;
 
     /**
      * Gets the value of the tourGuide property.
+     *
+     * @return true if it is a tour guide.
      */
     public boolean isTourGuide() {
         return tourGuide;
@@ -37,13 +44,17 @@ public class GuidedTour
 
     /**
      * Sets the value of the tourGuide property.
+     *
+     * @param value specific value
      */
-    public void setTourGuide(boolean value) {
+    public void setTourGuide(final boolean value) {
         this.tourGuide = value;
     }
 
     /**
      * Gets the value of the excursionsNumber property.
+     *
+     * @return number of excursions
      */
     public int getExcursionsNumber() {
         return excursionsNumber;
@@ -51,11 +62,18 @@ public class GuidedTour
 
     /**
      * Sets the value of the excursionsNumber property.
+     *
+     * @param value specific value
      */
-    public void setExcursionsNumber(int value) {
+    public void setExcursionsNumber(final int value) {
         this.excursionsNumber = value;
     }
 
+    /**
+     * Method to represent class as a string.
+     *
+     * @return string
+     */
     @Override
     public String toString() {
         return "\nGuidedTour { tour guide: " + tourGuide

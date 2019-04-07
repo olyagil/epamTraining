@@ -6,25 +6,24 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for Meal.
- *     &lt;enumeration value="HB"/&gt;
- *     &lt;enumeration value="BB"/&gt;
- *     &lt;enumeration value="AL"/&gt;
- *
+ * &lt;enumeration value="HB"/&gt;
+ * &lt;enumeration value="BB"/&gt;
+ * &lt;enumeration value="AL"/&gt;
  */
 @XmlType(name = "Meal")
 @XmlEnum
 public enum Meal {
-
+    /**
+     * The constant for HB type of meal.
+     */
     HB,
+    /**
+     * The constant for BB type of meal.
+     */
     BB,
+    /**
+     * The constant for AL type of meal.
+     */
     AL;
-
-    public String value() {
-        return name();
-    }
-
-    public static Meal fromValue(String v) {
-        return valueOf(v);
-    }
 
 }
