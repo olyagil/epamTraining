@@ -2,7 +2,6 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%--<c:set var="lang" value="${sessionScope.lang}"/>--%>
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="property.text" var="local"/>
 <!DOCTYPE html>
@@ -27,7 +26,6 @@
 <fmt:message bundle="${local}" key="table.number.stars" var="stars"/>
 <fmt:message bundle="${local}" key="table.room.type" var="room"/>
 <fmt:message bundle="${local}" key="table.meal.type" var="meal"/>
-<%--<c:import url="header.jsp"/>--%>
 <meta charset="utf-8">
 <style>
     body {
@@ -54,7 +52,6 @@
 <body>
 
 <table border="2">
-    <caption>Vouchers</caption>
     <thead>
     <tr>
         <th rowspan="2">${id}</th>

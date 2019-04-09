@@ -73,7 +73,6 @@ public class Servlet extends HttpServlet {
         String fileName = Paths.get(filePart.getSubmittedFileName())
                 .getFileName().toString();
         InputStream fileContent = filePart.getInputStream();
-        System.out.println(fileName);
         String filepath = "D:\\IdeaProjects\\epamTraining\\task04\\www\\files"
                 + fileName;
 
@@ -84,7 +83,6 @@ public class Servlet extends HttpServlet {
         Creator creator = new Creator();
         List<Voucher> vouchers;
         String parser = request.getParameter("parser");
-        System.out.println(parser);
         switch (parser) {
             case "SAX":
                 vouchers = creator.createVouchers(new SAXBuilder(), fileName);
@@ -104,5 +102,4 @@ public class Servlet extends HttpServlet {
         }
         request.getRequestDispatcher("/index.jsp").forward(request, response);
     }
-
 }
