@@ -41,7 +41,7 @@
     </guided-tour>
 
 
-    <rest id="qwerty13" country="Польша" number-nights="5">
+    <rest id="qwerty13" country="Poland" number-nights="5">
         <begin-data>2019-03-30T12:16:00</begin-data>
         <transport>Railway</transport>
         <cost currency="BYN">
@@ -57,7 +57,7 @@
         </hotel-characteristic>
         <resting>true</resting>
     </rest>
-    <pilgrimage-tour id="qwerty14" country="Индия">
+    <pilgrimage-tour id="qwerty14" country="India">
         <begin-data>2018-12-25T14:25:00</begin-data>
         <transport>Air</transport>
         <cost>

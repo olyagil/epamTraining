@@ -71,7 +71,7 @@
 </head>
 <body>
 
-<form>
+<form method="post">
     <ul id="navbar">
         <li><a href="index.jsp">${main}</a></li>
 
@@ -85,7 +85,7 @@
 
     </ul>
 </form>
-<form action="parse" method="post">
+<form action="parse" method="get">
 
     <input type="hidden" name="lang" value="${lang}">
 </form>

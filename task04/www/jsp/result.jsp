@@ -27,7 +27,7 @@
 <fmt:message bundle="${local}" key="table.number.stars" var="stars"/>
 <fmt:message bundle="${local}" key="table.room.type" var="room"/>
 <fmt:message bundle="${local}" key="table.meal.type" var="meal"/>
-<c:import url="header.jsp"/>
+<%--<c:import url="header.jsp"/>--%>
 <meta charset="utf-8">
 <style>
     body {

@@ -5,6 +5,8 @@ import by.training.tourist_vouchers.builder.SAXBuilder;
 import by.training.tourist_vouchers.builder.StAXBuilder;
 import by.training.tourist_vouchers.creator.Creator;
 import by.training.tourist_vouchers.entity.Voucher;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.util.IOUtils;
 
 import javax.servlet.RequestDispatcher;
@@ -13,7 +15,6 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,39 +29,58 @@ import java.util.List;
  */
 @MultipartConfig
 public class Servlet extends HttpServlet {
+    /**
+     * The constant for logging.
+     */
+    private static final Logger LOGGER = LogManager.getLogger();
 
+    /**
+     * Method doGet.
+     *
+     * @param request  request
+     * @param response response
+     * @throws ServletException thrown if servlet exception occur
+     * @throws IOException      thrown if exception occur because of text
+     */
     @Override
     protected void doGet(final HttpServletRequest request,
                          final HttpServletResponse response)
             throws ServletException, IOException {
 
-        String lang = request.getParameter("lang");
-        HttpSession session = request.getSession(true);
-        session.setAttribute("lang", lang);
-        RequestDispatcher rd = getServletContext().getRequestDispatcher(
-                "/result.jsp");
-        rd.forward(request, response);
+        request.getSession().setAttribute("lang",
+                request.getParameter("lang"));
+        RequestDispatcher dispatcher = getServletContext()
+                .getRequestDispatcher("/index.jsp");
+        dispatcher.forward(request, response);
     }
-
+    /**
+     * Method doPost.
+     *
+     * @param request  request
+     * @param response response
+     * @throws ServletException thrown if servlet exception occur
+     * @throws IOException      thrown if exception occur because of text
+     */
     @Override
     protected void doPost(final HttpServletRequest request,
                           final HttpServletResponse response)
             throws IOException, ServletException {
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
+//        try {
 
         Part filePart = request.getPart("file");
-        String fileName =
-                Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+        String fileName = Paths.get(filePart.getSubmittedFileName())
+                .getFileName().toString();
         InputStream fileContent = filePart.getInputStream();
         System.out.println(fileName);
-        StringBuilder filepath = new StringBuilder("D:\\IdeaProjects" +
-                "\\epamTraining\\task04\\www\\files\\");
-        filepath.append(fileName);
-        PrintStream loadedFile = new PrintStream(filepath.toString(), "UTF-8");
-        loadedFile.print(IOUtils.toString(new InputStreamReader(fileContent,
+        String filepath = "D:\\IdeaProjects\\epamTraining\\task04\\www\\files"
+                + fileName;
+
+        PrintStream newFile = new PrintStream(filepath, "UTF-8");
+        newFile.print(IOUtils.toString(new InputStreamReader(fileContent,
                 StandardCharsets.UTF_8)));
-        loadedFile.close();
+        newFile.close();
         Creator creator = new Creator();
         List<Voucher> vouchers;
         String parser = request.getParameter("parser");
@@ -78,9 +98,9 @@ public class Servlet extends HttpServlet {
                 vouchers = creator.createVouchers(new DOMBuilder(), fileName);
                 request.setAttribute("res", vouchers);
                 break;
+            default:
         }
-        request.getRequestDispatcher("/jsp/result.jsp").forward(request, response);
-
+        request.getRequestDispatcher("/index.jsp").forward(request, response);
     }
 
 }

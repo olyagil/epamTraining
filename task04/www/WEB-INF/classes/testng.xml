@@ -1,0 +1,22 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Suite1">
+    <test name="testDOMBuilder">
+        <classes>
+            <class name="by.training.tourist_vouchers.builder.DOMBuilderTest"/>
+        </classes>
+    </test>
+    <test name="testStAXBuilder">
+        <classes>
+            <class
+                    name="by.training.tourist_vouchers.builder.StAXBuilderTest"/>
+        </classes>
+    </test>
+    <test name="testSAXBuilder">
+        <classes>
+            <class name="by.training.tourist_vouchers.builder.SAXBuilderTest"/>
+        </classes>
+    </test>
+
+</suite>
