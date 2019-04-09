@@ -53,6 +53,7 @@ public class Servlet extends HttpServlet {
                 .getRequestDispatcher("/index.jsp");
         dispatcher.forward(request, response);
     }
+
     /**
      * Method doPost.
      *
@@ -67,7 +68,6 @@ public class Servlet extends HttpServlet {
             throws IOException, ServletException {
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
-//        try {
 
         Part filePart = request.getPart("file");
         String fileName = Paths.get(filePart.getSubmittedFileName())
@@ -99,6 +99,8 @@ public class Servlet extends HttpServlet {
                 request.setAttribute("res", vouchers);
                 break;
             default:
+                LOGGER.error("Wrong Parser!");
+                break;
         }
         request.getRequestDispatcher("/index.jsp").forward(request, response);
     }
