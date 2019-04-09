@@ -37,7 +37,7 @@ public enum Transport {
      * The constant for railway.
      */
     @XmlEnumValue("\u0436/\u0434")
-    RAILWAY("Railway"),
+    RAILWAY("\u0436/\u0434"),
     /**
      * The constant for liner.
      */
@@ -57,17 +57,12 @@ public enum Transport {
         value = v;
     }
 
+    /**
+     * Method to get value.
+     *
+     * @return value
+     */
     public String value() {
         return value;
     }
-
-    public static Transport fromValue(final String v) {
-        for (Transport c : Transport.values()) {
-            if (c.value.equals(v)) {
-                return c;
-            }
-        }
-        throw new IllegalArgumentException(v);
-    }
-
 }

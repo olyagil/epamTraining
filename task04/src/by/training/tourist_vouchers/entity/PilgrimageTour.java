@@ -17,6 +17,10 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class PilgrimageTour extends Voucher {
     /**
+     * The constant for the hashCode.
+     */
+    private static final int PRIME = 31;
+    /**
      * The variable for number of bethels.
      */
     @XmlElement(name = "bethel-number")
@@ -41,13 +45,46 @@ public class PilgrimageTour extends Voucher {
     }
 
     /**
+     * Overriding equals method for proper comparison.
+     *
+     * @param o another object
+     * @return true if equals
+     */
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        PilgrimageTour that = (PilgrimageTour) o;
+        return getBethelNumber() == that.getBethelNumber();
+    }
+
+    /**
+     * Overriding method hashCode for determining hashcode.
+     *
+     * @return hashcode
+     */
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = PRIME * result + getBethelNumber();
+        return result;
+    }
+
+    /**
      * Method to represent class as a string.
      *
      * @return string
      */
     @Override
     public String toString() {
-        return "\nPilgrimageTour { number of bethel: " + bethelNumber
-                + super.toString() + '}';
+        return "\nPilgrimageTour " + super.toString() + "|\t" + bethelNumber
+                + "|\t";
     }
 }

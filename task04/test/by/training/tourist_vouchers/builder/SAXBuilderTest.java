@@ -15,28 +15,23 @@ import org.testng.annotations.Test;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class SAXBuilderTest {
 
     private static final String PATH = "testdata//tourist-vouchers.xml";
     private SAXBuilder saxBuilder;
-    private Set<Voucher> expected;
-    private Voucher voucher;
-    private Cost cost;
-    private HotelCharacteristic hotelCharacteristic;
+    private List<Voucher> expected;
 
     @BeforeMethod
     public void setUp() {
         saxBuilder = new SAXBuilder();
-        voucher = new CityBreak();
-        hotelCharacteristic = new HotelCharacteristic();
-        cost = new Cost();
+        CityBreak voucher = new CityBreak();
+        HotelCharacteristic hotelCharacteristic = new HotelCharacteristic();
+        Cost cost = new Cost();
         voucher.setHotelCharacteristic(hotelCharacteristic);
         voucher.setCost(cost);
-        expected = new HashSet<>();
+        expected = new ArrayList<>();
 
         voucher.setNumberNights(1);
         voucher.setBeginData("2019-03-20T15:30:00");

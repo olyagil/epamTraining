@@ -20,8 +20,11 @@ import javax.xml.bind.annotation.XmlType;
         "tourGuide",
         "excursionsNumber"
 })
-public class GuidedTour
-        extends Voucher {
+public class GuidedTour extends Voucher {
+    /**
+     * The constant for the hashCode.
+     */
+    private static final int PRIME = 31;
     /**
      * The variable for determining if it is a guided tour.
      */
@@ -70,14 +73,54 @@ public class GuidedTour
     }
 
     /**
+     * Overriding equals method for proper comparison.
+     *
+     * @param o another object
+     * @return true if equals
+     */
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        GuidedTour that = (GuidedTour) o;
+        if (isTourGuide() != that.isTourGuide()) {
+            return false;
+        }
+        return getExcursionsNumber() == that.getExcursionsNumber();
+    }
+
+    /**
+     * Overriding method hashCode for determining hashcode.
+     *
+     * @return hashcode
+     */
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        if (isTourGuide()) {
+            result = PRIME * result + 1;
+        } else {
+            result = PRIME * result;
+        }
+        result = PRIME * result + getExcursionsNumber();
+        return result;
+    }
+
+    /**
      * Method to represent class as a string.
      *
      * @return string
      */
     @Override
     public String toString() {
-        return "\nGuidedTour { tour guide: " + tourGuide
-                + ", number of excursions: " + excursionsNumber
-                + super.toString() + '}';
+        return "\nGuidedTour " + super.toString() + "|\t" + tourGuide
+                + "|\t" + excursionsNumber + "|\t";
     }
 }

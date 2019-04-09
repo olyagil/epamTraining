@@ -10,12 +10,17 @@ import org.apache.logging.log4j.Logger;
 /**
  * The main class for running the program.
  */
-public class Main {
+public final class Main {
+    /**
+     * Default private constructor.
+     */
+    private Main() {
+    }
+
     /**
      * The path to the file.
      */
-    private static final String PATH = "D://IdeaProjects//epamTraining"
-            + "//task04//data//tourist-vouchers.xml";
+    private static final String PATH = "data//tourist-vouchers.xml";
     /**
      * The constant for logger.
      */
@@ -29,10 +34,27 @@ public class Main {
     public static void main(final String[] args) {
 
         Creator creator = new Creator();
-//        System.out.println(creator.createVouchers(new SAXBuilder(),PATH));
-        LOGGER.info(creator.createVouchers(new SAXBuilder(), PATH));
-        LOGGER.info(creator.createVouchers(new DOMBuilder(), PATH));
-        LOGGER.info(creator.createVouchers(new StAXBuilder(), PATH));
+
+        LOGGER.info(createHead() + creator.createVouchers(new SAXBuilder(),
+                PATH));
+
+        LOGGER.info(createHead() + creator.createVouchers(new DOMBuilder(),
+                PATH));
+
+        LOGGER.info(createHead() + creator.createVouchers(new StAXBuilder(),
+                PATH));
+    }
+
+    /**
+     * Method for creating the head for the table.
+     *
+     * @return the head of the table
+     */
+    private static String createHead() {
+
+        return "Id|\tBegin Data|\t\t\t\t\tNights|\tTransport|\tPrice"
+                + "|\tCurrency|\tFlight|\tHotel|\tTv|\tFan|\tSafe|\tWi-Fi"
+                + "|\tStars|\tRoom|\tMeal\tCountry|\n";
     }
 }
 

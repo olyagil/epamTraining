@@ -1,6 +1,12 @@
 package by.training.tourist_vouchers.builder;
 
-import by.training.tourist_vouchers.entity.*;
+import by.training.tourist_vouchers.entity.CityBreak;
+import by.training.tourist_vouchers.entity.Cost;
+import by.training.tourist_vouchers.entity.GuidedTour;
+import by.training.tourist_vouchers.entity.HotelCharacteristic;
+import by.training.tourist_vouchers.entity.PilgrimageTour;
+import by.training.tourist_vouchers.entity.Rest;
+import by.training.tourist_vouchers.entity.Voucher;
 import by.training.tourist_vouchers.entity.enumeration.Currency;
 import by.training.tourist_vouchers.entity.enumeration.Meal;
 import by.training.tourist_vouchers.entity.enumeration.Transport;
@@ -20,6 +26,10 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+/**
+ * The {@code StAXBuilder} is used for creating the list of vouchers by the
+ * DOM parser.
+ */
 public class StAXBuilder extends BaseBuilder {
 
     /**
@@ -55,7 +65,8 @@ public class StAXBuilder extends BaseBuilder {
                     String name = reader.getLocalName();
                     if (VouchersEnum.CITY_BREAK.getValue().equals(name)
                             || VouchersEnum.GUIDED_TOUR.getValue().equals(name)
-                            || VouchersEnum.PILGRIMAGE_TOUR.getValue().equals(name)
+                            || VouchersEnum.PILGRIMAGE_TOUR.getValue()
+                            .equals(name)
                             || VouchersEnum.REST.getValue().equals(name)
                     ) {
                         vouchers.add(buildVoucher(name, reader));
@@ -72,7 +83,7 @@ public class StAXBuilder extends BaseBuilder {
     }
 
     /**
-     * Method for building the voucher
+     * Method for building the voucher.
      *
      * @param voucherType type
      * @param reader      reader
@@ -153,24 +164,35 @@ public class StAXBuilder extends BaseBuilder {
                             ((PilgrimageTour) voucher).setBethelNumber(Integer
                                     .parseInt(getXMLText(reader)));
                             break;
+                        default:
+                            break;
                     }
                     break;
                 case XMLStreamConstants.END_ELEMENT:
                     name = reader.getLocalName();
                     if (VoucherType.CITY_BREAK.getValue().equals(name)
                             || VoucherType.GUIDED_TOUR.getValue().equals(name)
-                            || VoucherType.PILGRIMAGE_TOUR.getValue().equals(name)
+                            || VoucherType.PILGRIMAGE_TOUR.getValue()
+                            .equals(name)
                             || VoucherType.REST.getValue().equals(name)
                     ) {
                         return voucher;
                     }
+                    break;
+                default:
                     break;
             }
         }
         throw new XMLStreamException("Unknown element in tag Student");
     }
 
-
+    /**
+     * Method for creating the hotel characteristic.
+     *
+     * @param reader reader
+     * @return hotel characteristic
+     * @throws XMLStreamException if can't create hotel characteristic
+     */
     private HotelCharacteristic getXMLHotelCharacteristic(final XMLStreamReader
                                                                   reader)
             throws XMLStreamException {
@@ -207,6 +229,8 @@ public class StAXBuilder extends BaseBuilder {
                             hotelCharacteristic.setSafe(Boolean
                                     .valueOf(getXMLText(reader)));
                             break;
+                        default:
+                            break;
                     }
                     break;
                 case XMLStreamConstants.END_ELEMENT:
@@ -215,12 +239,23 @@ public class StAXBuilder extends BaseBuilder {
                         return hotelCharacteristic;
                     }
                     break;
+                default:
+                    break;
             }
         }
-        throw new XMLStreamException("Unknown element in tag Hotel characteristic");
+        throw new XMLStreamException("Unknown element in tag "
+                + "Hotel characteristic");
     }
 
-    private Cost getXMLCost(XMLStreamReader reader) throws XMLStreamException {
+    /**
+     * Method for creating the cost.
+     *
+     * @param reader reader
+     * @return cost
+     * @throws XMLStreamException is thrown if can't create cost
+     */
+    private Cost getXMLCost(final XMLStreamReader reader)
+            throws XMLStreamException {
         Cost cost = new Cost();
         if (reader.getAttributeValue(null,
                 VouchersEnum.CURRENCY.getValue()) != null) {
@@ -249,6 +284,8 @@ public class StAXBuilder extends BaseBuilder {
                             cost.setFlightInclude(Boolean
                                     .valueOf(getXMLText(reader)));
                             break;
+                        default:
+                            break;
                     }
                     break;
                 case XMLStreamConstants.END_ELEMENT:
@@ -256,6 +293,8 @@ public class StAXBuilder extends BaseBuilder {
                             .equals(reader.getLocalName())) {
                         return cost;
                     }
+                    break;
+                default:
                     break;
             }
         }

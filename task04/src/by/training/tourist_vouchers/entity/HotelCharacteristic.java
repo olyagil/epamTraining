@@ -214,29 +214,31 @@ public class HotelCharacteristic {
             return false;
         }
 
-        HotelCharacteristic that = (HotelCharacteristic) o;
+        HotelCharacteristic other = (HotelCharacteristic) o;
 
-        if (isTv() != that.isTv()) {
+        if (isTv() != other.isTv()) {
             return false;
         }
-        if (isFan() != that.isFan()) {
+        if (isFan() != other.isFan()) {
             return false;
         }
-        if (isSafe() != that.isSafe()) {
+        if (isSafe() != other.isSafe()) {
             return false;
         }
-        if (isWiFi() != that.isWiFi()) {
+        if (isWiFi() != other.isWiFi()) {
             return false;
         }
-        if (getRoomType() != that.getRoomType()) {
+        if (getRoomType() != other.getRoomType()) {
             return false;
         }
-        if (getNumberStars() != null
-                ? !getNumberStars().equals(that.getNumberStars())
-                : that.getNumberStars() != null) {
+        if (getNumberStars() == null) {
+            if (other.numberStars != null) {
+                return false;
+            }
+        } else if (!getNumberStars().equals(other.numberStars)) {
             return false;
         }
-        return getMealType() == that.getMealType();
+        return getMealType() == other.getMealType();
     }
 
     /**
@@ -246,15 +248,38 @@ public class HotelCharacteristic {
      */
     @Override
     public int hashCode() {
-        int result = (isTv() ? 1 : 0);
-        result = PRIME * result + (isFan() ? 1 : 0);
-        result = PRIME * result + (isSafe() ? 1 : 0);
-        result = PRIME * result + (isWiFi() ? 1 : 0);
-        result = PRIME * result + (getNumberStars() != null
-                ? getNumberStars().hashCode() : 0);
+        int result;
+        if (isTv()) {
+            result = 1;
+        } else {
+            result = 0;
+        }
+        if (isFan()) {
+            result = PRIME * result + 1;
+        } else {
+            result = PRIME * result;
+        }
+        if (isSafe()) {
+            result = PRIME * result + 1;
+        } else {
+            result = PRIME * result;
+        }
+        if (isWiFi()) {
+            result = PRIME * result + 1;
+        } else {
+            result = PRIME * result;
+        }
+        if (getNumberStars() != null) {
+            result = PRIME * result + getNumberStars().hashCode();
+        } else {
+            result = PRIME * result;
+        }
+        if (getMealType() != null) {
+            result = PRIME * result + getMealType().hashCode();
+        } else {
+            result = PRIME * result;
+        }
         result = PRIME * result + getRoomType();
-        result = PRIME * result + (getMealType() != null
-                ? getMealType().hashCode() : 0);
         return result;
     }
 
@@ -265,8 +290,8 @@ public class HotelCharacteristic {
      */
     @Override
     public String toString() {
-        return " tv=" + tv + ", fan=" + fan + ", safe=" + safe + ", wiFi="
-                + wiFi + ", numberStars=" + numberStars + ", roomType="
-                + roomType + ", mealType=" + mealType;
+        return "|\t" + tv + "|\t" + fan + "|\t" + safe + "|\t"
+                + wiFi + "|\t" + numberStars + "|\t"
+                + roomType + "|\t" + mealType;
     }
 }

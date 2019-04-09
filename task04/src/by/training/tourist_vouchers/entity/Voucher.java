@@ -1,6 +1,8 @@
 package by.training.tourist_vouchers.entity;
 
 import by.training.tourist_vouchers.entity.enumeration.Transport;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -46,6 +48,10 @@ import java.util.GregorianCalendar;
         PilgrimageTour.class
 })
 public class Voucher {
+    /**
+     * The constant for logger.
+     */
+    private static final Logger LOGGER = LogManager.getLogger();
     /**
      * The variable for hashCode.
      */
@@ -105,17 +111,18 @@ public class Voucher {
      * @param value allowed object is
      *              {@link XMLGregorianCalendar }
      */
-    public void setBeginData(String value) {
+    public void setBeginData(final String value) {
         GregorianCalendar calendar = new GregorianCalendar();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         try {
             calendar.setTime(format.parse(value));
             beginData =
-                    DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar);
+                    DatatypeFactory.newInstance()
+                            .newXMLGregorianCalendar(calendar);
         } catch (ParseException e) {
-            e.printStackTrace();
+            LOGGER.error("Can't parse" + e);
         } catch (DatatypeConfigurationException e) {
-            e.printStackTrace();
+            LOGGER.error("Can't convert" + e);
         }
     }
 
@@ -135,7 +142,7 @@ public class Voucher {
      * @param value allowed object is
      *              {@link Transport }
      */
-    public void setTransport(Transport value) {
+    public void setTransport(final Transport value) {
         this.transport = value;
     }
 
@@ -155,7 +162,7 @@ public class Voucher {
      * @param value allowed object is
      *              {@link Cost }
      */
-    public void setCost(Cost value) {
+    public void setCost(final Cost value) {
         this.cost = value;
     }
 
@@ -243,60 +250,117 @@ public class Voucher {
         this.numberNights = BigInteger.valueOf(value);
     }
 
+    /**
+     * Overriding equals method for proper comparison.
+     *
+     * @param obj another object
+     * @return true if equals
+     */
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (obj == null) {
             return false;
         }
-
-        Voucher voucher = (Voucher) o;
-
-        if (getBeginData() != null
-                ? !getBeginData().equals(voucher.getBeginData())
-                : voucher.getBeginData() != null)
-            return false;
-        if (getTransport() != voucher.getTransport()) {
+        if (getClass() != obj.getClass()) {
             return false;
         }
-        if (getCost() != null ? !getCost().equals(voucher.getCost())
-                : voucher.getCost() != null) {
+        Voucher other = (Voucher) obj;
+        if (getBeginData() == null) {
+            if (other.getBeginData() != null) {
+                return false;
+            }
+        } else if (!getBeginData().equals(other.getBeginData())) {
             return false;
         }
-        if (getHotelCharacteristic() != null
-                ? !getHotelCharacteristic().equals(voucher.getHotelCharacteristic())
-                : voucher.getHotelCharacteristic() != null) {
+        if (getCost() == null) {
+            if (other.getCost() != null) {
+                return false;
+            }
+        } else if (!getCost().equals(other.getCost())) {
             return false;
         }
-        if (getId() != null ? !getId().equals(voucher.getId())
-                : voucher.getId() != null) {
+        if (getCountry() == null) {
+            if (other.getCountry() != null) {
+                return false;
+            }
+        } else if (!getCountry().equals(other.getCountry())) {
             return false;
         }
-        if (getCountry() != null ? !getCountry().equals(voucher.getCountry())
-                : voucher.getCountry() != null) {
+        if (getHotelCharacteristic() == null) {
+            if (other.getHotelCharacteristic() != null) {
+                return false;
+            }
+        } else if (!getHotelCharacteristic()
+                .equals(other.getHotelCharacteristic())) {
             return false;
         }
-        return getNumberNights() != null
-                ? getNumberNights().equals(voucher.getNumberNights())
-                : voucher.getNumberNights() == null;
+        if (getId() == null) {
+            if (other.getId() != null) {
+                return false;
+            }
+        } else if (!getId().equals(other.getId())) {
+            return false;
+        }
+        if (getNumberNights() == null) {
+            if (other.getNumberNights() != null) {
+                return false;
+            }
+        } else if (!getNumberNights().equals(other.getNumberNights())) {
+            return false;
+        }
+        if (getTransport() != other.getTransport()) {
+            return false;
+        }
+        return true;
     }
 
+    /**
+     * Overriding method hashCode for determining hashcode.
+     *
+     * @return hashcode
+     */
     @Override
     public int hashCode() {
-        int result = getBeginData() != null ? getBeginData().hashCode() : 0;
-        result = PRIME * result + (getTransport() != null
-                ? getTransport().hashCode() : 0);
-        result = PRIME * result + (getCost() != null
-                ? getCost().hashCode() : 0);
-        result = PRIME * result + (getHotelCharacteristic() != null
-                ? getHotelCharacteristic().hashCode() : 0);
-        result = PRIME * result + (getId() != null ? getId().hashCode() : 0);
-        result = PRIME * result + (getCountry() != null
-                ? getCountry().hashCode() : 0);
-        result = PRIME * result + (getNumberNights() != null
-                ? getNumberNights().hashCode() : 0);
+        int result;
+        if (getBeginData() != null) {
+            result = getBeginData().hashCode();
+        } else {
+            result = 0;
+        }
+        if (getTransport() != null) {
+            result = PRIME * result + getTransport().hashCode();
+        } else {
+            result = PRIME * result;
+        }
+
+        if (getCost() != null) {
+            result = PRIME * result + getCost().hashCode();
+        } else {
+            result = PRIME * result;
+        }
+        if (getHotelCharacteristic() != null) {
+            result = PRIME * result + getHotelCharacteristic().hashCode();
+        } else {
+            result = PRIME * result;
+        }
+        if (getId() != null) {
+            result = PRIME * result + getId().hashCode();
+        } else {
+            result = PRIME * result;
+        }
+        if (getCountry() != null) {
+            result = PRIME * result + getCountry().hashCode();
+        } else {
+            result = PRIME * result;
+        }
+        if (getNumberNights() != null) {
+            result = PRIME * result + getNumberNights().hashCode();
+        } else {
+            result = PRIME * result;
+        }
         return result;
     }
 
@@ -307,9 +371,9 @@ public class Voucher {
      */
     @Override
     public String toString() {
-        return " id = '" + id + '\'' + ", start: " + beginData
-                + ", number of nights: " + numberNights + ", cost=" + cost
-                + ", transport: " + transport + ", hotel characteristic:"
-                + hotelCharacteristic + ", country: '" + country + '\'';
+        return '|' + id + "|\t" + "|\t" + beginData
+                + "|\t" + numberNights + "|\t" + cost
+                + "|\t" + transport + "|\t"
+                + hotelCharacteristic + "|\t" + country + "\t\'";
     }
 }

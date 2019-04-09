@@ -28,7 +28,7 @@ public class TouristVouchers {
     @XmlElementRef(name = "voucher",
             namespace = "http://www.training.by/tourist-vouchers",
             type = JAXBElement.class, required = false)
-    protected List<JAXBElement<? extends Voucher>> voucher;
+    private List<JAXBElement<? extends Voucher>> voucher;
 
     /**
      * Gets the value of the voucher property.

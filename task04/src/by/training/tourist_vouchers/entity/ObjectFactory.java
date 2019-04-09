@@ -22,40 +22,35 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
     /**
+     * The constant for the URI.
+     */
+    private static final String URI = "http://www.training.by/tourist-vouchers";
+    /**
      * The constant of the voucher qName.
      */
     private static final QName VOUCHER_QNAME
-            = new QName("http://www.training.by/tourist-vouchers", "voucher");
+            = new QName(URI, "voucher");
     /**
      * The constant of the city break qName.
      */
     private static final QName CITY_BREAK_QNAME
-            = new QName("http://www.training.by / tourist - vouchers",
-            "city -break");
+            = new QName(URI, "city -break");
     /**
      * The constant of the rest qName.
      */
     private static final QName REST_QNAME
-            = new QName("http://www.training.by/tourist-vouchers", "rest");
+            = new QName(URI, "rest");
     /**
      * The constant of the guided tour qName.
      */
     private static final QName GUIDED_TOUR_QNAME
-            = new QName("http://www.training.by/tourist-vouchers",
-            "guided-tour");
+            = new QName(URI, "guided-tour");
     /**
      * The constant of the pilgrimage tour qName.
      */
     private static final QName PILGRIMAGE_TOUR_QNAME
-            = new QName("http://www.training.by/tourist-vouchers",
-            "pilgrimage-tour");
+            = new QName(URI, "pilgrimage-tour");
 
-    /**
-     * Create a new ObjectFactory that can be used to create new instances
-     * of schema derived classes for package: by.training.tourist_vouchers.
-     */
-    public ObjectFactory() {
-    }
 
     /**
      * Create an instance of {@link TouristVouchers }.
@@ -135,10 +130,10 @@ public class ObjectFactory {
      * @param value Java instance representing xml element's value.
      * @return the new instance of {@link JAXBElement }{@link Voucher }
      */
-    @XmlElementDecl(namespace = "http://www.training.by/tourist-vouchers",
+    @XmlElementDecl(namespace = URI,
             name = "voucher")
     public JAXBElement<Voucher> createVoucher(final Voucher value) {
-        return new JAXBElement<Voucher>(VOUCHER_QNAME, Voucher.class,
+        return new JAXBElement<>(VOUCHER_QNAME, Voucher.class,
                 null, value);
     }
 
@@ -148,11 +143,11 @@ public class ObjectFactory {
      * @param value Java instance representing xml element's value.
      * @return the new instance of {@link JAXBElement }{@link CityBreak }
      */
-    @XmlElementDecl(namespace = "http://www.training.by/tourist-vouchers",
+    @XmlElementDecl(namespace = URI,
             name = "city-break", substitutionHeadNamespace = "http://www"
             + ".training.by/tourist-vouchers", substitutionHeadName = "voucher")
     public JAXBElement<CityBreak> createCityBreak(final CityBreak value) {
-        return new JAXBElement<CityBreak>(CITY_BREAK_QNAME, CityBreak.class,
+        return new JAXBElement<>(CITY_BREAK_QNAME, CityBreak.class,
                 null, value);
     }
 
@@ -162,11 +157,11 @@ public class ObjectFactory {
      * @param value Java instance representing xml element's value.
      * @return the new instance of {@link JAXBElement }{@link Rest }
      */
-    @XmlElementDecl(namespace = "http://www.training.by/tourist-vouchers",
+    @XmlElementDecl(namespace = URI,
             name = "rest", substitutionHeadNamespace = "http://www."
             + "training.by/tourist-vouchers", substitutionHeadName = "voucher")
     public JAXBElement<Rest> createRest(final Rest value) {
-        return new JAXBElement<Rest>(REST_QNAME, Rest.class, null, value);
+        return new JAXBElement<>(REST_QNAME, Rest.class, null, value);
     }
 
     /**
@@ -175,12 +170,12 @@ public class ObjectFactory {
      * @param value Java instance representing xml element's value.
      * @return the new instance of {@link JAXBElement }{@link GuidedTour }
      */
-    @XmlElementDecl(namespace = "http://www.training.by/tourist-vouchers",
+    @XmlElementDecl(namespace = URI,
             name = "guided-tour", substitutionHeadNamespace =
-            "http://www.training.by/tourist-vouchers",
+            URI,
             substitutionHeadName = "voucher")
     public JAXBElement<GuidedTour> createGuidedTour(final GuidedTour value) {
-        return new JAXBElement<GuidedTour>(GUIDED_TOUR_QNAME, GuidedTour.class,
+        return new JAXBElement<>(GUIDED_TOUR_QNAME, GuidedTour.class,
                 null, value);
     }
 
@@ -190,13 +185,13 @@ public class ObjectFactory {
      * @param value Java instance representing xml element's value.
      * @return the new instance of {@link JAXBElement }{@link PilgrimageTour }
      */
-    @XmlElementDecl(namespace = "http://www.training.by/tourist-vouchers",
+    @XmlElementDecl(namespace = URI,
             name = "pilgrimage-tour", substitutionHeadNamespace
-            = "http://www.training.by/tourist-vouchers",
+            = URI,
             substitutionHeadName = "voucher")
     public JAXBElement<PilgrimageTour> createPilgrimageTour(final PilgrimageTour
-                                                                        value) {
-        return new JAXBElement<PilgrimageTour>(PILGRIMAGE_TOUR_QNAME,
+                                                                    value) {
+        return new JAXBElement<>(PILGRIMAGE_TOUR_QNAME,
                 PilgrimageTour.class, null, value);
     }
 

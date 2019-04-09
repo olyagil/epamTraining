@@ -20,11 +20,5 @@ public enum Currency {
     /**
      * The constant for EUR currency.
      */
-    EUR;
-
-
-    public String value() {
-        return name();
-    }
-
+    EUR
 }

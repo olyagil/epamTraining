@@ -10,8 +10,6 @@ import java.util.List;
  * Class {@code Creator} id used for creating vouchers.
  */
 public class Creator {
-    private static final String PATH = "D://IdeaProjects//epamTraining"
-            + "//task04//data//tourist-vouchers.xml";
 
     /**
      * Method for creating vouchers from file by specific builder.

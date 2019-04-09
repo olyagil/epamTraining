@@ -18,6 +18,10 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class CityBreak extends Voucher {
     /**
+     * The constant for the hashCode.
+     */
+    private static final int PRIME = 31;
+    /**
      * The variable for number of shopping centers in the city break voucher.
      */
     @XmlElement(name = "shopping-centers-numbers")
@@ -42,14 +46,48 @@ public class CityBreak extends Voucher {
     }
 
     /**
+     * Overriding equals method for proper comparison.
+     *
+     * @param o another object
+     * @return true if equals
+     */
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        CityBreak cityBreak = (CityBreak) o;
+        return getShoppingCentersNumbers()
+                == cityBreak.getShoppingCentersNumbers();
+    }
+
+    /**
+     * Overriding method hashCode for determining hashcode.
+     *
+     * @return hashcode
+     */
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = PRIME * result + getShoppingCentersNumbers();
+        return result;
+    }
+
+    /**
      * Method to represent class as a string.
      *
      * @return string
      */
     @Override
     public String toString() {
-        return "\nCityBreak { numbers of shopping centers: "
-                + shoppingCentersNumbers + super.toString() + '}';
+        return "\nCityBreak " + super.toString() + shoppingCentersNumbers
+                + "|\t";
     }
 }
 

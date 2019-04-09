@@ -36,7 +36,7 @@ public class SAXBuilder extends BaseBuilder {
             reader = XMLReaderFactory.createXMLReader();
             reader.setContentHandler(saxHandler);
         } catch (SAXException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
     }
 
@@ -51,9 +51,9 @@ public class SAXBuilder extends BaseBuilder {
         try {
             reader.parse(path);
         } catch (SAXException e) {
-            e.printStackTrace();
+            LOGGER.error("Can't parse the text");
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Can't read the text");
         }
         for (int i = 0; i < saxHandler.getSize(); i++) {
             vouchers.add(saxHandler.getVoucher(i));

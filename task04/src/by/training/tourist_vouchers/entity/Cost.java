@@ -134,31 +134,38 @@ public class Cost {
     /**
      * Overriding equals method for proper comparison.
      *
-     * @param o another object
+     * @param obj another object
      * @return true if equals
      */
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (obj == null) {
             return false;
         }
-
-        Cost cost = (Cost) o;
-
-        if (isFlightInclude() != cost.isFlightInclude()) {
+        if (getClass() != obj.getClass()) {
             return false;
         }
-        if (isHotelInclude() != cost.isHotelInclude()) {
+        Cost other = (Cost) obj;
+        if (getCurrency() != other.getCurrency()) {
             return false;
         }
-        if (getPrice() != null ? !getPrice().equals(cost.getPrice())
-                : cost.getPrice() != null) {
+        if (isFlightInclude() != other.isFlightInclude()) {
             return false;
         }
-        return getCurrency() == cost.getCurrency();
+        if (isHotelInclude() != other.isHotelInclude()) {
+            return false;
+        }
+        if (getPrice() == null) {
+            if (other.getPrice() != null) {
+                return false;
+            }
+        } else if (!getPrice().equals(other.getPrice())) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -168,11 +175,27 @@ public class Cost {
      */
     @Override
     public int hashCode() {
-        int result = getPrice() != null ? getPrice().hashCode() : 0;
-        result = PRIME * result + (isFlightInclude() ? 1 : 0);
-        result = PRIME * result + (isHotelInclude() ? 1 : 0);
-        result = PRIME * result + (getCurrency() != null
-                ? getCurrency().hashCode() : 0);
+        int result;
+        if (getPrice() != null) {
+            result = getPrice().hashCode();
+        } else {
+            result = 0;
+        }
+        if (isFlightInclude()) {
+            result = PRIME * result + 1;
+        } else {
+            result = PRIME * result;
+        }
+        if (isHotelInclude()) {
+            result = PRIME * result + 1;
+        } else {
+            result = PRIME * result;
+        }
+        if (getCurrency() != null) {
+            result = PRIME * result + getCurrency().hashCode();
+        } else {
+            result = PRIME * result;
+        }
         return result;
     }
 
@@ -183,8 +206,8 @@ public class Cost {
      */
     @Override
     public String toString() {
-        return "Cost{ price=" + price + ", currency=" + currency
-                + ", flightInclude=" + flightInclude + ", hotelInclude="
+        return "|\t" + price + "|\t" + currency
+                + "|\t" + flightInclude + "|\t"
                 + hotelInclude + '}';
     }
 }

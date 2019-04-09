@@ -298,7 +298,7 @@
         <tour-guide>false</tour-guide>
         <excursions-number>4</excursions-number>
     </guided-tour>
-    <rest id="qwerty27" country="Великобритания" number-nights="6">
+    <rest id="qwerty27" country="Япония" number-nights="6">
         <begin-data>2019-05-29T14:16:00</begin-data>
         <transport>Air</transport>
         <cost currency="USD">

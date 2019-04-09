@@ -29,7 +29,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 
 /**
- * THe {@code DOMBuilder} id used for creating the list of vouchers by the
+ * THe {@code DOMBuilder} is used for creating the list of vouchers by the
  * DOM parser.
  */
 public class DOMBuilder extends BaseBuilder {
@@ -86,14 +86,18 @@ public class DOMBuilder extends BaseBuilder {
                         case GUIDED_TOUR:
                             voucher = buildGuidedTour(element);
                             break;
+                        default:
+                            LOGGER.error("Doesn't have this type of "
+                                    + "voucher.");
+                            break;
                     }
                     vouchers.add(voucher);
                 }
             }
         } catch (SAXException e) {
-            LOGGER.error(e);
+            LOGGER.error("Can parse the element");
         } catch (IOException e) {
-            LOGGER.error(e);
+            LOGGER.error("Can't read from text");
         }
     }
 

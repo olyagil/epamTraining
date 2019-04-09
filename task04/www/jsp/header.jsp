@@ -2,12 +2,14 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value="${language}"/>
+<c:set var="lang" value="${sessionScope.lang}"/>
+<fmt:setLocale value="${lang}"/>
 <fmt:setBundle basename="property.text" var="local"/>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
+
     <style>
         #navbar ul {
             display: none;
@@ -65,23 +67,27 @@
     <fmt:message bundle="${local}" key="language.ru" var="ru"/>
     <fmt:message bundle="${local}" key="language.be" var="be"/>
     <fmt:message bundle="${local}" key="language.en" var="en"/>
+    <title>${main}</title>
 </head>
 <body>
-<ul id="navbar">
-    <li><a href="index.jsp">${main}</a></li>
 
-    <li><a>${language}</a>
-        <ul>
-            <li><a href="?lang=RU">${ru}</a></li>
-            <li><a href="?lang=be_BY">${be}</a></li>
-            <li><a href="?lang=US">${en}</a></li>
-        </ul>
-    </li>
-
-</ul>
 <form>
+    <ul id="navbar">
+        <li><a href="index.jsp">${main}</a></li>
 
-    <input type="hidden" name="language" value="${language}">
+        <li><a>${language}</a>
+            <ul>
+                <li><a href="?lang=ru_RU">${ru}</a></li>
+                <li><a href="?lang=be_BY">${be}</a></li>
+                <li><a href="?lang=en_US">${en}</a></li>
+            </ul>
+        </li>
+
+    </ul>
+</form>
+<form action="parse" method="post">
+
+    <input type="hidden" name="lang" value="${lang}">
 </form>
 </body>
 

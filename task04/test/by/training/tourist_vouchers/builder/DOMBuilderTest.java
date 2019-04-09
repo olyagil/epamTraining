@@ -15,35 +15,29 @@ import org.testng.annotations.Test;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class DOMBuilderTest {
-
     private static final String PATH = "testdata//tourist-vouchers.xml";
     private DOMBuilder domBuilder;
-    private Set<Voucher> expected;
-    private Voucher voucher;
-    private Cost cost;
-    private HotelCharacteristic hotelCharacteristic;
+    private List<Voucher> expected;
 
     @BeforeMethod
     public void setUp() {
         domBuilder = new DOMBuilder();
-        voucher = new CityBreak();
-        hotelCharacteristic = new HotelCharacteristic();
-        cost = new Cost();
+        CityBreak voucher = new CityBreak();
+        HotelCharacteristic hotelCharacteristic = new HotelCharacteristic();
+        Cost cost = new Cost();
         voucher.setHotelCharacteristic(hotelCharacteristic);
         voucher.setCost(cost);
-        expected = new HashSet<>();
+        expected = new ArrayList<>();
 
         voucher.setNumberNights(1);
         voucher.setBeginData("2019-03-20T15:30:00");
         voucher.setTransport(Transport.RAILWAY);
         voucher.setId("qwerty2345678");
         voucher.setCountry("Russia");
-        ((CityBreak) voucher).setShoppingCentersNumbers(10);
+        voucher.setShoppingCentersNumbers(10);
 
         hotelCharacteristic.setNumberStars(BigInteger.valueOf(3));
         hotelCharacteristic.setMealType(Meal.AL);
@@ -74,12 +68,4 @@ public class DOMBuilderTest {
         }
         Assert.assertEquals(actual, expected);
     }
-
-
-//    @DataProvider(name = "dataForDOMBuilder")
-//    public static Object[][] dataForDOMBuilder() {
-//        return new Object[][]{
-//                {},
-//        };
-//    }
 }

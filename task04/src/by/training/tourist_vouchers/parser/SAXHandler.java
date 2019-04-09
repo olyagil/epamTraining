@@ -12,8 +12,6 @@ import by.training.tourist_vouchers.entity.enumeration.Meal;
 import by.training.tourist_vouchers.entity.enumeration.Transport;
 import by.training.tourist_vouchers.entity.enumeration.VoucherType;
 import by.training.tourist_vouchers.entity.enumeration.VouchersEnum;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -27,10 +25,6 @@ import java.util.List;
  * The {@code SAXHandler} is used for handling the data.
  */
 public class SAXHandler extends DefaultHandler {
-    /**
-     * The constant for logger.
-     */
-    private static final Logger LOGGER = LogManager.getLogger();
     /**
      * The list of vouchers.
      */
@@ -237,6 +231,8 @@ public class SAXHandler extends DefaultHandler {
             case REST:
             case PILGRIMAGE_TOUR:
                 vouchers.add(currentVoucher);
+                break;
+            default:
                 break;
         }
     }
