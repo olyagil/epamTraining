@@ -1,0 +1,17 @@
+INSERT INTO `users` (
+  `identity`,
+  `login`,
+  `password`,
+  `role`
+) VALUES (
+           2,
+           "user1",
+           "EE11CBB19052E40B07AAC0CA060C23EE", /* MD5 хэш пароля "user" */
+           1
+         ), (
+           3,
+           "user2",
+           "EE11CBB19052E40B07AAC0CA060C23EE", /* MD5 хэш пароля "user" */
+           2
+         );
+

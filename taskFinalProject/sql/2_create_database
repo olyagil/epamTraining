@@ -1,0 +1,13 @@
+create database `library_db` default character set utf8;
+
+create user `library_user` identified BY 'library_password';
+
+GRANT SELECT,INSERT,UPDATE,DELETE
+  ON `library_db`.*
+  TO library_user@localhost
+  IDENTIFIED BY 'library_password';
+
+GRANT SELECT,INSERT,UPDATE,DELETE
+  ON `library_db`.*
+  TO library_user@'%'
+  IDENTIFIED BY 'library_password';
