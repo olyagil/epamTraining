@@ -1,0 +1,10 @@
+insert into `users`(`id`,
+                    `login`,
+                    `password`,
+                    `role`)
+values (1,
+        "admin",
+        "admin",
+        0);
+
+

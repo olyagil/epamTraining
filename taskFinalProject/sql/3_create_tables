@@ -1,14 +1,74 @@
-USE `library_db`;
+use `salon_db`;
 
-CREATE TABLE `users` (
-                       `identity` INTEGER NOT NULL AUTO_INCREMENT,
-                       `login` VARCHAR(255) NOT NULL UNIQUE,
-                       `password` CHAR(32) NOT NULL,
-  /*
-   * 0 - администратор (Role.ADMINISTRATOR)
-   * 1 - архтивариус (Role.REGISTRAR)
-   * 2 - библиотекарь (Role.LIBRARIAN)
-   */
-                       `role` TINYINT NOT NULL CHECK (`role` IN (0, 1, 2)),
-                       PRIMARY KEY (`identity`)
-) ENGINE=INNODB DEFAULT CHARACTER SET utf8;
+create table `users`
+(
+  `id`       integer      not null auto_increment,
+  `login`    varchar(255) not null unique,
+  `password` char(32)     not null,
+  `role`     tinyint      not null check ( `role` in (0, 1, 2)),
+  primary key (`id`)
+) engine = innodb
+  default character set utf8;
+
+create table `services`
+(
+  `id`       integer        not null auto_increment,
+  `code`     varchar(255)   not null unique,
+  `name`     varchar(255)   not null,
+  `price`    decimal(15, 2) not null,
+  `duration` double         not null,
+  primary key (`id`)
+) engine = innodb
+  default character set utf8;
+
+create table `clients`
+(
+  `id`          integer      not null auto_increment,
+  `surname`     varchar(255) not null,
+  `name`        varchar(255) not null,
+  `patronymic`  varchar(255) not null,
+  `card_number` varchar(255) not null unique,
+  `phone`       varchar(255) not null unique,
+  primary key (`id`)
+) engine = innodb
+  default character set utf8;
+
+create table `specialists`
+(
+  `id`                integer        not null auto_increment,
+  `surname`           varchar(255)   not null,
+  `name`              varchar(255)   not null,
+  `patronymic`        varchar(255)   not null,
+  `begin_working_day` time           not null,
+  `end_working_day`   time           not null,
+  `cabinet_number`    integer        not null,
+  `salary`            decimal(15, 2) not null,
+  `specialty`         tinyint        not null check ( `specialty` in (0, 1)),
+  primary key (`id`)
+) engine = innodb
+  default character set utf8;
+
+
+create table `talons`
+(
+  `id`             integer  not null auto_increment,
+  `service_id`     integer  not null,
+  `specialist_id`  integer  not null,
+  `client_id`      integer  not null,
+  `reception_date` datetime not null,
+  primary key (`id`),
+  foreign key (`service_id`)
+    references `services` (`id`)
+    on UPDATE cascade
+    on delete restrict,
+  foreign key (`specialist_id`)
+    references `specialists` (`id`)
+    on UPDATE cascade
+    on DELETE restrict,
+  foreign key (`client_id`)
+    references `clients` (`id`)
+    on UPDATE cascade
+    on DELETE restrict
+)
+  engine = innodb
+  default character set utf8;
