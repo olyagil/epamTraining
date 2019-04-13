@@ -1,6 +1,6 @@
 package by.training.beatysalon.dao;
 
-import by.training.beatysalon.domain.Doctor;
+import by.training.beatysalon.domain.Specialist;
 import by.training.beatysalon.domain.Service;
 import by.training.beatysalon.exception.PersistentException;
 
@@ -10,6 +10,6 @@ public interface ServiceDao extends Dao<Service> {
 
     Service readByName(String name) throws PersistentException;
 
-    List<Doctor> readByDoctor(Integer doctorId) throws PersistentException;
+    List<Specialist> readByDoctor(Integer doctorId) throws PersistentException;
 
 }

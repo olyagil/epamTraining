@@ -3,19 +3,19 @@ package by.training.beatysalon.domain;
 import java.util.Date;
 import java.util.List;
 
-public class Doctor extends Person {
+public class Specialist extends Person {
 
     private Specialty specialty;
     private Date beginWorkingDay;
     private Date endWorkingDay;
     private Integer cabinetNumber;
-    private Integer salary;
+    private Double salary;
 
-    public Integer getSalary() {
+    public Double getSalary() {
         return salary;
     }
 
-    public void setSalary(Integer salary) {
+    public void setSalary(Double salary) {
         this.salary = salary;
     }
 
@@ -65,6 +65,17 @@ public class Doctor extends Person {
 
     public List<Talon> getTakenTalons() {
         return takenTalons;
+    }
+
+    @Override
+    public String toString() {
+        return "\nSpecialist{" +super.toString()+
+                "specialty=" + specialty +
+                ", beginWorkingDay=" + beginWorkingDay +
+                ", endWorkingDay=" + endWorkingDay +
+                ", cabinetNumber=" + cabinetNumber +
+                ", salary=" + salary +
+                "} ";
     }
 }
 

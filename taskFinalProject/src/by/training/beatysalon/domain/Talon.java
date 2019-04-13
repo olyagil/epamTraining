@@ -5,9 +5,17 @@ import java.util.Date;
 public class Talon extends Entity {
 
     private Service service;
-    private Doctor doctor;
+    private Specialist specialist;
     private Date receptionDate;
     private Client client;
+
+    public Specialist getSpecialist() {
+        return specialist;
+    }
+
+    public void setSpecialist(Specialist specialist) {
+        this.specialist = specialist;
+    }
 
     public Service getService() {
         return service;
@@ -17,13 +25,6 @@ public class Talon extends Entity {
         this.service = service;
     }
 
-    public Doctor getDoctor() {
-        return doctor;
-    }
-
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
 
     public Date getReceptionDate() {
         return receptionDate;
@@ -39,5 +40,15 @@ public class Talon extends Entity {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    @Override
+    public String toString() {
+        return "\nTalon{" +
+                "service=" + service +
+                ", specialist=" + specialist +
+                ", receptionDate=" + receptionDate +
+                ", client=" + client +
+                "} ";
     }
 }

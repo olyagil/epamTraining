@@ -3,10 +3,9 @@ package by.training.beatysalon.domain;
 
 import java.util.List;
 
-public class Client extends Entity {
+public class Client extends Person {
 
     private String cardNumber;
-    private String name;
     private String phone;
     private List<Talon> currentTalons;
     private List<Talon> usedTalons;
@@ -17,14 +16,6 @@ public class Client extends Entity {
 
     public void setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getPhone() {
@@ -49,5 +40,13 @@ public class Client extends Entity {
 
     public void setUsedTalons(List<Talon> usedTalons) {
         this.usedTalons = usedTalons;
+    }
+
+    @Override
+    public String toString() {
+        return "\nClient{" + super.toString() +
+                "cardNumber='" + cardNumber + '\'' +
+                ", phone='" + phone + '\'' +
+                "} ";
     }
 }

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TalonDao extends Dao<Talon> {
 
-    List<Talon> readByDoctor(Integer doctorId) throws PersistentException;
+    List<Talon> readBySpecialist(Integer specialistId) throws PersistentException;
 
     List<Talon> readByService(Integer serviceId) throws PersistentException;
 

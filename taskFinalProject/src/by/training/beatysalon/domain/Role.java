@@ -3,7 +3,7 @@ package by.training.beatysalon.domain;
 public enum Role {
 
     ADMINISTRATOR("администратор"),
-    DOCTOR("доктор"),
+    SPECIALIST("специалист"),
     CLIENT("клиент");
 
     private String name;
