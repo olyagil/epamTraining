@@ -6,7 +6,7 @@ create table `users`
   `login`    varchar(255) not null unique,
   `password` char(32)     not null,
   `role`     tinyint      not null check ( `role` in (0, 1, 2)),
-  primary key (`id`)
+  constraint PK_users primary key (`id`)
 ) engine = innodb
   default character set utf8;
 
@@ -17,7 +17,7 @@ create table `services`
   `name`     varchar(255)   not null,
   `price`    decimal(15, 2) not null,
   `duration` double         not null,
-  primary key (`id`)
+  constraint PK_services primary key (`id`)
 ) engine = innodb
   default character set utf8;
 
@@ -25,11 +25,11 @@ create table `clients`
 (
   `id`          integer      not null auto_increment,
   `surname`     varchar(255) not null,
-  `name`        varchar(255) not null,
+  `name`        varchar(32) not null,
   `patronymic`  varchar(255) not null,
   `card_number` varchar(255) not null unique,
   `phone`       varchar(255) not null unique,
-  primary key (`id`)
+  constraint PK_clients primary key (`id`)
 ) engine = innodb
   default character set utf8;
 
@@ -44,7 +44,7 @@ create table `specialists`
   `cabinet_number`    integer        not null,
   `salary`            decimal(15, 2) not null,
   `specialty`         tinyint        not null check ( `specialty` in (0, 1)),
-  primary key (`id`)
+  constraint PK_specialists primary key (`id`)
 ) engine = innodb
   default character set utf8;
 
@@ -56,16 +56,16 @@ create table `talons`
   `specialist_id`  integer  not null,
   `client_id`      integer  not null,
   `reception_date` datetime not null,
-  primary key (`id`),
-  foreign key (`service_id`)
+  constraint PK_talons primary key (`id`),
+  constraint FK_talons_service_id foreign key (`service_id`)
     references `services` (`id`)
     on UPDATE cascade
     on delete restrict,
-  foreign key (`specialist_id`)
+  constraint FK_talons_specialist_id foreign key (`specialist_id`)
     references `specialists` (`id`)
     on UPDATE cascade
     on DELETE restrict,
-  foreign key (`client_id`)
+  constraint FK_talons_client_id foreign key (`client_id`)
     references `clients` (`id`)
     on UPDATE cascade
     on DELETE restrict
