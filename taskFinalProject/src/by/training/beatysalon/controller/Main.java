@@ -1,6 +1,5 @@
 package by.training.beatysalon.controller;
 
-
 import by.training.beatysalon.domain.Client;
 import by.training.beatysalon.domain.Person;
 import by.training.beatysalon.domain.Role;

@@ -6,8 +6,17 @@ public class Talon extends Entity {
 
     private Service service;
     private Specialist specialist;
-    private Date receptionDate;
     private Client client;
+    private Date receptionDate;
+    private boolean status;
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 
     public Specialist getSpecialist() {
         return specialist;

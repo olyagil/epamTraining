@@ -12,4 +12,6 @@ public interface TalonDao extends Dao<Talon> {
     List<Talon> readByService(Integer serviceId) throws PersistentException;
 
     List<Talon> readByReceptionDate() throws PersistentException;
+
+    List<Talon> readByClients(Integer clientId) throws PersistentException;
 }

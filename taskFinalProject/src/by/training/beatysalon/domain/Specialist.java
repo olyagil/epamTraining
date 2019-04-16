@@ -20,7 +20,6 @@ public class Specialist extends Person {
     }
 
     private List<Talon> usedTalons;
-    private List<Talon> freeTalons;
     private List<Talon> takenTalons;
 
     public Specialty getSpecialty() {
