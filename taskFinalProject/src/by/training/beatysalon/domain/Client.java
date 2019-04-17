@@ -1,29 +1,22 @@
 package by.training.beatysalon.domain;
 
 
+import java.sql.Date;
 import java.util.List;
 
 public class Client extends Person {
 
-    private String cardNumber;
-    private String phone;
+    private Date birth_date;
+
     private List<Talon> currentTalons;
     private List<Talon> usedTalons;
 
-    public String getCardNumber() {
-        return cardNumber;
+    public Date getBirth_date() {
+        return birth_date;
     }
 
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setBirth_date(Date birth_date) {
+        this.birth_date = birth_date;
     }
 
     public List<Talon> getCurrentTalons() {
@@ -44,9 +37,10 @@ public class Client extends Person {
 
     @Override
     public String toString() {
-        return "\nClient{" + super.toString() +
-                "cardNumber='" + cardNumber + '\'' +
-                ", phone='" + phone + '\'' +
+        return "Client{" + super.toString() +
+                "birth_date=" + birth_date +
+                ", currentTalons=" + currentTalons +
+                ", usedTalons=" + usedTalons +
                 "} ";
     }
 }

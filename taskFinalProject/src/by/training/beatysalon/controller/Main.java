@@ -1,5 +1,8 @@
 package by.training.beatysalon.controller;
 
+import by.training.beatysalon.dao.ClientDao;
+import by.training.beatysalon.dao.mysql.ClientDaoImpl;
+import by.training.beatysalon.dao.mysql.TalonDaoImpl;
 import by.training.beatysalon.domain.Client;
 import by.training.beatysalon.domain.Person;
 import by.training.beatysalon.domain.Role;
@@ -8,6 +11,7 @@ import by.training.beatysalon.domain.Specialist;
 import by.training.beatysalon.domain.Specialty;
 import by.training.beatysalon.domain.Talon;
 import by.training.beatysalon.domain.User;
+import by.training.beatysalon.exception.PersistentException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -36,12 +40,17 @@ public class Main {
     private static final String SELECT_TALON = "select `id`, `service_id`, " +
             "`specialist_id`, `client_id`, `reception_date` from talons";
 
-    public static void main(String[] args) {
-        System.out.println(createUsers());
-        System.out.println(createClients());
-        System.out.println(createServices());
-        System.out.println(createSpecialists());
-        System.out.println(createTalons());
+    public static void main(String[] args) throws PersistentException {
+//        System.out.println(createUsers());
+//        System.out.println(createClients());
+//        System.out.println(createServices());
+//        System.out.println(createSpecialists());
+//        System.out.println(createTalons());
+//        TalonDaoImpl talonDao = new TalonDaoImpl();
+//        talonDao.create()
+        ClientDaoImpl clientDao = new ClientDaoImpl();
+        clientDao.read();
+
     }
 
     private static List<User> createUsers() {
@@ -81,8 +90,6 @@ public class Main {
                 client.setSurname(rs.getString("surname"));
                 client.setName(rs.getString("name"));
                 client.setPatronymic(rs.getString("patronymic"));
-                ((Client) client).setCardNumber(rs.getString("card_number"));
-                ((Client) client).setPhone(rs.getString("phone"));
                 clients.add(client);
             }
         } catch (SQLException e) {
@@ -160,7 +167,7 @@ public class Main {
 //                talon.setSpecialist(createSpecialists().get(rs.getInt(
 //                        "specialist_id")));
 //                talon.setClient(createClients().get(rs.getInt("client_id")));
-talon.setReceptionDate(rs.getTimestamp("reception_date"));
+                talon.setReceptionDate(rs.getTimestamp("reception_date"));
                 talons.add(talon);
             }
         } catch (SQLException e) {

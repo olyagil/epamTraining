@@ -3,26 +3,27 @@ use `salon_db`;
 create table `users`
 (
   `id`       int(11)     not null auto_increment,
-  `login`    varchar(15) not null unique,
+  `login`    varchar(15) not null,
   `password` char(32)    not null,
   `role`     tinyint     not null check ( `role` in (0, 1, 2)),
-  constraint PK_users primary key (`id`)
+  constraint PK_users primary key (`id`),
+  unique index `unique_Login` (`login` ASC)
 ) engine = innodb
   default character set utf8;
 
 create table `user_info`
 (
   `id`         int(11)     not null auto_increment,
+  `user_id`    int(11)     not null,
   `name`       varchar(45) not null,
   `surname`    varchar(45) not null,
   `patronymic` varchar(45) not null,
   `phone`      int(9)      not null unique,
   `photo`      blob        not null,
   constraint PK_user_info primary key (`id`),
-  constraint FK_user_info_users foreign key (`id`)
+  constraint FK_user_info_users foreign key (`user_id`)
     references users (`id`)
-    on delete RESTRICT
-    on UPDATE cascade
+
 ) engine = innodb
   default character set utf8;
 
@@ -30,7 +31,8 @@ create table `clients`
 (
   `user_id`    int(11) not null,
   `birth_date` date    not null,
-  constraint PK_clients primary key (`user_id`),
+  #   constraint PK_clients primary key (`user_id`),
+  unique index `user_id` (`user_id`),
   constraint FK_clients_user_info foreign key (`user_id`)
     references user_info (`id`)
 ) engine = innodb
@@ -43,7 +45,8 @@ create table `specialists`
   `salary`          decimal(15, 2) not null,
   `employment_date` date           not null,
   `specialty`       tinyint        not null check ( `specialty` in (0, 1)),
-  constraint PK_specialists primary key (`user_id`),
+  #   constraint PK_specialists primary key (`user_id`),
+  unique index `user_id` (`user_id`),
   constraint FK_specialists_user_info foreign key (`user_id`)
     references user_info (`id`)
 
@@ -60,6 +63,7 @@ create table `services`
   constraint PK_services primary key (`id`)
 ) engine = innodb
   default character set utf8;
+
 create table `talons`
 (
   `id`             int(11)  not null auto_increment,
@@ -88,6 +92,7 @@ create table `feedback`
 (
   `client_id`     int(11) not null,
   `specialist_id` int(11) not null,
+  `date`          date    not null,
   `review`        text    not null,
   constraint FK_feedback_client_id foreign key (`client_id`)
     references clients (`user_id`)

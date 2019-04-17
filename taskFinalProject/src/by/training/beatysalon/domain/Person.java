@@ -5,6 +5,15 @@ public abstract class Person extends Entity {
     private String name;
     private String surname;
     private String patronymic;
+    private Integer phone;
+
+    public Integer getPhone() {
+        return phone;
+    }
+
+    public void setPhone(Integer phone) {
+        this.phone = phone;
+    }
 
     public String getName() {
         return name;

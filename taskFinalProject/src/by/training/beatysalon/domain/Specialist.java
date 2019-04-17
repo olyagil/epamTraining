@@ -58,9 +58,6 @@ public class Specialist extends Person {
         return usedTalons;
     }
 
-    public List<Talon> getFreeTalons() {
-        return freeTalons;
-    }
 
     public List<Talon> getTakenTalons() {
         return takenTalons;
