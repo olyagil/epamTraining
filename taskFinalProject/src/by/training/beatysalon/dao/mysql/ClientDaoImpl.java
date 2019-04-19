@@ -20,13 +20,14 @@ public class ClientDaoImpl extends BaseDaoImpl implements ClientDao {
     public List<Client> read() throws PersistentException {
 
         String sql = "select `id`, `name`, `surname`, `patronymic`, " +
-                "`phone` , `birth_date` " +
-                "from `users` " +
-                "join `user_info` using (`user_id`)";
-        List<Client> clients = new ArrayList<>();
+                "`phone` " +
+                "from `user_info` ";
+//                +                "join `user_info` using (`user_id`)";
+
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
+            List<Client> clients = new ArrayList<>();
             statement = connection.prepareStatement(sql);
             resultSet = statement.executeQuery();
             Client client = null;
@@ -36,14 +37,23 @@ public class ClientDaoImpl extends BaseDaoImpl implements ClientDao {
                 client.setName(resultSet.getString("name"));
                 client.setPatronymic(resultSet.getString("patronymic"));
                 client.setPhone(resultSet.getInt("phone"));
-                client.setBirth_date(resultSet.getDate("birth_date"));
+                client.setBirthDate(resultSet.getDate("birth_date"));
                 clients.add(client);
             }
+            return clients;
         } catch (SQLException e) {
-
+            throw new PersistentException(e);
+        } finally {
+            try {
+                statement.close();
+            } catch (SQLException | NullPointerException e) {
+            }
+            try {
+                resultSet.close();
+            } catch (SQLException | NullPointerException e) {
+            }
         }
 
-        return clients;
     }
 
     @Override

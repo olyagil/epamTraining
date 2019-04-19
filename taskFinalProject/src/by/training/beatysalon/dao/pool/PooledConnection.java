@@ -12,28 +12,28 @@ public class PooledConnection implements Connection, Comparable<PooledConnection
         this.connection = connection;
     }
 
-    public Connection getConnection() {
+    Connection getConnection() {
         return connection;
     }
 
     @Override
     public Statement createStatement() throws SQLException {
-        return null;
+        return connection.createStatement();
     }
 
     @Override
     public PreparedStatement prepareStatement(String sql) throws SQLException {
-        return null;
+        return connection.prepareStatement(sql);
     }
 
     @Override
     public CallableStatement prepareCall(String sql) throws SQLException {
-        return null;
+        return connection.prepareCall(sql);
     }
 
     @Override
     public String nativeSQL(String sql) throws SQLException {
-        return null;
+        return connection.nativeSQL(sql);
     }
 
     @Override
@@ -44,66 +44,67 @@ public class PooledConnection implements Connection, Comparable<PooledConnection
 
     @Override
     public boolean getAutoCommit() throws SQLException {
-        return false;
+        return connection.getAutoCommit();
     }
 
     @Override
     public void commit() throws SQLException {
-
+        connection.commit();
     }
 
     @Override
     public void rollback() throws SQLException {
-
+        connection.rollback();
     }
 
     @Override
     public void close() throws SQLException {
+        ConnectionPool.getInstance().freeConnection(this);
     }
 
     @Override
     public boolean isClosed() throws SQLException {
-        return false;
+        return connection.isClosed();
     }
 
     @Override
     public DatabaseMetaData getMetaData() throws SQLException {
-        return null;
+        return connection.getMetaData();
     }
 
     @Override
     public void setReadOnly(boolean readOnly) throws SQLException {
-
+        connection.setReadOnly(readOnly);
     }
 
     @Override
     public boolean isReadOnly() throws SQLException {
-        return false;
+        return connection.isReadOnly();
     }
 
     @Override
     public void setCatalog(String catalog) throws SQLException {
-
+        connection.setCatalog(catalog);
     }
 
     @Override
     public String getCatalog() throws SQLException {
-        return null;
+        return connection.getCatalog();
     }
 
     @Override
     public void setTransactionIsolation(int level) throws SQLException {
-
+        connection.setTransactionIsolation(level);
     }
 
     @Override
     public int getTransactionIsolation() throws SQLException {
-        return 0;
+        return connection.getTransactionIsolation();
     }
 
     @Override
     public SQLWarning getWarnings() throws SQLException {
-        return null;
+        return connection.getWarnings();
     }
 
     @Override
@@ -114,107 +115,123 @@ public class PooledConnection implements Connection, Comparable<PooledConnection
 
     @Override
     public Statement createStatement(int resultSetType, int resultSetConcurrency) throws SQLException {
-        return null;
+        return connection.createStatement(resultSetType, resultSetConcurrency);
     }
 
     @Override
-    public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
-        return null;
+    public PreparedStatement prepareStatement(String sql, int resultSetType,
+                                              int resultSetConcurrency)
+            throws SQLException {
+        return connection.prepareStatement(sql, resultSetType, resultSetConcurrency);
     }
 
     @Override
-    public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
-        return null;
+    public CallableStatement prepareCall(String sql, int resultSetType,
+                                         int resultSetConcurrency)
+            throws SQLException {
+        return connection.prepareCall(sql, resultSetType, resultSetConcurrency);
     }
 
     @Override
     public Map<String, Class<?>> getTypeMap() throws SQLException {
-        return null;
+        return connection.getTypeMap();
     }
 
     @Override
     public void setTypeMap(Map<String, Class<?>> map) throws SQLException {
-
+        connection.setTypeMap(map);
     }
 
     @Override
     public void setHoldability(int holdability) throws SQLException {
-
+        connection.setHoldability(holdability);
     }
 
     @Override
     public int getHoldability() throws SQLException {
-        return 0;
+        return connection.getHoldability();
     }
 
     @Override
     public Savepoint setSavepoint() throws SQLException {
-        return null;
+        return connection.setSavepoint();
     }
 
     @Override
     public Savepoint setSavepoint(String name) throws SQLException {
-        return null;
+        return connection.setSavepoint();
     }
 
     @Override
     public void rollback(Savepoint savepoint) throws SQLException {
-
+        connection.rollback(savepoint);
     }
 
     @Override
     public void releaseSavepoint(Savepoint savepoint) throws SQLException {
-
+        connection.releaseSavepoint(savepoint);
     }
 
     @Override
-    public Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-        return null;
+    public Statement createStatement(int resultSetType,
+                                     int resultSetConcurrency,
+                                     int resultSetHoldability)
+            throws SQLException {
+        return connection.createStatement(resultSetType, resultSetConcurrency,
+                resultSetHoldability);
     }
 
     @Override
-    public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-        return null;
+    public PreparedStatement prepareStatement(String sql, int resultSetType,
+                                              int resultSetConcurrency,
+                                              int resultSetHoldability)
+            throws SQLException {
+        return connection.prepareStatement(sql, resultSetType,
+                resultSetConcurrency, resultSetHoldability);
     }
 
     @Override
-    public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-        return null;
+    public CallableStatement prepareCall(String sql, int resultSetType,
+                                         int resultSetConcurrency,
+                                         int resultSetHoldability)
+            throws SQLException {
+        return connection.prepareCall(sql, resultSetType,
+                resultSetConcurrency, resultSetHoldability);
     }
 
     @Override
     public PreparedStatement prepareStatement(String sql, int autoGeneratedKeys) throws SQLException {
-        return null;
+        return connection.prepareStatement(sql, autoGeneratedKeys);
     }
 
     @Override
     public PreparedStatement prepareStatement(String sql, int[] columnIndexes) throws SQLException {
-        return null;
+        return connection.prepareStatement(sql, columnIndexes);
     }
 
     @Override
     public PreparedStatement prepareStatement(String sql, String[] columnNames) throws SQLException {
-        return null;
+        return connection.prepareStatement(sql, columnNames);
     }
 
     @Override
     public Clob createClob() throws SQLException {
-        return null;
+        return connection.createClob();
     }
 
     @Override
     public Blob createBlob() throws SQLException {
-        return null;
+        return connection.createBlob();
     }
 
     @Override
     public NClob createNClob() throws SQLException {
-        return null;
+        return connection.createNClob();
     }
 
     @Override
     public SQLXML createSQLXML() throws SQLException {
-        return null;
+        return connection.createSQLXML();
     }
 
     @Override
@@ -224,42 +241,42 @@ public class PooledConnection implements Connection, Comparable<PooledConnection
 
     @Override
     public void setClientInfo(String name, String value) throws SQLClientInfoException {
-
+        connection.setClientInfo(name, value);
     }
 
     @Override
     public void setClientInfo(Properties properties) throws SQLClientInfoException {
-
+        connection.setClientInfo(properties);
     }
 
     @Override
     public String getClientInfo(String name) throws SQLException {
-        return null;
+        return connection.getClientInfo(name);
     }
 
     @Override
     public Properties getClientInfo() throws SQLException {
-        return null;
+        return connection.getClientInfo();
     }
 
     @Override
     public Array createArrayOf(String typeName, Object[] elements) throws SQLException {
-        return null;
+        return connection.createArrayOf(typeName, elements);
     }
 
     @Override
     public Struct createStruct(String typeName, Object[] attributes) throws SQLException {
-        return null;
+        return connection.createStruct(typeName, attributes);
     }
 
     @Override
     public void setSchema(String schema) throws SQLException {
-
+        connection.setSchema(schema);
     }
 
     @Override
     public String getSchema() throws SQLException {
-        return null;
+        return connection.getSchema();
     }
 
     @Override
@@ -270,12 +287,12 @@ public class PooledConnection implements Connection, Comparable<PooledConnection
 
     @Override
     public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {
-
+        connection.setNetworkTimeout(executor, milliseconds);
     }
 
     @Override
     public int getNetworkTimeout() throws SQLException {
-        return 0;
+        return connection.getNetworkTimeout();
     }
 
     @Override
@@ -289,7 +306,7 @@ public class PooledConnection implements Connection, Comparable<PooledConnection
     }
 
     @Override
-    public int compareTo(PooledConnection o) {
-        return 0;
+    public int compareTo(PooledConnection connection) {
+        return hashCode() - connection.hashCode();
     }
 }
