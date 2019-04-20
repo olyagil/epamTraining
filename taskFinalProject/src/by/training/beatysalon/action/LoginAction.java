@@ -23,8 +23,8 @@ public class LoginAction extends Action {
 
     static {
         menu.put(Role.ADMINISTRATOR, new ArrayList<>(Arrays.asList(
-                new MenuItem("/client/list.html", "клиенты"),
-                new MenuItem("/specialist/list.html", "сотрудники")
+                new MenuItem("/user/list.html", "клиенты"),
+                new MenuItem("/user/edit.html", "сотрудники")
         )));
         menu.put(Role.SPECIALIST, new ArrayList<>(Arrays.asList(
                 new MenuItem("", ""),
@@ -37,7 +37,8 @@ public class LoginAction extends Action {
     }
 
     @Override
-    Forward exec(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
+    Forward exec(HttpServletRequest request, HttpServletResponse response)
+            throws PersistentException {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         if (login != null && password != null) {

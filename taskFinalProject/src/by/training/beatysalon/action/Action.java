@@ -18,6 +18,10 @@ public abstract class Action {
     private User authorizedUser;
     private String name;
 
+    public Set<Role> getAllowedRoles() {
+        return allowedRoles;
+    }
+
     protected ServiceFactory factory;
 
     public void setAllowedRoles(Set<Role> allowedRoles) {
@@ -38,6 +42,10 @@ public abstract class Action {
 
     public String getName() {
         return name;
+    }
+
+    public void setFactory(ServiceFactory factory) {
+        this.factory = factory;
     }
 
     abstract Forward exec(HttpServletRequest request,
