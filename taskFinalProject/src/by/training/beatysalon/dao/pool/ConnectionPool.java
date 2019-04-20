@@ -121,7 +121,6 @@ public class ConnectionPool {
             }
         }
         usedConnections.clear();
-
     }
 
     private PooledConnection createConnection() throws SQLException {
