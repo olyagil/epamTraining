@@ -1,6 +1,8 @@
 package by.training.beatysalon.dao.mysql;
 
+import by.training.beatysalon.dao.ClientDao;
 import by.training.beatysalon.dao.Dao;
+import by.training.beatysalon.dao.TalonDao;
 import by.training.beatysalon.dao.Transaction;
 import by.training.beatysalon.dao.UserDao;
 import by.training.beatysalon.exception.PersistentException;
@@ -21,6 +23,8 @@ public class TransactionImpl implements Transaction {
 
     static {
         classMap.put(UserDao.class, UserDaoImpl.class);
+        classMap.put(TalonDao.class, TalonDaoImpl.class);
+        classMap.put(ClientDao.class, ClientDaoImpl.class);
     }
 
     private Connection connection;

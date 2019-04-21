@@ -1,6 +1,9 @@
 package by.training.beatysalon.dao.mysql;
 
 import by.training.beatysalon.dao.TalonDao;
+import by.training.beatysalon.domain.Client;
+import by.training.beatysalon.domain.Service;
+import by.training.beatysalon.domain.Specialist;
 import by.training.beatysalon.domain.Talon;
 import by.training.beatysalon.exception.PersistentException;
 
@@ -9,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TalonDaoImpl extends BaseDaoImpl implements TalonDao {
@@ -18,10 +22,9 @@ public class TalonDaoImpl extends BaseDaoImpl implements TalonDao {
 
     @Override
     public Integer create(Talon talon) throws PersistentException {
-        PreparedStatement statement = null;
         ResultSet resultSet = null;
-        try {
-            statement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+        try (PreparedStatement statement = connection.prepareStatement(SQL,
+                Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, talon.getService().getId());
             statement.setInt(2, talon.getSpecialist().getId());
             statement.setInt(3, talon.getClient().getId());
@@ -36,15 +39,8 @@ public class TalonDaoImpl extends BaseDaoImpl implements TalonDao {
             try {
                 resultSet.close();
             } catch (SQLException e) {
-
-            }
-            try {
-                statement.close();
-            } catch (SQLException e) {
-
             }
         }
-
         return null;
     }
 
@@ -65,7 +61,40 @@ public class TalonDaoImpl extends BaseDaoImpl implements TalonDao {
 
     @Override
     public List<Talon> readBySpecialist(Integer specialistId) throws PersistentException {
-        return null;
+        String sql = "select `id`, `service_id`, `client_id`, " +
+                "`reception_date`, `status` from `talons` where " +
+                "`specialist_id`=?";
+        ResultSet resultSet = null;
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, specialistId);
+            resultSet = statement.executeQuery();
+            List<Talon> talonList = new ArrayList<>();
+            Talon talon;
+            Specialist specialist = new Specialist();
+            while (resultSet.next()) {
+                talon = new Talon();
+                talon.setId(resultSet.getInt("id"));
+                talon.setSpecialist(specialist);
+                Service service = new Service();
+                service.setId(resultSet.getInt("service_id"));
+                talon.setService(service);
+                Client client = new Client();
+                client.setId(resultSet.getInt("client_id"));
+                talon.setClient(client);
+                talon.setReceptionDate(new java.util.Date(resultSet.getDate(
+                        "reception_date").getTime()));
+                talon.setStatus(resultSet.getBoolean("status"));
+                talonList.add(talon);
+            }
+            return talonList;
+        } catch (SQLException e) {
+            throw new PersistentException();
+        } finally {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+            }
+        }
     }
 
     @Override

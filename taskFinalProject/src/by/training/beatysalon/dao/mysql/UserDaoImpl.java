@@ -1,28 +1,28 @@
 package by.training.beatysalon.dao.mysql;
 
 import by.training.beatysalon.dao.UserDao;
-import by.training.beatysalon.dao.mysql.BaseDaoImpl;
 import by.training.beatysalon.domain.Role;
 import by.training.beatysalon.domain.User;
 import by.training.beatysalon.exception.PersistentException;
-import com.mysql.jdbc.NotUpdatable;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public User read(String login, String password) throws PersistentException {
         String sql = "select `id`, `role` from `users` where `login`= ? and " +
                 "`password` = ?";
-        PreparedStatement statement = null;
         ResultSet resultSet = null;
-        try {
-            statement = connection.prepareStatement(sql);
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, login);
             statement.setString(2, password);
             resultSet = statement.executeQuery();
@@ -40,10 +40,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             throw new PersistentException(e);
         } finally {
             try {
-                statement.close();
-            } catch (SQLException | NullPointerException e) {
-            }
-            try {
                 resultSet.close();
             } catch (SQLException | NullPointerException e) {
 
@@ -55,12 +51,11 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     public List<User> read() throws PersistentException {
         String sql = "select `id`, `login`, `password`, `role` from `users` " +
                 "order by `login`";
-        PreparedStatement statement = null;
         ResultSet resultSet = null;
-        List<User> userList = new ArrayList<>();
-        try {
-            statement = connection.prepareStatement(sql);
+        List<User> userList;
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             resultSet = statement.executeQuery();
+            userList = new ArrayList<>();
             User user;
             while (resultSet.next()) {
                 user = new User();
@@ -74,37 +69,96 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         } catch (SQLException e) {
             throw new PersistentException(e);
         } finally {
-            try {
-                statement.close();
-            } catch (SQLException | NullPointerException e) {
 
+            try {
+                resultSet.close();
+            } catch (SQLException | NullPointerException e) {
             }
+        }
+    }
+
+    @Override
+    public Integer create(User user) throws PersistentException {
+        String sql = "insert into `users` (`login`, `password`, `role`) " +
+                "values (?,?,?)";
+        ResultSet resultSet = null;
+        try (PreparedStatement statement = connection.prepareStatement(sql,
+                Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, user.getLogin());
+            statement.setString(2, user.getPassword());
+            statement.setInt(3, user.getRole().getId());
+            statement.executeUpdate();
+            resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            } else {
+                LOGGER.error("There is no autoincremented index after trying " +
+                        "to add record into `users` ");
+                throw new PersistentException();
+            }
+        } catch (SQLException e) {
+            throw new PersistentException(e);
+        } finally {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+            }
+        }
+    }
+
+    @Override
+    public User read(Integer id) throws PersistentException {
+        String sql = "select `login`, `password`, `role` from `users`" +
+                "where `id`=?";
+        ResultSet resultSet = null;
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+            User user = null;
+            if (resultSet.next()) {
+                user = new User();
+                user.setId(id);
+                user.setLogin(resultSet.getString("login"));
+                user.setPassword(resultSet.getString("password"));
+                user.setRole(Role.getById(resultSet.getInt("role")));
+            }
+            System.out.println(user);
+            return user;
+        } catch (SQLException e) {
+            LOGGER.error("Can't read the user from DB by id.");
+            throw new PersistentException(e);
+        } finally {
             try {
                 resultSet.close();
             } catch (SQLException | NullPointerException e) {
 
             }
         }
-
     }
 
     @Override
-    public Integer create(User entity) throws PersistentException {
-        return null;
-    }
-
-    @Override
-    public User read(Integer id) throws PersistentException {
-        return null;
-    }
-
-    @Override
-    public void update(User entity) throws PersistentException {
-
+    public void update(User user) throws PersistentException {
+        String sql = "update `users` set `login`=?, `password`=?, `role`=?"
+                + "where `id`=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, user.getLogin());
+            statement.setString(2, user.getPassword());
+            statement.setInt(3, user.getRole().getId());
+            statement.setInt(4, user.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new PersistentException(e);
+        }
     }
 
     @Override
     public void delete(Integer id) throws PersistentException {
-
+        String sql = "delete from `users` where `id`=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new PersistentException(e);
+        }
     }
 }

@@ -21,33 +21,28 @@ public class ClientDaoImpl extends BaseDaoImpl implements ClientDao {
 
         String sql = "select `id`, `name`, `surname`, `patronymic`, " +
                 "`phone` " +
-                "from `user_info` ";
+                "from `user_info` where `user_id`=3 ";
 //                +                "join `user_info` using (`user_id`)";
 
-        PreparedStatement statement = null;
         ResultSet resultSet = null;
-        try {
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             List<Client> clients = new ArrayList<>();
-            statement = connection.prepareStatement(sql);
             resultSet = statement.executeQuery();
             Client client = null;
             while (resultSet.next()) {
+                client = new Client();
                 client.setId(resultSet.getInt("id"));
                 client.setSurname(resultSet.getString("surname"));
                 client.setName(resultSet.getString("name"));
                 client.setPatronymic(resultSet.getString("patronymic"));
                 client.setPhone(resultSet.getInt("phone"));
-                client.setBirthDate(resultSet.getDate("birth_date"));
+//                client.setBirthDate(resultSet.getDate("birth_date"));
                 clients.add(client);
             }
             return clients;
         } catch (SQLException e) {
             throw new PersistentException(e);
         } finally {
-            try {
-                statement.close();
-            } catch (SQLException | NullPointerException e) {
-            }
             try {
                 resultSet.close();
             } catch (SQLException | NullPointerException e) {
