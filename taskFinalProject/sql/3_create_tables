@@ -30,7 +30,7 @@ create table `user_info`
 create table `clients`
 (
   `user_id`    int(11) not null,
-  `birth_date` date    not null,
+  `birthDate` date    not null,
   #   constraint PK_clients primary key (`user_id`),
   unique index `user_id` (`user_id`),
   constraint FK_clients_user_info foreign key (`user_id`)

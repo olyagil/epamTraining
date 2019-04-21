@@ -1,18 +1,17 @@
 package by.training.beatysalon.domain;
 
 public class Service extends Entity {
-    private String code;
     private String name;
-//    private String type;
+    private String description;
     private double price;
     private double duration;
 
-    public String getCode() {
-        return code;
+    public String getDescription() {
+        return description;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getName() {
@@ -42,10 +41,10 @@ public class Service extends Entity {
     @Override
     public String toString() {
         return "\nService{" +
-                "code='" + code + '\'' +
+                "description='" + description + '\'' +
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 ", duration=" + duration +
-                "} " ;
+                "} ";
     }
 }

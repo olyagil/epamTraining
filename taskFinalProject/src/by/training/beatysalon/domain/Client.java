@@ -6,39 +6,23 @@ import java.util.List;
 
 public class Client extends Person {
 
-    private Date birth_date;
-
+    private Date birthDate;
     private List<Talon> currentTalons;
     private List<Talon> usedTalons;
 
-    public Date getBirth_date() {
-        return birth_date;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public void setBirth_date(Date birth_date) {
-        this.birth_date = birth_date;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
-    public List<Talon> getCurrentTalons() {
-        return currentTalons;
-    }
-
-    public void setCurrentTalons(List<Talon> currentTalons) {
-        this.currentTalons = currentTalons;
-    }
-
-    public List<Talon> getUsedTalons() {
-        return usedTalons;
-    }
-
-    public void setUsedTalons(List<Talon> usedTalons) {
-        this.usedTalons = usedTalons;
-    }
 
     @Override
     public String toString() {
-        return "Client{" + super.toString() +
-                "birth_date=" + birth_date +
+        return "\nClient{" + super.toString() +
+                ", birthDate=" + birthDate +
                 ", currentTalons=" + currentTalons +
                 ", usedTalons=" + usedTalons +
                 "} ";

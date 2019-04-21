@@ -41,9 +41,10 @@ public abstract class Person extends Entity {
 
     @Override
     public String toString() {
-        return "name='" + name + '\'' +
+        return super.toString() + " name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", patronymic='" + patronymic + '\'' +
-                "} " ;
+                ", phone=" + phone;
     }
 }
+

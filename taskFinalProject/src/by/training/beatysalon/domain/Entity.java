@@ -2,7 +2,7 @@ package by.training.beatysalon.domain;
 
 import java.io.Serializable;
 
-public abstract class Entity  implements Serializable {
+public abstract class Entity implements Serializable {
 
     private Integer id;
 
@@ -27,5 +27,11 @@ public abstract class Entity  implements Serializable {
     @Override
     public int hashCode() {
         return getId() != null ? getId().hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "id=" + id;
+
     }
 }
