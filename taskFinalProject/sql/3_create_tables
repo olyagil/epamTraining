@@ -13,28 +13,17 @@ create table `users`
 
 create table `user_info`
 (
-  `id`         int(11)     not null auto_increment,
+  #   `id`         int(11)     not null auto_increment,
   `user_id`    int(11)     not null,
   `name`       varchar(45) not null,
   `surname`    varchar(45) not null,
   `patronymic` varchar(45) not null,
-  `phone`      int(9)      not null unique,
+  `phone`      bigint        not null unique,
+  `birth_date` date        null,
   `photo`      blob        not null,
-  constraint PK_user_info primary key (`id`),
+  #   constraint PK_user_info primary key (`id`),
   constraint FK_user_info_users foreign key (`user_id`)
     references users (`id`)
-
-) engine = innodb
-  default character set utf8;
-
-create table `clients`
-(
-  `user_id`    int(11) not null,
-  `birthDate` date    not null,
-  #   constraint PK_clients primary key (`user_id`),
-  unique index `user_id` (`user_id`),
-  constraint FK_clients_user_info foreign key (`user_id`)
-    references user_info (`id`)
 ) engine = innodb
   default character set utf8;
 
@@ -48,7 +37,7 @@ create table `specialists`
   #   constraint PK_specialists primary key (`user_id`),
   unique index `user_id` (`user_id`),
   constraint FK_specialists_user_info foreign key (`user_id`)
-    references user_info (`id`)
+    references user_info (`user_id`)
 
 ) engine = innodb
   default character set utf8;
@@ -64,12 +53,11 @@ create table `services`
 ) engine = innodb
   default character set utf8;
 
-create table `talons`
+create table `bills`
 (
   `id`             int(11)  not null auto_increment,
   `service_id`     int(11)  not null,
   `specialist_id`  int(11)  not null,
-  `client_id`      int(11)  not null,
   `reception_date` datetime not null,
   `status`         boolean  not null,
   constraint PK_talons primary key (`id`),
@@ -80,9 +68,20 @@ create table `talons`
   constraint FK_talons_specialist_id foreign key (`specialist_id`)
     references `specialists` (`user_id`)
     on UPDATE cascade
-    on DELETE restrict,
+    on DELETE restrict
+)
+  engine = innodb
+  default character set utf8;
+create table `talons`
+(
+  `id`        int(11) not null auto_increment,
+  `client_id` int(11) not null,
+  `bill_id`   int(11) not null,
+  constraint PK_talons primary key (`id`),
+  constraint FK_talons_bills_id foreign key (`bill_id`)
+    references `bills` (`id`) on update cascade on delete cascade,
   constraint FK_talons_client_id foreign key (`client_id`)
-    references `clients` (`user_id`)
+    references `user_info` (`user_id`)
     on UPDATE cascade
     on DELETE restrict
 )
@@ -93,9 +92,9 @@ create table `feedback`
   `client_id`     int(11) not null,
   `specialist_id` int(11) not null,
   `date`          date    not null,
-  `review`        text    not null,
+  `review`        blob    not null,
   constraint FK_feedback_client_id foreign key (`client_id`)
-    references clients (`user_id`)
+    references user_info (`user_id`)
     on DELETE restrict
     on UPDATE cascade,
   constraint FK_feedback_specialist_id foreign key (`specialist_id`)
