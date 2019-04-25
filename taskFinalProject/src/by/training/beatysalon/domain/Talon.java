@@ -6,7 +6,7 @@ public class Talon extends Entity {
 
     private Service service;
     private Specialist specialist;
-    private Client client;
+    private User client;
     private Date receptionDate;
     private boolean status;
 
@@ -43,11 +43,11 @@ public class Talon extends Entity {
         this.receptionDate = receptionDate;
     }
 
-    public Client getClient() {
+    public User getClient() {
         return client;
     }
 
-    public void setClient(Client client) {
+    public void setClient(User client) {
         this.client = client;
     }
 

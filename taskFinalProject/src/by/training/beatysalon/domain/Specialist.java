@@ -3,12 +3,13 @@ package by.training.beatysalon.domain;
 import java.util.Date;
 import java.util.List;
 
-public class Specialist extends Person {
+public class Specialist extends UserInfo {
 
     private Specialty specialty;
     private Date employmentDate;
     private Integer cabinetNumber;
     private Double salary;
+
     private List<Talon> usedTalons;
     private List<Talon> takenTalons;
 

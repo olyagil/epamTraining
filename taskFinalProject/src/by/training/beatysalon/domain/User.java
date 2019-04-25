@@ -1,11 +1,11 @@
 package by.training.beatysalon.domain;
 
-
 public class User extends Entity {
 
     private String login;
     private String password;
     private Role role;
+
 
     public String getLogin() {
         return login;
@@ -33,7 +33,7 @@ public class User extends Entity {
 
     @Override
     public String toString() {
-        return "\nUser{" + super.toString() +
+        return "User{" + super.toString() +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", role=" + role +
