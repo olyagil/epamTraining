@@ -1,10 +1,10 @@
 package by.training.beatysalon.dao.mysql;
 
 import by.training.beatysalon.dao.TalonDao;
-import by.training.beatysalon.domain.Client;
 import by.training.beatysalon.domain.Service;
 import by.training.beatysalon.domain.Specialist;
 import by.training.beatysalon.domain.Talon;
+import by.training.beatysalon.domain.User;
 import by.training.beatysalon.exception.PersistentException;
 
 import java.sql.Date;
@@ -78,7 +78,7 @@ public class TalonDaoImpl extends BaseDaoImpl implements TalonDao {
                 Service service = new Service();
                 service.setId(resultSet.getInt("service_id"));
                 talon.setService(service);
-                Client client = new Client();
+                User client = new User();
                 client.setId(resultSet.getInt("client_id"));
                 talon.setClient(client);
                 talon.setReceptionDate(new java.util.Date(resultSet.getDate(

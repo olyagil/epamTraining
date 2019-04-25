@@ -49,23 +49,23 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     @Override
     public List<User> read() throws PersistentException {
-        String sql = "select `id`, `login`, `password`, `role` from `users` " +
-                "order by `login`";
+        String sql = "select `id`, `login`, `password`, `role` "
+                + "from `users`";
         ResultSet resultSet = null;
-        List<User> userList;
+        List<User> clientList;
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             resultSet = statement.executeQuery();
-            userList = new ArrayList<>();
-            User user;
+            clientList = new ArrayList<>();
+            User client;
             while (resultSet.next()) {
-                user = new User();
-                user.setId(resultSet.getInt("id"));
-                user.setLogin(resultSet.getString("login"));
-                user.setPassword(resultSet.getString("password"));
-                user.setRole(Role.getById(resultSet.getInt("role")));
-                userList.add(user);
+                client = new User();
+                client.setId(resultSet.getInt("id"));
+                client.setLogin(resultSet.getString("login"));
+                client.setPassword(resultSet.getString("password"));
+                client.setRole(Role.getById(resultSet.getInt("role")));
+                clientList.add(client);
             }
-            return userList;
+            return clientList;
         } catch (SQLException e) {
             throw new PersistentException(e);
         } finally {

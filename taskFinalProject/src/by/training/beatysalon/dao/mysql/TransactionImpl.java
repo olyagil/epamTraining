@@ -1,10 +1,12 @@
 package by.training.beatysalon.dao.mysql;
 
-import by.training.beatysalon.dao.ClientDao;
 import by.training.beatysalon.dao.Dao;
+import by.training.beatysalon.dao.SpecialistDao;
 import by.training.beatysalon.dao.TalonDao;
 import by.training.beatysalon.dao.Transaction;
 import by.training.beatysalon.dao.UserDao;
+import by.training.beatysalon.dao.UserInfoDao;
+import by.training.beatysalon.domain.UserInfo;
 import by.training.beatysalon.exception.PersistentException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,7 +26,8 @@ public class TransactionImpl implements Transaction {
     static {
         classMap.put(UserDao.class, UserDaoImpl.class);
         classMap.put(TalonDao.class, TalonDaoImpl.class);
-        classMap.put(ClientDao.class, ClientDaoImpl.class);
+        classMap.put(UserInfoDao.class, UserInfoDaoImpl.class);
+//        classMap.put(SpecialistDao.class,);
     }
 
     private Connection connection;
