@@ -15,13 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserInfoDaoImpl extends BaseDaoImpl implements UserInfoDao {
+
     private static final Logger LOGGER = LogManager.getLogger();
-
-
-    @Override
-    public User readById(Integer id) throws PersistentException {
-        return null;
-    }
 
     @Override
     public List<UserInfo> read() throws PersistentException {
@@ -84,16 +79,64 @@ public class UserInfoDaoImpl extends BaseDaoImpl implements UserInfoDao {
 
     @Override
     public UserInfo read(Integer id) throws PersistentException {
-        return null;
+        String sql = "select  `name`, `surname`,`patronymic`, `phone`, "
+                + "`birth_date`, `photo` " +
+                "from `user_info` where `user_id`=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                UserInfo userInfo = null;
+                if (resultSet.next()) {
+                    userInfo = new UserInfo();
+                    userInfo.setId(id);
+                    userInfo.setName(resultSet.getString("name"));
+                    userInfo.setSurname(resultSet.getString("surname"));
+                    userInfo.setPatronymic(resultSet.getString("patronymic"));
+                    userInfo.setPhone(resultSet.getInt("phone"));
+                    userInfo.setBirthDate(resultSet.getDate("birth_date"));
+//                    userInfo.setPhoto(resultSet.getObject("photo"));
+                }
+                return userInfo;
+            }
+
+        } catch (SQLException e) {
+            LOGGER.error("Can't read the user from DB by id.");
+            throw new PersistentException();
+        }
     }
 
     @Override
     public void update(UserInfo userInfo) throws PersistentException {
+        String sql = "update `user_info` set `name`=?, `surname`=?, " +
+                "`patronymic`=?, `birth_date`=?, `phone`=? where `user_id`=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, userInfo.getName());
+            statement.setString(2, userInfo.getSurname());
+            statement.setString(3, userInfo.getPatronymic());
+            statement.setDate(4, userInfo.getBirthDate());
+            statement.setInt(5, userInfo.getPhone());
+//            statement.setObject(6, userInfo.getPhoto());
+            statement.setInt(6, userInfo.getId());
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new PersistentException();
+        }
 
     }
 
+    //TODO ?????????
     @Override
     public void delete(Integer id) throws PersistentException {
+        String sql = "delete from `user_info` where `user_id`=?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new PersistentException();
+        }
+
 
     }
 }

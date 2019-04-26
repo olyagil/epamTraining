@@ -1,9 +1,9 @@
 package by.training.beatysalon.dao.mysql;
 
-import by.training.beatysalon.dao.TalonDao;
+import by.training.beatysalon.dao.BillDao;
+import by.training.beatysalon.domain.Bill;
 import by.training.beatysalon.domain.Service;
 import by.training.beatysalon.domain.Specialist;
-import by.training.beatysalon.domain.Talon;
 import by.training.beatysalon.domain.User;
 import by.training.beatysalon.exception.PersistentException;
 
@@ -15,21 +15,21 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TalonDaoImpl extends BaseDaoImpl implements TalonDao {
+public class BillDaoImpl extends BaseDaoImpl implements BillDao {
     private static final String SQL = "insert into `talons` (`id`, `service_id`,"
             + " `specialist_id`, `client_id`, `reception_date`, `status`) "
             + "VALUES (?,?,?,?,?,?)";
 
     @Override
-    public Integer create(Talon talon) throws PersistentException {
+    public Integer create(Bill bill) throws PersistentException {
         ResultSet resultSet = null;
         try (PreparedStatement statement = connection.prepareStatement(SQL,
                 Statement.RETURN_GENERATED_KEYS)) {
-            statement.setInt(1, talon.getService().getId());
-            statement.setInt(2, talon.getSpecialist().getId());
-            statement.setInt(3, talon.getClient().getId());
-            statement.setDate(4, new Date(talon.getReceptionDate().getTime()));
-            statement.setBoolean(5, talon.isStatus());
+            statement.setInt(1, bill.getService().getId());
+            statement.setInt(2, bill.getSpecialist().getId());
+//            statement.setInt(3, bill.getClient().getId());
+            statement.setDate(4, new Date(bill.getReceptionDate().getTime()));
+            statement.setBoolean(5, bill.isStatus());
 
             statement.executeUpdate();
             resultSet = statement.getGeneratedKeys();
@@ -45,12 +45,12 @@ public class TalonDaoImpl extends BaseDaoImpl implements TalonDao {
     }
 
     @Override
-    public Talon read(Integer id) throws PersistentException {
+    public Bill read(Integer id) throws PersistentException {
         return null;
     }
 
     @Override
-    public void update(Talon entity) throws PersistentException {
+    public void update(Bill entity) throws PersistentException {
 
     }
 
@@ -60,7 +60,7 @@ public class TalonDaoImpl extends BaseDaoImpl implements TalonDao {
     }
 
     @Override
-    public List<Talon> readBySpecialist(Integer specialistId) throws PersistentException {
+    public List<Bill> readBySpecialist(Integer specialistId) throws PersistentException {
         String sql = "select `id`, `service_id`, `client_id`, " +
                 "`reception_date`, `status` from `talons` where " +
                 "`specialist_id`=?";
@@ -68,25 +68,25 @@ public class TalonDaoImpl extends BaseDaoImpl implements TalonDao {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, specialistId);
             resultSet = statement.executeQuery();
-            List<Talon> talonList = new ArrayList<>();
-            Talon talon;
+            List<Bill> billList = new ArrayList<>();
+            Bill bill;
             Specialist specialist = new Specialist();
             while (resultSet.next()) {
-                talon = new Talon();
-                talon.setId(resultSet.getInt("id"));
-                talon.setSpecialist(specialist);
+                bill = new Bill();
+                bill.setId(resultSet.getInt("id"));
+                bill.setSpecialist(specialist);
                 Service service = new Service();
                 service.setId(resultSet.getInt("service_id"));
-                talon.setService(service);
+                bill.setService(service);
                 User client = new User();
                 client.setId(resultSet.getInt("client_id"));
-                talon.setClient(client);
-                talon.setReceptionDate(new java.util.Date(resultSet.getDate(
+//                bill.setClient(client);
+                bill.setReceptionDate(new java.util.Date(resultSet.getDate(
                         "reception_date").getTime()));
-                talon.setStatus(resultSet.getBoolean("status"));
-                talonList.add(talon);
+                bill.setStatus(resultSet.getBoolean("status"));
+                billList.add(bill);
             }
-            return talonList;
+            return billList;
         } catch (SQLException e) {
             throw new PersistentException();
         } finally {
@@ -98,17 +98,14 @@ public class TalonDaoImpl extends BaseDaoImpl implements TalonDao {
     }
 
     @Override
-    public List<Talon> readByService(Integer serviceId) throws PersistentException {
+    public List<Bill> readByService(Integer serviceId) throws PersistentException {
         return null;
     }
 
     @Override
-    public List<Talon> readByReceptionDate() throws PersistentException {
+    public List<Bill> readByReceptionDate() throws PersistentException {
         return null;
     }
 
-    @Override
-    public List<Talon> readByClients(Integer clientId) throws PersistentException {
-        return null;
-    }
+
 }

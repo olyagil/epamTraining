@@ -10,6 +10,9 @@ public interface ServiceDao extends Dao<Service> {
 
     Service readByName(String name) throws PersistentException;
 
-    List<Specialist> readByDoctor(Integer doctorId) throws PersistentException;
+//    List<Service> readBySpecialist(Integer specialistId) throws PersistentException;
+
+    List<Service> readByPrice(double startPrice, double endPrice)
+            throws PersistentException;
 
 }

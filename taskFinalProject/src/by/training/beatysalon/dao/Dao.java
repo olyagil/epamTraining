@@ -4,6 +4,7 @@ import by.training.beatysalon.domain.Entity;
 import by.training.beatysalon.exception.PersistentException;
 
 public interface Dao<Type extends Entity> {
+
     Integer create(Type entity) throws PersistentException;
 
     Type read(Integer id) throws PersistentException;

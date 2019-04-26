@@ -16,13 +16,24 @@ import java.util.List;
 
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     private static final Logger LOGGER = LogManager.getLogger();
+    public static final String SQL_DELETE_BY_ID = "delete from `users` where `id`=?";
+    public static final String SELECT_BY_PASSWORD_LOGIN = "select `id`, `role` from `users` where `login`= ? and " +
+            "`password` = ?";
+    public static final String SELECT_ALL = "select `id`, `login`, `password`, `role` "
+            + "from `users`";
+    public static final String INSERT_USER = "insert into `users` (`login`, `password`, `role`) " +
+            "values (?,?,?)";
+    public static final String SELECT_BY_ID = "select `login`, `password`, `role` from `users`" +
+            "where `id`=?";
+    public static final String UPDATE_USER = "update `users` set `login`=?, `password`=?, `role`=?"
+            + "where `id`=?";
 
+    //TODO ?????
     @Override
     public User read(String login, String password) throws PersistentException {
-        String sql = "select `id`, `role` from `users` where `login`= ? and " +
-                "`password` = ?";
         ResultSet resultSet = null;
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement =
+                     connection.prepareStatement(SELECT_BY_PASSWORD_LOGIN)) {
             statement.setString(1, login);
             statement.setString(2, password);
             resultSet = statement.executeQuery();
@@ -49,11 +60,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     @Override
     public List<User> read() throws PersistentException {
-        String sql = "select `id`, `login`, `password`, `role` "
-                + "from `users`";
         ResultSet resultSet = null;
         List<User> clientList;
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(SELECT_ALL)) {
             resultSet = statement.executeQuery();
             clientList = new ArrayList<>();
             User client;
@@ -79,10 +88,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     @Override
     public Integer create(User user) throws PersistentException {
-        String sql = "insert into `users` (`login`, `password`, `role`) " +
-                "values (?,?,?)";
         ResultSet resultSet = null;
-        try (PreparedStatement statement = connection.prepareStatement(sql,
+        try (PreparedStatement statement = connection.prepareStatement(INSERT_USER,
                 Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getPassword());
@@ -108,10 +115,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     @Override
     public User read(Integer id) throws PersistentException {
-        String sql = "select `login`, `password`, `role` from `users`" +
-                "where `id`=?";
         ResultSet resultSet = null;
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID)) {
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
             User user = null;
@@ -122,7 +127,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 user.setPassword(resultSet.getString("password"));
                 user.setRole(Role.getById(resultSet.getInt("role")));
             }
-            System.out.println(user);
             return user;
         } catch (SQLException e) {
             LOGGER.error("Can't read the user from DB by id.");
@@ -138,9 +142,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     @Override
     public void update(User user) throws PersistentException {
-        String sql = "update `users` set `login`=?, `password`=?, `role`=?"
-                + "where `id`=?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE_USER)) {
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getPassword());
             statement.setInt(3, user.getRole().getId());
@@ -153,8 +155,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     @Override
     public void delete(Integer id) throws PersistentException {
-        String sql = "delete from `users` where `id`=?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement =
+                     connection.prepareStatement(SQL_DELETE_BY_ID)) {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {

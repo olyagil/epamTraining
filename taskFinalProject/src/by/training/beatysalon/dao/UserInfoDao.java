@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface UserInfoDao extends Dao<UserInfo>{
 
-    User readById(Integer id) throws PersistentException;
+//    User readById(Integer id) throws PersistentException;
 
     List<UserInfo> read() throws PersistentException;
 
