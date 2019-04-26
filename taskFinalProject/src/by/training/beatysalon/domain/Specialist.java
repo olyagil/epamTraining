@@ -10,8 +10,8 @@ public class Specialist extends UserInfo {
     private Integer cabinetNumber;
     private Double salary;
 
-    private List<Talon> usedTalons;
-    private List<Talon> takenTalons;
+    private List<Bill> usedBills;
+    private List<Bill> takenBills;
 
     @Override
     public String toString() {
@@ -20,8 +20,8 @@ public class Specialist extends UserInfo {
                 ", employmentDate=" + employmentDate +
                 ", cabinetNumber=" + cabinetNumber +
                 ", salary=" + salary +
-                ", usedTalons=" + usedTalons +
-                ", takenTalons=" + takenTalons +
+                ", usedBills=" + usedBills +
+                ", takenBills=" + takenBills +
                 "} ";
     }
 
