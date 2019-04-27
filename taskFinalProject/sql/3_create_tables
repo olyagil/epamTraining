@@ -6,22 +6,26 @@ create table `users`
   `login`    varchar(15) not null,
   `password` char(32)    not null,
   `role`     tinyint     not null check ( `role` in (0, 1, 2)),
+  /* 0 - admin,
+     1 - specialist
+     2 - client
+  */
   constraint PK_users primary key (`id`),
-  unique index `unique_Login` (`login` ASC)
+  unique index `idx_unique_login` (`login`)
 ) engine = innodb
   default character set utf8;
 
 create table `user_info`
 (
-  #   `id`         int(11)     not null auto_increment,
-  `user_id`    int(11)     not null,
-  `name`       varchar(45) not null,
-  `surname`    varchar(45) not null,
-  `patronymic` varchar(45) not null,
-  `phone`      bigint        not null unique,
-  `birth_date` date        null,
-  `photo`      blob        not null,
-  #   constraint PK_user_info primary key (`id`),
+  `user_id`       int(11)     not null,
+  `name`          varchar(45) not null,
+  `surname`       varchar(45) not null,
+  `patronymic`    varchar(45) not null,
+  `phone`         bigint      not null,
+  `birth_date`    date        null,
+  `path_to_photo` varchar(255) not null,
+  index idx_surname (surname),
+  unique index idx_unique_phone (phone),
   constraint FK_user_info_users foreign key (`user_id`)
     references users (`id`)
 ) engine = innodb
@@ -34,11 +38,11 @@ create table `specialists`
   `salary`          decimal(15, 2) not null,
   `employment_date` date           not null,
   `specialty`       tinyint        not null check ( `specialty` in (0, 1)),
-  #   constraint PK_specialists primary key (`user_id`),
-  unique index `user_id` (`user_id`),
+  unique index `idx_unique_user_id` (`user_id`),
   constraint FK_specialists_user_info foreign key (`user_id`)
     references user_info (`user_id`)
-
+    on update cascade
+    on delete restrict
 ) engine = innodb
   default character set utf8;
 
@@ -49,26 +53,29 @@ create table `services`
   `description` varchar(255)   not null,
   `price`       decimal(15, 2) not null,
   `duration`    double         not null,
-  constraint PK_services primary key (`id`)
+  constraint PK_services primary key (`id`),
+  index idx_name (`name`)
 ) engine = innodb
   default character set utf8;
 
 create table `bills`
 (
-  `id`             int(11)  not null auto_increment,
-  `service_id`     int(11)  not null,
-  `specialist_id`  int(11)  not null,
-  `reception_date` datetime not null,
-  `status`         boolean  not null,
+  `id`             int(11)   not null auto_increment,
+  `service_id`     int(11)   not null,
+  `specialist_id`  int(11)   not null,
+  `reception_date` timestamp not null,
+  `status`         boolean   not null,
   constraint PK_talons primary key (`id`),
   constraint FK_talons_service_id foreign key (`service_id`)
     references `services` (`id`)
-    on UPDATE cascade
+    on update cascade
     on delete restrict,
   constraint FK_talons_specialist_id foreign key (`specialist_id`)
     references `specialists` (`user_id`)
-    on UPDATE cascade
-    on DELETE restrict
+    on update cascade
+    on delete restrict,
+  index idx_status (`status`),
+  index idx_date (`reception_date`)
 )
   engine = innodb
   default character set utf8;
@@ -79,27 +86,32 @@ create table `talons`
   `bill_id`   int(11) not null,
   constraint PK_talons primary key (`id`),
   constraint FK_talons_bills_id foreign key (`bill_id`)
-    references `bills` (`id`) on update cascade on delete cascade,
+    references `bills` (`id`)
+    on update cascade
+    on delete cascade,
   constraint FK_talons_client_id foreign key (`client_id`)
     references `user_info` (`user_id`)
-    on UPDATE cascade
-    on DELETE restrict
+    on update cascade
+    on delete restrict
 )
   engine = innodb
   default character set utf8;
 create table `feedback`
 (
+  `id`            int(11) not null auto_increment,
   `client_id`     int(11) not null,
   `specialist_id` int(11) not null,
   `date`          date    not null,
   `review`        blob    not null,
+  constraint PK_feedback primary key (`id`),
   constraint FK_feedback_client_id foreign key (`client_id`)
     references user_info (`user_id`)
-    on DELETE restrict
-    on UPDATE cascade,
+    on delete restrict
+    on update cascade,
   constraint FK_feedback_specialist_id foreign key (`specialist_id`)
     references specialists (`user_id`)
     on delete restrict
-    on update cascade
+    on update cascade,
+  index idx_date (`date`)
 ) engine = innodb
   default character set utf8;
