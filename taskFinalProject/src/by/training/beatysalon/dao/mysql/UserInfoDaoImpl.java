@@ -17,15 +17,25 @@ import java.util.List;
 public class UserInfoDaoImpl extends BaseDaoImpl implements UserInfoDao {
 
     private static final Logger LOGGER = LogManager.getLogger();
+    private static final String READ_ALL = "select `id`, `surname`, "
+            + "`name`, `patronymic`, `phone`, `birth_date`,path_to_photo "
+            + "from `users`"
+            + "join user_info ui on users.id = ui.user_id";
+    private static final String CREATE_USER_INFO = "insert into `user_info` " +
+            "(`user_id`, `name`, `surname`, `patronymic`, `phone`, " +
+            "`birth_date`, path_to_photo) "
+            + "VALUES (?,?,?,?,?,?,?)";
+    private static final String READ_BY_ID = "select  `name`, `surname`,`patronymic`, `phone`, "
+            + "`birth_date`, path_to_photo " +
+            "from `user_info` where `user_id`=?";
+    private static final String UPDATE_USER_INFO = "update `user_info` set `name`=?, `surname`=?, " +
+            "`patronymic`=?, `birth_date`=?, `phone`=? where `user_id`=?";
+    private static final String DELETE_BY_ID = "delete from `user_info` where `user_id`=?";
 
     @Override
     public List<UserInfo> read() throws PersistentException {
-        String sql = "select `id`, `surname`, "
-                + "`name`, `patronymic`, `phone`, `birth_date`,`photo` "
-                + "from `users`"
-                + "join user_info ui on users.id = ui.user_id";
         List<UserInfo> userInfoList;
-        try (PreparedStatement statement = connection.prepareStatement(sql);
+        try (PreparedStatement statement = connection.prepareStatement(READ_ALL);
              ResultSet resultSet = statement.executeQuery()) {
             userInfoList = new ArrayList<>();
             UserInfo userInfo;
@@ -47,22 +57,16 @@ public class UserInfoDaoImpl extends BaseDaoImpl implements UserInfoDao {
 
     @Override
     public Integer create(UserInfo userInfo) throws PersistentException {
-        String sql = "insert into `user_info` " +
-                "(`user_id`, `name`, `surname`, `patronymic`, `phone`, " +
-                "`birth_date`, `photo`) "
-                + "VALUES (?,?,?,?,?,?,?)";
-//        ResultSet resultSet = null;
-        try (PreparedStatement statement = connection.prepareStatement(sql,
+        try (PreparedStatement statement = connection.prepareStatement(CREATE_USER_INFO,
                 Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, userInfo.getName());
             statement.setString(2, userInfo.getSurname());
             statement.setString(3, userInfo.getPatronymic());
             statement.setInt(4, userInfo.getPhone());
             statement.setDate(5, userInfo.getBirthDate());
-//            statement.setObject(1, userInfo.getPhoto());
+//            statement.setObject(6, userInfo.getPhoto());
             statement.executeUpdate();
             try (ResultSet resultSet = statement.getGeneratedKeys()) {
-//            resultSet = statement.getGeneratedKeys();
                 if (resultSet.next()) {
                     return resultSet.getInt(1);
                 } else {
@@ -79,10 +83,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl implements UserInfoDao {
 
     @Override
     public UserInfo read(Integer id) throws PersistentException {
-        String sql = "select  `name`, `surname`,`patronymic`, `phone`, "
-                + "`birth_date`, `photo` " +
-                "from `user_info` where `user_id`=?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(READ_BY_ID)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 UserInfo userInfo = null;
@@ -107,9 +108,8 @@ public class UserInfoDaoImpl extends BaseDaoImpl implements UserInfoDao {
 
     @Override
     public void update(UserInfo userInfo) throws PersistentException {
-        String sql = "update `user_info` set `name`=?, `surname`=?, " +
-                "`patronymic`=?, `birth_date`=?, `phone`=? where `user_id`=?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement =
+                     connection.prepareStatement(UPDATE_USER_INFO)) {
             statement.setString(1, userInfo.getName());
             statement.setString(2, userInfo.getSurname());
             statement.setString(3, userInfo.getPatronymic());
@@ -120,7 +120,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl implements UserInfoDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new PersistentException();
+            throw new PersistentException(e);
         }
 
     }
@@ -128,7 +128,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl implements UserInfoDao {
     //TODO ?????????
     @Override
     public void delete(Integer id) throws PersistentException {
-        String sql = "delete from `user_info` where `user_id`=?";
+        String sql = DELETE_BY_ID;
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);

@@ -3,6 +3,7 @@ package by.training.beatysalon.dao.mysql;
 import by.training.beatysalon.dao.Dao;
 import by.training.beatysalon.dao.BillDao;
 import by.training.beatysalon.dao.ServiceDao;
+import by.training.beatysalon.dao.SpecialistDao;
 import by.training.beatysalon.dao.Transaction;
 import by.training.beatysalon.dao.UserDao;
 import by.training.beatysalon.dao.UserInfoDao;
@@ -26,7 +27,7 @@ public class TransactionImpl implements Transaction {
         classMap.put(UserDao.class, UserDaoImpl.class);
         classMap.put(BillDao.class, BillDaoImpl.class);
         classMap.put(UserInfoDao.class, UserInfoDaoImpl.class);
-//        classMap.put(SpecialistDao.class,);
+        classMap.put(SpecialistDao.class, SpecialistDaoImpl.class);
         classMap.put(ServiceDao.class, ServiceDaoImpl.class);
     }
 

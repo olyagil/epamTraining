@@ -10,5 +10,4 @@ public interface SpecialistDao extends Dao<Specialist> {
 
     List<Specialist> read() throws PersistentException;
 
-    Map<Specialist, Integer> readWithNamOfServices() throws PersistentException;
 }

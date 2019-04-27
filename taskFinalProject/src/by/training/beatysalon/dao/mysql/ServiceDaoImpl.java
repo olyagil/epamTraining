@@ -25,25 +25,31 @@ public class ServiceDaoImpl extends BaseDaoImpl implements ServiceDao {
     public static final String CREATE_SERVICE = "insert into `services`(`name`,"
             + " `description`, `price`, `duration`) values (?,?,?,?)";
     public static final String READ_SERVICES_BY_RANGE_OF_PRICE =
-            "select `name`, `description`, `price`, `duration` from `services`"
+            "select `id`, `name`, `description`, `price`, `duration` from " +
+                    "`services`"
                     + " where `price` between  ? and ? order by `price`";
+    public static final String READ_SERVICE_BY_NAME = "select `name`, `description`, `price`, `duration` from `services`\n" +
+            "where `name` like ? order by name";
 
     @Override
-    public Service readByName(String name) throws PersistentException {
-        String sql = "";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, name);
+    public List<Service> readByName(String name) throws PersistentException {
+        try (PreparedStatement statement =
+                     connection.prepareStatement(READ_SERVICE_BY_NAME)) {
+            statement.setString(1, "%" + name + "%");
+            List<Service> serviceList;
             try (ResultSet resultSet = statement.executeQuery()) {
-                Service service = null;
-                if (resultSet.next()) {
+                serviceList = new ArrayList<>();
+                Service service;
+                while (resultSet.next()) {
                     service = new Service();
-                    service.setId(resultSet.getInt("id"));
+//                    service.setId(resultSet.getInt("id"));
                     service.setName(resultSet.getString("name"));
-                    service.setDescription(resultSet.getString("descrition"));
+                    service.setDescription(resultSet.getString("description"));
                     service.setPrice(resultSet.getDouble("price"));
                     service.setDuration(resultSet.getDouble("duration"));
+                    serviceList.add(service);
                 }
-                return service;
+                return serviceList;
             }
         } catch (SQLException e) {
             throw new PersistentException();
@@ -73,8 +79,8 @@ public class ServiceDaoImpl extends BaseDaoImpl implements ServiceDao {
                 }
                 return serviceList;
             }
-        } catch (SQLException e1) {
-            throw new PersistentException();
+        } catch (SQLException e) {
+            throw new PersistentException(e);
 
         }
     }
