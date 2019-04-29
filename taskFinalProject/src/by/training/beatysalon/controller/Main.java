@@ -1,178 +1,102 @@
 package by.training.beatysalon.controller;
 
-import by.training.beatysalon.dao.ClientDao;
-import by.training.beatysalon.dao.mysql.ClientDaoImpl;
-import by.training.beatysalon.dao.mysql.TalonDaoImpl;
-import by.training.beatysalon.domain.Client;
-import by.training.beatysalon.domain.Person;
+import by.training.beatysalon.dao.BillDao;
+import by.training.beatysalon.dao.ServiceDao;
+import by.training.beatysalon.dao.SpecialistDao;
+import by.training.beatysalon.dao.Transaction;
+import by.training.beatysalon.dao.TransactionFactory;
+import by.training.beatysalon.dao.UserDao;
+import by.training.beatysalon.dao.UserInfoDao;
+import by.training.beatysalon.dao.mysql.TransactionFactoryImpl;
+import by.training.beatysalon.dao.pool.ConnectionPool;
 import by.training.beatysalon.domain.Role;
 import by.training.beatysalon.domain.Service;
 import by.training.beatysalon.domain.Specialist;
 import by.training.beatysalon.domain.Specialty;
-import by.training.beatysalon.domain.Talon;
 import by.training.beatysalon.domain.User;
+import by.training.beatysalon.domain.UserInfo;
 import by.training.beatysalon.exception.PersistentException;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Date;
 
 public class Main {
-    public static final String DB_DRIVER_CLASS = "com.mysql.jdbc.Driver";
+    private static final String DB_DRIVER_CLASS = "com.mysql.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/salon_db" +
             "?useUnicode=true&characterEncoding=UTF-8";
     private static final String DB_USER = "salon_user";
     private static final String DB_PASSWORD = "salon_password";
 
-    private static final String SELECT_USER = "select `id`, `login`, " +
-            "`password`, `role` from users";
-    private static final String SELECT_CLIENT = "select `id`, `surname`, " +
-            "`name`, `patronymic`, `card_number`, `phone` from clients";
-    private static final String SELECT_SERVICE = "select `id`, `code`, " +
-            "`name`, `price`, `duration` from services";
-    private static final String SELECT_SPECIALIST = "select `id`, `surname`, " +
-            "`name`, `patronymic`, `begin_working_day`, `end_working_day`, " +
-            "`cabinet_number`, `salary`, `specialty` from specialists";
-    private static final String SELECT_TALON = "select `id`, `service_id`, " +
-            "`specialist_id`, `client_id`, `reception_date` from talons";
+    private static final int DB_POOL_START_SIZE = 10;
+    private static final int DB_POOL_MAX_SIZE = 1000;
+    private static final int DB_POOL_CHECK_CONNECTION_TIMEOUT = 0;
+
 
     public static void main(String[] args) throws PersistentException {
-//        System.out.println(createUsers());
-//        System.out.println(createClients());
-//        System.out.println(createServices());
-//        System.out.println(createSpecialists());
-//        System.out.println(createTalons());
-//        TalonDaoImpl talonDao = new TalonDaoImpl();
-//        talonDao.create()
-        ClientDaoImpl clientDao = new ClientDaoImpl();
-        clientDao.read();
+        ConnectionPool.getInstance().init(DB_DRIVER_CLASS, DB_URL, DB_USER,
+                DB_PASSWORD, DB_POOL_START_SIZE, DB_POOL_MAX_SIZE,
+                DB_POOL_CHECK_CONNECTION_TIMEOUT);
+
+        TransactionFactory transactionFactory = new TransactionFactoryImpl();
+        Transaction transaction = transactionFactory.createTransaction();
+//        UserDao userDao = transaction.createDao(UserDao.class);
+//        userDao.read("admin", "admin");
+//
+//        userDao.read(2);
+//        User client = new User();
+////        client.setId(8);
+//        client.setLogin("qwerty");
+//        client.setPassword("qwerty");
+//        client.setRole(Role.CLIENT);
+//        userDao.create(client);
+////        client.setRole(Role.SPECIALIST);
+////        userDao.update(client );
+//        System.out.println("LOGIN: " + userDao.read());
+//        BillDao billDao = transaction.createDao(BillDao.class);
+////        System.out.println(billDao.readBySpecialist(8));
+//
+////        System.out.println("FIO:" + userDao.readInfo());
+//        System.out.println(userDao.read("client2", "client"));
+//
+//        UserInfo userInfo = new UserInfo();
+//        userInfo.setId(4);
+//        userInfo.setName("Татьяна");
+//        userInfo.setSurname("Петрова");
+//        userInfo.setPatronymic("Петровна");
+//        userInfo.setPhone(13248461);
+//        userInfo.setBirthDate(new Date(2019-02-16));
+//        UserInfoDao userInfoDao = transaction.createDao(UserInfoDao.class);
+////        userInfoDao.create(userInfo);
+//        System.out.println(userInfoDao.read());
+//        userInfoDao.update(userInfo);
+//        System.out.println(userInfoDao.read(4));
+////        userInfoDao.delete(4);
+//        System.out.println(userInfoDao.read());
+//
+//        Service service = new Service();
+////        service.setId(2);
+//        service.setName("Ногті");
+//        service.setDescription("xgfgfhfcbcb cbcbv gfnv v");
+//        service.setPrice(453.415);
+//        service.setDuration(45);
+//
+//        ServiceDao serviceDao = transaction.createDao(ServiceDao.class);
+//        System.out.println(serviceDao.readByPrice(0, 1200));
+//        System.out.println(serviceDao.readByName("Визаж"));
+        SpecialistDao specialistDao =
+                transaction.createDao(SpecialistDao.class);
+        Specialist specialist = new Specialist();
+specialist.setId(13);
+        specialist.setCabinetNumber(10);
+        specialist.setSalary(10000.0);
+        specialist.setEmploymentDate(new Date(2000 - 12 - 05));
+        specialist.setSpecialty(Specialty.COSMETOLOGIST);
+        System.out.println(specialistDao.read());
+
+//        specialistDao.update();
+//        specialistDao.create(specialist);
+        System.out.println(specialistDao.read(9));
+        System.out.println(specialistDao.read());
 
     }
 
-    private static List<User> createUsers() {
-        List<User> users = new ArrayList<>();
-        Connection cn;
-        try {
-            cn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-            Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery(SELECT_USER);
-            User user;
-            while (rs.next()) {
-                user = new User();
-                user.setId(rs.getInt("id"));
-                user.setLogin(rs.getString("login"));
-                user.setPassword(rs.getString("password"));
-                user.setRole(Role.getById(rs.getInt("role")));
-                users.add(user);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return users;
-
-    }
-
-    private static List<Person> createClients() {
-        List<Person> clients = new ArrayList<>();
-        Connection cn;
-        try {
-            cn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-            Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery(SELECT_CLIENT);
-            Person client;
-            while (rs.next()) {
-                client = new Client();
-                client.setId(rs.getInt("id"));
-                client.setSurname(rs.getString("surname"));
-                client.setName(rs.getString("name"));
-                client.setPatronymic(rs.getString("patronymic"));
-                clients.add(client);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return clients;
-    }
-
-    private static List<Service> createServices() {
-        List<Service> services = new ArrayList<>();
-        Connection cn;
-        try {
-            cn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-            Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery(SELECT_SERVICE);
-            Service service;
-            while (rs.next()) {
-                service = new Service();
-                service.setId(rs.getInt("id"));
-                service.setCode(rs.getString("code"));
-                service.setName(rs.getString("name"));
-                service.setPrice(rs.getDouble("price"));
-                service.setDuration(rs.getDouble("duration"));
-                services.add(service);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return services;
-    }
-
-    private static List<Person> createSpecialists() {
-        List<Person> specialists = new ArrayList<>();
-        Connection cn;
-        try {
-            cn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-            Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery(SELECT_SPECIALIST);
-            Person specialist;
-            while (rs.next()) {
-                specialist = new Specialist();
-                specialist.setId(rs.getInt("id"));
-                specialist.setSurname(rs.getString("surname"));
-                specialist.setName(rs.getString("name"));
-                specialist.setPatronymic(rs.getString("patronymic"));
-                ((Specialist) specialist).setBeginWorkingDay(rs.getTime(
-                        "begin_working_day"));
-                ((Specialist) specialist).setEndWorkingDay(rs.getTime(
-                        "end_working_day"));
-                ((Specialist) specialist).setCabinetNumber(rs.getInt(
-                        "cabinet_number"));
-                ((Specialist) specialist).setSalary(rs.getDouble("salary"));
-                ((Specialist) specialist).setSpecialty(Specialty.getById(rs.getInt("specialty")));
-                specialists.add(specialist);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return specialists;
-    }
-
-    private static List<Talon> createTalons() {
-        List<Talon> talons = new ArrayList<>();
-        Connection cn;
-        try {
-            cn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-            Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery(SELECT_TALON);
-            Talon talon;
-            while (rs.next()) {
-                talon = new Talon();
-                talon.setId(rs.getInt("id"));
-//                talon.setService(createServices().get(rs.getInt(
-//                        "service_id")));
-//                talon.setSpecialist(createSpecialists().get(rs.getInt(
-//                        "specialist_id")));
-//                talon.setClient(createClients().get(rs.getInt("client_id")));
-                talon.setReceptionDate(rs.getTimestamp("reception_date"));
-                talons.add(talon);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return talons;
-    }
 }
