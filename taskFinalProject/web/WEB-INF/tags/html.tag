@@ -14,26 +14,34 @@
 
 <HTML>
 <HEAD>
-    <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <%--<META http-equiv="Content-Type" content="text/html; charset=UTF-8">--%>
     <TITLE>Косметический салон - ${title}</TITLE>
     <c:url value="/main.css" var="cssUrl"/>
     <LINK rel="stylesheet" type="text/css" href="${cssUrl}">
-    <%--<c:url value="/js" var="javascriptUrl"/>--%>
-    <%--<SCRIPT type="text/javascript" src="${javascriptUrl}/main.js"></SCRIPT>--%>
-    <%--<c:if test="${not empty message}">--%>
-        <%--<SCRIPT type="text/javascript">--%>
-            <%--startMessage = "${message}";--%>
-        <%--</SCRIPT>--%>
-    <%--</c:if>--%>
-    <%--<c:if test="${not empty validator}">--%>
-        <%--<SCRIPT type="text/javascript"--%>
-                <%--src="${javascriptUrl}/validator.js"></SCRIPT>--%>
-        <%--<SCRIPT type="text/javascript"--%>
-                <%--src="${javascriptUrl}/${validator}"></SCRIPT>--%>
-    <%--</c:if>--%>
+    <%--<meta charset="utf-8">--%>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <c:url value="/js" var="javascriptUrl"/>
+    <SCRIPT type="text/javascript" src="${javascriptUrl}/main.js"></SCRIPT>
+    <c:if test="${not empty message}">
+        <SCRIPT type="text/javascript">
+            startMessage = "${message}";
+        </SCRIPT>
+    </c:if>
+    <c:if test="${not empty validator}">
+        <SCRIPT type="text/javascript"
+                src="${javascriptUrl}/validator.js"></SCRIPT>
+        <SCRIPT type="text/javascript"
+                src="${javascriptUrl}/${validator}"></SCRIPT>
+    </c:if>
 </HEAD>
 <BODY>
-<%--<u:menu/>--%>
+<u:menu/>
 <DIV id="page">
     <jsp:doBody/>
 </DIV>

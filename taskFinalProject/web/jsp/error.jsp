@@ -5,11 +5,11 @@
 <u:html title="Ошибка">
     <c:choose>
         <c:when test="${not empty error}">
-            <H2>${error}</H2>
+            <h2>${error}</h2>
         </c:when>
         <c:when test="${not empty pageContext.errorData.requestURI}">
-            <H2>Запрошенная страница ${pageContext.errorData.requestURI} не
-                найдена на сервере</H2>
+            <h2>Запрошенная страница ${pageContext.errorData.requestURI} не
+                найдена на сервере</h2>
         </c:when>
         <c:otherwise>Непредвиденная ошибка приложения</c:otherwise>
     </c:choose>

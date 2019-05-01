@@ -2,6 +2,9 @@
 <html>
 <head><title>Index</title></head>
 <body>
+<%--<jsp:forward page="/jsp/test.jsp"/>--%>
+<%----%>
 <jsp:forward page="/jsp/login.jsp"/>
+<%--<jsp:forward page="/jsp/client/list.jsp"/>--%>
 </body>
 </html>
