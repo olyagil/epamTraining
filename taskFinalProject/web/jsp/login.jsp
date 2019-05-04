@@ -1,18 +1,14 @@
-<%@page language="java" contentType="text/html; charset=UTF-8"
+<%@page language="java" contentType="text/html;charset=UTF-8"
         pageEncoding="UTF-8" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib tagdir="/WEB-INF/tags" prefix="u" %>
 
 <head>
-    <%--<meta charset="utf-8">--%>
-    <%--<meta name="viewport" content="width=device-width, initial-scale=1">--%>
-    <%--<link rel="stylesheet"--%>
-    <%--href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">--%>
-    <%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>--%>
-    <%--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>--%>
-    <%--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>--%>
+    <title>Login</title>
 </head>
 <body>
+<%@include file="header.jsp" %>
+
 <div class="container">
     <u:html title="Вход в систему" message="${message}">
         <h2>Вход в систему</h2>
@@ -45,27 +41,29 @@
     </u:html>
 </div>
 
-<script>
-    // Disable form submissions if there are invalid fields
-    (function () {
-        'use strict';
-        window.addEventListener('load', function () {
-// Get the forms we want to add validation styles to
-            var forms = document.getElementsByClassName('needs-validation');
-// Loop over them and prevent submission
-            var validation = Array.prototype.filter.call(forms, function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (form.checkValidity() === false) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
-                }, false);
-            });
-        }, false);
-    })();
-</script>
+<%--<script>--%>
+    <%--// Disable form submissions if there are invalid fields--%>
+    <%--(function () {--%>
+        <%--'use strict';--%>
+        <%--window.addEventListener('load', function () {--%>
+<%--// Get the forms we want to add validation styles to--%>
+            <%--var forms = document.getElementsByClassName('needs-validation');--%>
+<%--// Loop over them and prevent submission--%>
+            <%--var validation = Array.prototype.filter.call(forms, function (form) {--%>
+                <%--form.addEventListener('submit', function (event) {--%>
+                    <%--if (form.checkValidity() === false) {--%>
+                        <%--event.preventDefault();--%>
+                        <%--event.stopPropagation();--%>
+                    <%--}--%>
+                    <%--form.classList.add('was-validated');--%>
+                <%--}, false);--%>
+            <%--});--%>
+        <%--}, false);--%>
+    <%--})();--%>
+<%--</script>--%>
 
+
+<jsp:include page="footer.jsp"/>
 </body>
 
 
