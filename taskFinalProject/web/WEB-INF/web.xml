@@ -6,40 +6,39 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
-    <!--<servlet>-->
-        <!--<servlet-name>controller</servlet-name>-->
-        <!--<servlet-class>by.training.beatysalon.controller.DispatcherServlet-->
-        <!--</servlet-class>-->
-    <!--</servlet>-->
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>controller</servlet-name>-->
-        <!--<url-pattern>*.html</url-pattern>-->
-    <!--</servlet-mapping>-->
+    <servlet>
+        <servlet-name>controller</servlet-name>
+        <servlet-class>by.training.beautysalon.controller.DispatcherServlet
+        </servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>controller</servlet-name>
+        <url-pattern>*.html</url-pattern>
+    </servlet-mapping>
 
     <!--<filter>-->
         <!--<filter-name>encodingFilter</filter-name>-->
-        <!--<filter-class>by.training.beatysalon.filter.EncodingFilter-->
+        <!--<filter-class>by.training.beautysalon.filter.EncodingFilter-->
         <!--</filter-class>-->
     <!--</filter>-->
     <!--<filter-mapping>-->
         <!--<filter-name>encodingFilter</filter-name>-->
-        <!--<url-pattern>/*.html</url-pattern>-->
+        <!--<url-pattern>*.html</url-pattern>-->
     <!--</filter-mapping>-->
     <!--<filter>-->
-        <!--<filter-name>Action</filter-name>-->
-        <!--<filter-class>by.training.beatysalon.filter.ActionFilter-->
-        <!--</filter-class>-->
+    <!--<filter-name>Action</filter-name>-->
+    <!--<filter-class>by.training.beautysalon.filter.ActionFilter</filter-class>-->
     <!--</filter>-->
     <!--<filter-mapping>-->
-        <!--<filter-name>Action</filter-name>-->
-        <!--<url-pattern>/*</url-pattern>-->
+    <!--<filter-name>Action</filter-name>-->
+    <!--<url-pattern>*.html</url-pattern>-->
     <!--</filter-mapping>-->
     <!--<filter>-->
-        <!--<filter-name>Security</filter-name>-->
-        <!--<filter-class>by.training.beatysalon.filter.SecurityFilter</filter-class>-->
+    <!--<filter-name>Security</filter-name>-->
+    <!--<filter-class>SecurityFilter</filter-class>-->
     <!--</filter>-->
     <!--<filter-mapping>-->
-        <!--<filter-name>Security</filter-name>-->
-        <!--<url-pattern>/*</url-pattern>-->
+    <!--<filter-name>Security</filter-name>-->
+    <!--<url-pattern>*.html</url-pattern>-->
     <!--</filter-mapping>-->
 </web-app>

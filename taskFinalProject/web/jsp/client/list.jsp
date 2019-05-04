@@ -3,6 +3,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="u" tagdir="/WEB-INF/tags" %>
 <u:html title="List Of Clients">
+
+    <%--<jsp:include page="jsp/header.jsp"/>--%>
     <h2>Список:</h2>
     <table>
         <tr>
