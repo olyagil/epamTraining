@@ -1,9 +1,8 @@
-package by.training.beatysalon.dao.mysql;
+package by.training.beautysalon.dao.mysql;
 
-import by.training.beatysalon.dao.UserInfoDao;
-import by.training.beatysalon.domain.UserInfo;
-import by.training.beatysalon.domain.User;
-import by.training.beatysalon.exception.PersistentException;
+import by.training.beautysalon.dao.UserInfoDao;
+import by.training.beautysalon.domain.UserInfo;
+import by.training.beautysalon.exception.PersistentException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

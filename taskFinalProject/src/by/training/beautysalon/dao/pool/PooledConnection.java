@@ -1,4 +1,4 @@
-package by.training.beatysalon.dao.pool;
+package by.training.beautysalon.dao.pool;
 
 import java.sql.*;
 import java.util.Map;

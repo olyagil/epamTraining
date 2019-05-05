@@ -1,4 +1,4 @@
-package by.training.beatysalon.dao.mysql;
+package by.training.beautysalon.dao.mysql;
 
 import java.sql.Connection;
 

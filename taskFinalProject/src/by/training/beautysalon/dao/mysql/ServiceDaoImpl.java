@@ -1,8 +1,8 @@
-package by.training.beatysalon.dao.mysql;
+package by.training.beautysalon.dao.mysql;
 
-import by.training.beatysalon.dao.ServiceDao;
-import by.training.beatysalon.domain.Service;
-import by.training.beatysalon.exception.PersistentException;
+import by.training.beautysalon.dao.ServiceDao;
+import by.training.beautysalon.domain.Service;
+import by.training.beautysalon.exception.PersistentException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,7 +28,8 @@ public class ServiceDaoImpl extends BaseDaoImpl implements ServiceDao {
             "select `id`, `name`, `description`, `price`, `duration` from " +
                     "`services`"
                     + " where `price` between  ? and ? order by `price`";
-    public static final String READ_SERVICE_BY_NAME = "select `name`, `description`, `price`, `duration` from `services`\n" +
+    public static final String READ_SERVICE_BY_NAME = "select `name`, `description`," +
+            " `price`, `duration` from `services`\n" +
             "where `name` like ? order by name";
 
     @Override

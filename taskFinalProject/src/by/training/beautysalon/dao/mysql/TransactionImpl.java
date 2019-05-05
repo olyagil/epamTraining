@@ -1,13 +1,13 @@
-package by.training.beatysalon.dao.mysql;
+package by.training.beautysalon.dao.mysql;
 
-import by.training.beatysalon.dao.Dao;
-import by.training.beatysalon.dao.BillDao;
-import by.training.beatysalon.dao.ServiceDao;
-import by.training.beatysalon.dao.SpecialistDao;
-import by.training.beatysalon.dao.Transaction;
-import by.training.beatysalon.dao.UserDao;
-import by.training.beatysalon.dao.UserInfoDao;
-import by.training.beatysalon.exception.PersistentException;
+import by.training.beautysalon.dao.Dao;
+import by.training.beautysalon.dao.BillDao;
+import by.training.beautysalon.dao.ServiceDao;
+import by.training.beautysalon.dao.SpecialistDao;
+import by.training.beautysalon.dao.Transaction;
+import by.training.beautysalon.dao.UserDao;
+import by.training.beautysalon.dao.UserInfoDao;
+import by.training.beautysalon.exception.PersistentException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -1,6 +1,6 @@
-package by.training.beatysalon.dao.pool;
+package by.training.beautysalon.dao.pool;
 
-import by.training.beatysalon.exception.PersistentException;
+import by.training.beautysalon.exception.PersistentException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

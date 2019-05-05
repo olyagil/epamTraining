@@ -1,9 +1,9 @@
-package by.training.beatysalon.dao.mysql;
+package by.training.beautysalon.dao.mysql;
 
-import by.training.beatysalon.dao.UserDao;
-import by.training.beatysalon.domain.Role;
-import by.training.beatysalon.domain.User;
-import by.training.beatysalon.exception.PersistentException;
+import by.training.beautysalon.dao.UserDao;
+import by.training.beautysalon.domain.Role;
+import by.training.beautysalon.domain.User;
+import by.training.beautysalon.exception.PersistentException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,11 +19,11 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     public static final String SQL_DELETE_BY_ID = "delete from `users` where `id`=?";
     public static final String SELECT_BY_PASSWORD_LOGIN = "select `id`, `role` from `users` where `login`= ? and " +
             "`password` = ?";
-    public static final String SELECT_ALL = "select `id`, `login`, `password`, `role` "
+    public static final String SELECT_ALL = "select `id`, `login`, `role` "
             + "from `users`";
     public static final String INSERT_USER = "insert into `users` (`login`, `password`, `role`) " +
             "values (?,?,?)";
-    public static final String SELECT_BY_ID = "select `login`, `password`, `role` from `users`" +
+    public static final String SELECT_BY_ID = "select `login`, `role` from `users`" +
             "where `id`=?";
     public static final String UPDATE_USER = "update `users` set `login`=?, `password`=?, `role`=?"
             + "where `id`=?";
@@ -60,29 +60,24 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     @Override
     public List<User> read() throws PersistentException {
-        ResultSet resultSet = null;
         List<User> clientList;
-        try (PreparedStatement statement = connection.prepareStatement(SELECT_ALL)) {
-            resultSet = statement.executeQuery();
+        try (PreparedStatement statement =
+                     connection.prepareStatement(SELECT_ALL);
+             ResultSet resultSet = statement.executeQuery()) {
             clientList = new ArrayList<>();
             User client;
             while (resultSet.next()) {
                 client = new User();
                 client.setId(resultSet.getInt("id"));
                 client.setLogin(resultSet.getString("login"));
-                client.setPassword(resultSet.getString("password"));
+//                client.setPassword(resultSet.getString("password"));
                 client.setRole(Role.getById(resultSet.getInt("role")));
                 clientList.add(client);
             }
             return clientList;
         } catch (SQLException e) {
             throw new PersistentException(e);
-        } finally {
 
-            try {
-                resultSet.close();
-            } catch (SQLException | NullPointerException e) {
-            }
         }
     }
 
@@ -124,7 +119,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 user = new User();
                 user.setId(id);
                 user.setLogin(resultSet.getString("login"));
-                user.setPassword(resultSet.getString("password"));
+//                user.setPassword(resultSet.getString("password"));
                 user.setRole(Role.getById(resultSet.getInt("role")));
             }
             return user;

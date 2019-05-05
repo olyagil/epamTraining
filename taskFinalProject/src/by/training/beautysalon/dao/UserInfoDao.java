@@ -1,8 +1,7 @@
-package by.training.beatysalon.dao;
+package by.training.beautysalon.dao;
 
-import by.training.beatysalon.domain.UserInfo;
-import by.training.beatysalon.domain.User;
-import by.training.beatysalon.exception.PersistentException;
+import by.training.beautysalon.domain.UserInfo;
+import by.training.beautysalon.exception.PersistentException;
 
 import java.util.List;
 

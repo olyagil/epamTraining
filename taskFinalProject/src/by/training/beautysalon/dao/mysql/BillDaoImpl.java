@@ -1,11 +1,11 @@
-package by.training.beatysalon.dao.mysql;
+package by.training.beautysalon.dao.mysql;
 
-import by.training.beatysalon.dao.BillDao;
-import by.training.beatysalon.domain.Bill;
-import by.training.beatysalon.domain.Service;
-import by.training.beatysalon.domain.Specialist;
-import by.training.beatysalon.domain.User;
-import by.training.beatysalon.exception.PersistentException;
+import by.training.beautysalon.dao.BillDao;
+import by.training.beautysalon.domain.Bill;
+import by.training.beautysalon.domain.Service;
+import by.training.beautysalon.domain.Specialist;
+import by.training.beautysalon.domain.User;
+import by.training.beautysalon.exception.PersistentException;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
