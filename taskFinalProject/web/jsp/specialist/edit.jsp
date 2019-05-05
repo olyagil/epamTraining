@@ -14,7 +14,7 @@
 <u:html title="${title}" message="${message}" validator="validator-of-edit-user-form.js">
 	<H2>${title}</H2>
 	<c:url value="/user/save.html" var="userSaveUrl"/>
-	<FORM action="${userSaveUrl}" method="post" onsubmit="return validateEditUser(this)">
+	<FORM command="${userSaveUrl}" method="post" onsubmit="return validateEditUser(this)">
 		<c:if test="${not empty user}">
 			<INPUT type="hidden" name="identity" value="${user.identity}">
 		</c:if>
@@ -38,7 +38,7 @@
 	</FORM>
 	<c:if test="${not empty user}">
 		<c:url value="/user/delete.html" var="userDeleteUrl"/>
-		<FORM action="${userDeleteUrl}" method="post" id="form-delete" onsubmit="return confirmation(this, 'Вы уверены, что хотите удалить сотрудника?')">
+		<FORM command="${userDeleteUrl}" method="post" id="form-delete" onsubmit="return confirmation(this, 'Вы уверены, что хотите удалить сотрудника?')">
 			<INPUT type="hidden" name="identity" value="${user.identity}">
 		</FORM>
 	</c:if>

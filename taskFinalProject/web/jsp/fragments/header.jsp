@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <title>Header</title>
@@ -36,7 +37,7 @@
                 <a class="nav-link" href="#">Специалисты</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="jsp/feedback.jsp">Отзызы</a>
+                <a class="nav-link" href="jsp/feedback.html">Отзызы</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navdroplang"
@@ -49,45 +50,76 @@
                 </div>
             </li>
             <li class="nav-item" data-toggle="modal"
-                data-target="#exampleModal">
+                data-target="#id01">
                 <a class="nav-link">Modal</a>
             </li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li class="nav-item">
-                <a class="nav-link" href="jsp/signup.jsp">Регистрация</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="jsp/login.jsp"><span class="glyphicon glyphicon-log-in"></span> Вход</a>
-            </li>
 
+        </ul>
+        <%--<form class="form-inline my-2 my-lg-0">--%>
+        <%--<input class="form-control mr-sm-2" type="search"--%>
+        <%--placeholder="Search" aria-label="Search">--%>
+        <%--<button class="btn btn-outline-info my-2 my-sm-0" type="submit">--%>
+        <%--Search--%>
+        <%--</button>--%>
+        <%--</form>--%>
+        <ul class="nav navbar-nav navbar-right">
+            <%--<c:if test="${authorizedUser=null}">--%>
+                <li class="nav-item">
+                    <a class="nav-link" href="jsp/signup.jsp">Регистрация</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="jsp/login.jsp"><span
+                            class="glyphicon glyphicon-log-in"></span> Вход</a>
+                </li>
+            <%--</c:if>--%>
+            <%--<c:if test="${authorizedUser!=null}">--%>
+                <li class="nav-item">
+                    <a class="nav-link" href="menu.jsp">Личный кабинет</a>
+                </li>
+            <%--</c:if>--%>
         </ul>
     </div>
 </nav>
 <!-- Модальное окно -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-     aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Заголовок
-                    модального окна</h5>
-                <button type="button" class="close" data-dismiss="modal"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Содержимое модального окна
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-info">Любая кнопка</button>
-                <button type="button" class="btn btn-secondary"
-                        data-dismiss="modal">Закрыть
-                </button>
-            </div>
+<!-- Button to open the modal login form -->
+<button onclick="document.getElementById('id01').style.display='block'">Login
+</button>
+
+<!-- The Modal -->
+<div id="id01" class="modal">
+    <span onclick="document.getElementById('id01').style.display='none'"
+          class="close" title="Close Modal">&times;</span>
+
+    <!-- Modal Content -->
+    <form class="modal-content animate" command="/action_page.php">
+        <div class="imgcontainer">
+            <img src="img_avatar2.png" alt="Avatar" class="avatar">
         </div>
-    </div>
+
+        <div class="container">
+            <label for="uname"><b>Username</b></label>
+            <input type="text" placeholder="Enter Username" name="uname"
+                   required>
+
+            <label for="psw"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="psw"
+                   required>
+
+            <button type="submit">Login</button>
+            <%--<label>--%>
+            <%--<input type="checkbox" checked="checked" name="remember">--%>
+            <%--Remember me--%>
+            <%--</label>--%>
+        </div>
+
+        <div class="container" style="background-color:#f1f1f1">
+            <button type="button"
+                    onclick="document.getElementById('id01').style.display='none'"
+                    class="cancelbtn">Cancel
+            </button>
+            <span class="psw">Forgot <a href="#">password?</a></span>
+        </div>
+    </form>
 </div>
 
 

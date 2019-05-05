@@ -8,7 +8,7 @@
 
 
 <body>
-<%@include file="header.jsp"%>
+<%@include file="fragments/header.jsp"%>
 <%--<jsp:include page="header.jsp"/>--%>
 
 <img class="img-fluid mx-auto d-block" src="img/main.jpg" alt="main">
@@ -22,7 +22,7 @@
 
 
 <%--<%@include file="footer.jsp"%>--%>
-<jsp:include page="footer.jsp"/>
+<jsp:include page="fragments/footer.jsp"/>
 </body>
 
 </html>

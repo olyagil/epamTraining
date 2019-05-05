@@ -16,7 +16,7 @@
         <c:forEach var="userInfo" items="${clients}" >
             <%--<TR onclick="submitFormById('form-${userInfo.id}')">--%>
                 <td>${userInfo.login}
-                    <FORM id="form-${userInfo.identity}" action="${userEditUrl}"
+                    <FORM id="form-${userInfo.identity}" command="${userEditUrl}"
                           method="post">
                         <INPUT type="hidden" name="id" value="${userInfo.id}">
                     </FORM>

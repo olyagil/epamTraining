@@ -4,9 +4,9 @@
     <title>Feedback</title>
 </head>
 <body>
-<jsp:include page="header.jsp"/>
+<jsp:include page="fragments/header.jsp"/>
 
 
-<%@include file="footer.jsp" %>
+<%@include file="fragments/footer.jsp" %>
 </body>
 </html>
