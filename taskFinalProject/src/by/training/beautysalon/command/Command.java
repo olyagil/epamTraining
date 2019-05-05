@@ -1,9 +1,9 @@
-package by.training.beatysalon.action;
+package by.training.beautysalon.command;
 
-import by.training.beatysalon.domain.Role;
-import by.training.beatysalon.domain.User;
-import by.training.beatysalon.exception.PersistentException;
-import by.training.beatysalon.service.ServiceFactory;
+import by.training.beautysalon.domain.Role;
+import by.training.beautysalon.domain.User;
+import by.training.beautysalon.exception.PersistentException;
+import by.training.beautysalon.service.ServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class Action {
+public abstract class Command {
 
     private Set<Role> allowedRoles = new HashSet<>();
     private User authorizedUser;
@@ -48,7 +48,7 @@ public abstract class Action {
         this.factory = factory;
     }
 
-    abstract Forward exec(HttpServletRequest request,
+    public abstract Forward exec(HttpServletRequest request,
                           HttpServletResponse response) throws PersistentException;
 
     public static class Forward {

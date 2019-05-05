@@ -1,4 +1,4 @@
-package by.training.beatysalon.action;
+package by.training.beautysalon.command;
 
 import java.io.Serializable;
 

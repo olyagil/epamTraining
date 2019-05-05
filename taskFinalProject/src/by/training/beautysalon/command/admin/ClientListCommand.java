@@ -1,13 +1,12 @@
-package by.training.beatysalon.action.admin;
+package by.training.beautysalon.command.admin;
 
-import by.training.beatysalon.action.Action;
-import by.training.beatysalon.exception.PersistentException;
-import by.training.beatysalon.service.UserService;
+import by.training.beautysalon.exception.PersistentException;
+import by.training.beautysalon.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ClientListAction extends AdminAction {
+public class ClientListCommand extends AdminCommand {
 
     @Override
     public Forward exec(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
