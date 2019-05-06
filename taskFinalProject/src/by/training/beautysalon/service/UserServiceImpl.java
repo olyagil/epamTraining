@@ -1,8 +1,9 @@
-package by.training.beatysalon.service;
+package by.training.beautysalon.service;
 
-import by.training.beatysalon.dao.UserDao;
-import by.training.beatysalon.domain.User;
-import by.training.beatysalon.exception.PersistentException;
+import by.training.beautysalon.dao.UserDao;
+import by.training.beautysalon.domain.User;
+import by.training.beautysalon.exception.PersistentException;
+import by.training.beautysalon.service.impl.UserService;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -25,7 +26,7 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
     @Override
     public User findByLoginAndPassword(String login, String password) throws PersistentException {
         UserDao userDao = transaction.createDao(UserDao.class);
-        return userDao.read(login, password);
+        return userDao.read(login, md5(password));
     }
 
     @Override

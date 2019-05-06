@@ -1,7 +1,8 @@
-package by.training.beatysalon.service;
+package by.training.beautysalon.service.impl;
 
-import by.training.beatysalon.domain.User;
-import by.training.beatysalon.exception.PersistentException;
+import by.training.beautysalon.domain.User;
+import by.training.beautysalon.exception.PersistentException;
+import by.training.beautysalon.service.impl.Service;
 
 import java.util.List;
 

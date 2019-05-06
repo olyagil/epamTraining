@@ -1,6 +1,6 @@
-package by.training.beatysalon.service;
+package by.training.beautysalon.service;
 
-import by.training.beatysalon.exception.PersistentException;
+import by.training.beautysalon.exception.PersistentException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

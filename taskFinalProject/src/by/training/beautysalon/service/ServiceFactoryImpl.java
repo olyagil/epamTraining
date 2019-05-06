@@ -1,8 +1,11 @@
-package by.training.beatysalon.service;
+package by.training.beautysalon.service;
 
-import by.training.beatysalon.dao.Transaction;
-import by.training.beatysalon.dao.TransactionFactory;
-import by.training.beatysalon.exception.PersistentException;
+import by.training.beautysalon.dao.Transaction;
+import by.training.beautysalon.dao.TransactionFactory;
+import by.training.beautysalon.exception.PersistentException;
+import by.training.beautysalon.service.impl.Service;
+import by.training.beautysalon.service.impl.ServiceFactory;
+import by.training.beautysalon.service.impl.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,9 +21,12 @@ public class ServiceFactoryImpl implements ServiceFactory {
 
     static {
         SERVICES.put(UserService.class, UserServiceImpl.class);
+//        SERVICES.put(ClientService.class, ClientServiceImpl.class);
+//        SERVICES.put(ServiceService.class, ServiceServiceImpl.class);
+
     }
 
-    public TransactionFactory factory;
+    private TransactionFactory factory;
 
     public ServiceFactoryImpl(TransactionFactory factory)
             throws PersistentException {

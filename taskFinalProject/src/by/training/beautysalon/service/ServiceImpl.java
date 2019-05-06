@@ -1,6 +1,7 @@
-package by.training.beatysalon.service;
+package by.training.beautysalon.service;
 
-import by.training.beatysalon.dao.Transaction;
+import by.training.beautysalon.dao.Transaction;
+import by.training.beautysalon.service.impl.Service;
 
 public abstract class ServiceImpl implements Service {
 
