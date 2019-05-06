@@ -1,14 +1,16 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>SighUp</title>
+    <title>SignUp</title>
+    <link rel="stylesheet" href="../css/signup.css" type="text/css">
 </head>
 <body>
 <jsp:include page="fragments/header.jsp"/>
-
-<form command="/controller" style="border:1px solid #ccc">
+<c:url value="/signup.html" var="signupUrl"/>
+<form action="${signupUrl}" style="border:1px solid #ccc">
     <div class="container">
-        </br></br></br> <h1>Sign Up Регистрация</h1>
+        <h1>Sign Up Регистрация</h1>
         <p>Please fill in this form to create an account.</p>
         <hr>
 
@@ -30,7 +32,8 @@
         <input type="text" placeholder="Введите фамилию" name="surname"
                required>
         <label for="patronymic"><b>*Patronymic</b></label>
-        <input type="text" placeholder="Введите отчество" name="patronymic" required>
+        <input type="text" placeholder="Введите отчество" name="patronymic"
+               required>
 
         <label for="phone"><b>*Phone</b></label>
         <input type="text" placeholder="Введите мобильный телефон" name="phone"
@@ -45,7 +48,7 @@
                accept="image/png">
 
         <div class="clearfix">
-            <button type="button" class="cancelbtn">Cancel</button>
+            <%--<button type="button" class="cancelbtn">Cancel</button>--%>
             <button type="submit" class="signupbtn">Sign Up</button>
         </div>
     </div>

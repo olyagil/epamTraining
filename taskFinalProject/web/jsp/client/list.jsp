@@ -11,17 +11,17 @@
             <th>Login</th>
             <th>Role</th>
         </tr>
-        <%--<c:url value="/user/edit.html" var="userEditUrl"/>--%>
+            <%--<c:url value="/user/edit.html" var="userEditUrl"/>--%>
 
-        <c:forEach var="userInfo" items="${clients}" >
+        <c:forEach var="userInfo" items="${clients}">
             <%--<TR onclick="submitFormById('form-${userInfo.id}')">--%>
-                <td>${userInfo.login}
-                    <FORM id="form-${userInfo.identity}" command="${userEditUrl}"
-                          method="post">
-                        <INPUT type="hidden" name="id" value="${userInfo.id}">
-                    </FORM>
-                </td>
-                <td>${userInfo.role}</td>
+            <td>${userInfo.login}
+                <FORM id="form-${userInfo.identity}" action="${userEditUrl}"
+                      method="post">
+                    <INPUT type="hidden" name="id" value="${userInfo.id}">
+                </FORM>
+            </td>
+            <td>${userInfo.role}</td>
             <td>${userInfo.name}</td>
             </TR>
         </c:forEach>

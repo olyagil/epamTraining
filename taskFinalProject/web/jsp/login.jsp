@@ -6,15 +6,16 @@
     <title>Login</title>
 </head>
 <body>
-<header>
-    <%@include file="fragments/header.jsp" %>
-</header>
+<jsp:include page="fragments/header.jsp"/>
+<%--<%@include file="fragments/header.jsp" %>--%>
 <div class="container">
 
-    <h2>Вход в систему</h2>
+    <h1>Вход в систему</h1>
     <c:url value="/login.html" var="loginUrl"/>
-    <form command="${loginUrl}" class="needs-validation" novalidate
+
+    <form action="${loginUrl}" class="needs-validation" novalidate
           method="post">
+
         <div class="form-group">
             <label for="login">Имя пользователя:</label>
             <input type="text" class="form-control" id="login"

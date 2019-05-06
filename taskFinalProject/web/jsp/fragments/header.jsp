@@ -63,7 +63,7 @@
         <%--</button>--%>
         <%--</form>--%>
         <ul class="nav navbar-nav navbar-right">
-            <%--<c:if test="${authorizedUser=null}">--%>
+            <c:if test="${authorizedUser==null}">
                 <li class="nav-item">
                     <a class="nav-link" href="jsp/signup.jsp">Регистрация</a>
                 </li>
@@ -71,12 +71,12 @@
                     <a class="nav-link" href="jsp/login.jsp"><span
                             class="glyphicon glyphicon-log-in"></span> Вход</a>
                 </li>
-            <%--</c:if>--%>
-            <%--<c:if test="${authorizedUser!=null}">--%>
+            </c:if>
+            <c:if test="${authorizedUser!=null}">
                 <li class="nav-item">
-                    <a class="nav-link" href="menu.jsp">Личный кабинет</a>
+                    <a class="nav-link" href="jsp/menu.jsp">Личный кабинет</a>
                 </li>
-            <%--</c:if>--%>
+            </c:if>
         </ul>
     </div>
 </nav>
@@ -91,7 +91,7 @@
           class="close" title="Close Modal">&times;</span>
 
     <!-- Modal Content -->
-    <form class="modal-content animate" command="/action_page.php">
+    <form class="modal-content animate" action="/action_page.php">
         <div class="imgcontainer">
             <img src="img_avatar2.png" alt="Avatar" class="avatar">
         </div>
