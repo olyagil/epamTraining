@@ -1,10 +1,11 @@
-package by.training.beatysalon.domain;
+package by.training.beautysalon.domain;
 
 public enum Role {
 
     ADMINISTRATOR("администратор"),
     SPECIALIST("специалист"),
-    CLIENT("клиент");
+    CLIENT("клиент"),
+    GUEST("гость");
 
     private String name;
 

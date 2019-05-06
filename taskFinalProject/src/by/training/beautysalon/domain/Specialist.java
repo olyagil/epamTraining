@@ -1,6 +1,6 @@
-package by.training.beatysalon.domain;
+package by.training.beautysalon.domain;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 public class Specialist extends UserInfo {

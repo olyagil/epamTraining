@@ -1,4 +1,4 @@
-package by.training.beatysalon.domain;
+package by.training.beautysalon.domain;
 
 public enum Specialty {
 

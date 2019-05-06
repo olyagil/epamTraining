@@ -1,4 +1,4 @@
-package by.training.beatysalon.domain;
+package by.training.beautysalon.domain;
 
 public class Service extends Entity {
     private String name;
