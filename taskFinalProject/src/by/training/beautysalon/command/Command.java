@@ -1,9 +1,9 @@
 package by.training.beautysalon.command;
 
-import by.training.beautysalon.domain.Role;
+import by.training.beautysalon.domain.enumeration.Role;
 import by.training.beautysalon.domain.User;
 import by.training.beautysalon.exception.PersistentException;
-import by.training.beautysalon.service.ServiceFactory;
+import by.training.beautysalon.service.impl.ServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -48,8 +48,8 @@ public abstract class Command {
         this.factory = factory;
     }
 
-    public abstract Forward exec(HttpServletRequest request,
-                          HttpServletResponse response) throws PersistentException;
+    public abstract Forward execute(HttpServletRequest request,
+                                 HttpServletResponse response) throws PersistentException;
 
     public static class Forward {
         private String forward;
@@ -69,20 +69,20 @@ public abstract class Command {
             return forward;
         }
 
-        public boolean isRedirect() {
-            return redirect;
-        }
-
-        public Map<String, Object> getAttributes() {
-            return attributes;
-        }
-
         public void setForward(String forward) {
             this.forward = forward;
         }
 
+        public boolean isRedirect() {
+            return redirect;
+        }
+
         public void setRedirect(boolean redirect) {
             this.redirect = redirect;
+        }
+
+        public Map<String, Object> getAttributes() {
+            return attributes;
         }
     }
 }

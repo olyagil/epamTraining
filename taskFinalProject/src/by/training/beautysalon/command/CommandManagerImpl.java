@@ -1,7 +1,7 @@
 package by.training.beautysalon.command;
 
 import by.training.beautysalon.exception.PersistentException;
-import by.training.beautysalon.service.ServiceFactory;
+import by.training.beautysalon.service.impl.ServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +16,7 @@ public class CommandManagerImpl implements CommandManager {
     @Override
     public Command.Forward execute(Command command, HttpServletRequest request, HttpServletResponse response) throws PersistentException {
         command.setFactory(factory);
-        return command.exec(request, response);
+        return command.execute(request, response);
     }
 
     @Override

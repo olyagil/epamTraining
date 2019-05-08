@@ -1,6 +1,6 @@
 package by.training.beautysalon.command;
 
-import by.training.beautysalon.domain.Role;
+import by.training.beautysalon.domain.enumeration.Role;
 
 import java.util.Arrays;
 
