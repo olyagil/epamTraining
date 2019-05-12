@@ -1,9 +1,10 @@
 package by.training.beautysalon.command;
 
+import by.training.beautysalon.dao.TransactionFactory;
+import by.training.beautysalon.domain.UserInfo;
 import by.training.beautysalon.domain.enumeration.Role;
-import by.training.beautysalon.domain.User;
 import by.training.beautysalon.exception.PersistentException;
-import by.training.beautysalon.service.impl.ServiceFactory;
+import by.training.beautysalon.service.ServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,42 +14,37 @@ import java.util.Map;
 import java.util.Set;
 
 public abstract class Command {
-
-    private Set<Role> allowedRoles = new HashSet<>();
-    private User authorizedUser;
+    private Set<Role> allowRoles = new HashSet<>();
+    private UserInfo authorizedUser;
     private String name;
-
-    public Set<Role> getAllowedRoles() {
-        return allowedRoles;
-    }
 
     protected ServiceFactory factory;
 
-    public void setAllowedRoles(Set<Role> allowedRoles) {
-        this.allowedRoles = allowedRoles;
+    public Set<Role> getAllowRoles() {
+        return allowRoles;
     }
 
-    public void setAuthorizedUser(User authorizedUser) {
-        this.authorizedUser = authorizedUser;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public User getAuthorizedUser() {
+    public UserInfo getAuthorizedUser() {
         return authorizedUser;
+    }
+
+    public void setAuthorizedUser(UserInfo authorizedUser) {
+        this.authorizedUser = authorizedUser;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void setFactory(ServiceFactory factory) {
         this.factory = factory;
     }
 
-    public abstract Forward execute(HttpServletRequest request,
+    public abstract  Forward execute(HttpServletRequest request,
                                  HttpServletResponse response) throws PersistentException;
 
     public static class Forward {

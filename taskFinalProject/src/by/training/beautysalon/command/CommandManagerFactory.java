@@ -1,6 +1,6 @@
 package by.training.beautysalon.command;
 
-import by.training.beautysalon.service.impl.ServiceFactory;
+import by.training.beautysalon.service.ServiceFactory;
 
 public class CommandManagerFactory {
 

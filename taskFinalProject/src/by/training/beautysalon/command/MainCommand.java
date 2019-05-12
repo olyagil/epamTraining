@@ -8,7 +8,8 @@ import java.util.List;
 
 public class MainCommand extends AuthorizedUserCommand {
     @Override
-    public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
+    public Command.Forward execute(HttpServletRequest request,
+                            HttpServletResponse response) throws PersistentException {
         @SuppressWarnings("unchecked")
         List<MenuItem> menu = (List<MenuItem>)request.getSession(false).getAttribute("menu");
         return new Forward(menu.get(0).getUrl());

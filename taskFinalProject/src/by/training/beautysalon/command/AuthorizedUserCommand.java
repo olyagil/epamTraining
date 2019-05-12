@@ -7,6 +7,6 @@ import java.util.Arrays;
 public abstract class AuthorizedUserCommand extends Command {
 
     public AuthorizedUserCommand() {
-        getAllowedRoles().addAll(Arrays.asList(Role.values()));
+        getAllowRoles().addAll(Arrays.asList(Role.values()));
     }
 }
