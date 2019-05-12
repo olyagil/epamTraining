@@ -10,8 +10,8 @@
             href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
 <body>
 
-<%@include file="fragments/header.jsp" %>
-<%@include file="fragments/sidebar.jsp" %>
+<%@include file="../../fragments/header.jsp" %>
+
 
 <hr>
 <div class="container bootstrap snippet">
@@ -32,15 +32,16 @@
         </div>
         <!--/col-3-->
         <div class="col-sm-9">
-
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="active">
-                    <a data-toggle="tab" href="#home">Home</a>
-                </li>
-
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="active"><a data-toggle="tab" href="#home">Home</a>
+                </li><c:forEach items="${menu}" var="item">
+                <c:url value="${item.url}"
+                       var="itemUrl"/>
+                <a href="${itemUrl}">${item.name}</a>
+            </c:forEach>
                 <c:forEach items="${menu}" var="item">
 
-                    <li><a data-toggle="tab" href="#${item.url}">${item.name}
+                    <li><a data-toggle="tab" href="${item.url}">${item.name}
                             ${item.url}</a>
                     </li>
                 </c:forEach>
@@ -148,77 +149,55 @@
                             </div>
                         </div>
                     </form>
-                </div>
-                <%--<hr>--%>
 
-                <div class="tab-pane" id="clientlist">
-                    <hr>
-                    <form class="form" action="" method="post"
-                          id="clientListForm">
-
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                <tr>
-                                    <th>Фамилия</th>
-                                    <th>Имя</th>
-                                    <th>Отчество</th>
-                                    <th>Пол</th>
-                                    <th>Телефон</th>
-                                    <th>Дата рожждения</th>
-                                    <th>Фото</th>
-                                </tr>
-                                </thead>
-                                <c:url value="/client/list.html"
-                                       var="clientListUrl"/>
-                                <c:forEach items="${clients}" var="client">
-                                    <tr>
-                                        <td><c:out
-                                                value="${client.login}"/></td>
-                                    </tr>
+                    <%--<hr>--%>
+                    <div class="tab-pane" id="settings">
 
 
-                                </c:forEach>
-                            </table>
-                        </div>
-                    </form>
-                </div>
+                        <hr>
+                        <form class="form" action="##" method="post"
+                              id="registrationForm">
 
-            </div><!--/tab-pane-->
-        </div><!--/tab-content-->
 
-    </div><!--/col-9-->
-</div><!--/row-->
+                        </form>
+                    </div>
 
-<%--<c:if test="${not empty user}">--%>
-<%--<div class="sidebar">--%>
-<%--<a class="active" href="menu.jsp">Главная</a>--%>
-<%--<c:forEach items="${menu}" var="item">--%>
-<%--<c:url value="/menu${item.url}"--%>
-<%--var="itemUrl"/>--%>
-<%--<a href="${itemUrl}">${item.name}</a>--%>
-<%--</c:forEach>--%>
+                </div><!--/tab-pane-->
+            </div><!--/tab-content-->
 
-<%--<c:url value="/jsp/account/edit.jsp"--%>
-<%--var="accountEditUrl"/>--%>
-<%--<a href="${accountEditUrl}">Редактирование профиля</a>--%>
+        </div><!--/col-9-->
+    </div><!--/row-->
+    <br>
+    <br>
+    <c:if test="${not empty user}">
+    <div class="sidebar">
+        <a class="active" href="menu.jsp">Главная</a>
+            <c:forEach items="${menu}" var="item">
+                <c:url value="/menu${item.url}"
+                       var="itemUrl"/>
+                <a href="${itemUrl}">${item.name}</a>
+            </c:forEach>
 
-<%--<c:url value="/logout.html" var="logoutUrl"/>--%>
-<%--<a href="${logoutUrl}">Выход</a>--%>
-<%--</div>--%>
+        <c:url value="/jsp/account/edit.jsp"
+               var="accountEditUrl"/>
+        <a href="${accountEditUrl}">Редактирование профиля</a>
 
-<%--<div class="content">--%>
-<%--<br>--%>
-<%--<h3>Добро пожаловать, ${authorizedUser.login}</h3>--%>
-<%--<hr>--%>
-<%--<c:url value="account/edit.html" var="accountEditUrl"/>--%>
-<%--<form action="${accountEditUrl}" method="post">--%>
+        <c:url value="/logout.html" var="logoutUrl"/>
+        <a href="${logoutUrl}">Выход</a>
+    </div>
 
-<%--<button type="submit">Редактировать</button>--%>
-<%--</form>--%>
-<%--&lt;%&ndash;<c:import url="${item.url}"/>&ndash;%&gt;--%>
-<%--</div>--%>
-<%--</c:if>--%>
-<%--<%@include file="fragments/footer.jsp" %>--%>
+        <%--<div class="content">--%>
+        <%--<br>--%>
+        <%--<h3>Добро пожаловать, ${authorizedUser.login}</h3>--%>
+        <%--<hr>--%>
+        <%--<c:url value="account/edit.html" var="accountEditUrl"/>--%>
+        <%--<form action="${accountEditUrl}" method="post">--%>
+
+        <%--<button type="submit">Редактировать</button>--%>
+        <%--</form>--%>
+        <%--&lt;%&ndash;<c:import url="${item.url}"/>&ndash;%&gt;--%>
+        <%--</div>--%>
+    </c:if>
+    <%--<%@include file="fragments/footer.jsp" %>--%>
 </body>
 </html>

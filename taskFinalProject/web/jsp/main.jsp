@@ -3,16 +3,13 @@
 <html lang="en">
 <head>
     <title>Косметический салон</title>
-
 </head>
 
 
 <body>
 <%@include file="fragments/header.jsp" %>
-<%--<jsp:include page="header.jsp"/>--%>
-
-<img class="img-fluid mx-auto d-block" src="img/main.jpg" alt="main">
-
+<%--<jsp:include page="fragments/header.jsp"/>--%>
+<img src="img/main.jpg" alt="main"  style="width:100%">
 
 <%--<%@include file="footer.jsp"%>--%>
 <jsp:include page="fragments/footer.jsp"/>

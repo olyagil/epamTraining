@@ -4,7 +4,6 @@
 <body>
 
 <jsp:forward page="/jsp/main.jsp"/>
-<%--<jsp:forward page="/jsp/test.jsp"/>--%>
 
 </body>
 </html>
