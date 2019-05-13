@@ -7,11 +7,12 @@ import java.util.List;
 
 public interface ServiceDao extends Dao<Service> {
 
-    List<Service> readByName(String name) throws PersistentException;
+    List<Service> read(String name) throws PersistentException;
 
-//    List<Service> readBySpecialist(Integer specialistId) throws PersistentException;
+    List<Service> read() throws PersistentException;
+//    List<Transaction> readBySpecialist(Integer specialistId) throws PersistentException;
 
-    List<Service> readByPrice(double startPrice, double endPrice)
+    List<Service> read(double startPrice, double endPrice)
             throws PersistentException;
 
 }

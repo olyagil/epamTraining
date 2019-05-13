@@ -1,12 +1,17 @@
 package by.training.beautysalon.dao.mysql;
 
 import by.training.beautysalon.dao.SpecialistDao;
+import by.training.beautysalon.dao.UserInfoDao;
 import by.training.beautysalon.domain.Specialist;
+import by.training.beautysalon.domain.UserInfo;
+import by.training.beautysalon.domain.enumeration.Gender;
+import by.training.beautysalon.domain.enumeration.Role;
 import by.training.beautysalon.domain.enumeration.Specialty;
 import by.training.beautysalon.exception.PersistentException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,11 +30,21 @@ public class SpecialistDaoImpl extends BaseDaoImpl implements SpecialistDao {
             "`cabinet_number`," +
             " `salary`, `employment_date`, `specialty`)" +
             "values (?,?,?,?,?)";
-    private static final String READ_ALL = "select `name`, `surname`, `patronymic`, `phone`, `birth_date`, path_to_photo,\n" +
-            "`cabinet_number`, `salary`, `employment_date`, `specialty`\n" +
-            "from `specialists` join user_info ui on specialists.user_id = ui.user_id";
-    private static final String READ_BY_ID = "select `cabinet_number`, `salary`, `employment_date`, `specialty`\n" +
-            "from `specialists` where user_id=?";
+    private static final String READ_ALL = "select users.`id`, `login`," +
+            "`role`, `name`,  `surname`,  `patronymic`, `gender`,\n" +
+            "       `phone`, `birth_date`, `avatar`, `cabinet_number`, `salary`,\n" +
+            "       `employment_date`, `specialty`\n" +
+            "from `specialists`\n" +
+            "  join user_info ui on specialists.user_id = ui.user_id\n" +
+            "  join users users on specialists.`user_id` = users.`id` order by users.`id`";
+    private static final String READ_BY_ID = "select users.`id`, `login`," +
+            "`role`, `name`,  `surname`,  `patronymic`, `gender`,\n" +
+            "       `phone`, `birth_date`, `avatar`, `cabinet_number`, `salary`,\n" +
+            "       `employment_date`, `specialty`\n" +
+            "from `specialists`\n" +
+            "  join user_info ui on specialists.user_id = ui.user_id\n" +
+            "  join users users on specialists.`user_id` = users.`id` where " +
+            "users.`id`=?";
 
     @Override
     public List<Specialist> read() throws PersistentException {
@@ -39,7 +54,18 @@ public class SpecialistDaoImpl extends BaseDaoImpl implements SpecialistDao {
             Specialist specialist;
             while (resultSet.next()) {
                 specialist = new Specialist();
-                specialist.setCabinetNumber(resultSet.getInt("cabinet_number"));
+                specialist.setId(resultSet.getInt("users.id"));
+                specialist.setLogin(resultSet.getString("login"));
+                specialist.setRole(Role.getById(resultSet.getInt("role")));
+                specialist.setName(resultSet.getString("name"));
+                specialist.setSurname(resultSet.getString("surname"));
+                specialist.setPatronymic(resultSet.getString("patronymic"));
+                specialist.setGender(Gender.getById(resultSet.getInt("gender")));
+                specialist.setPhone(resultSet.getInt("phone"));
+                specialist.setBirthDate(resultSet.getDate("birth_date"));
+                specialist.setAvatar(resultSet.getBlob("avatar"));
+                specialist.setCabinetNumber(resultSet.getInt(
+                        "cabinet_number"));
                 specialist.setSalary(resultSet.getDouble("salary"));
                 specialist.setEmploymentDate(resultSet.getDate("employment_date"));
                 specialist.setSpecialty(Specialty.getById(resultSet.getInt(
@@ -90,11 +116,19 @@ public class SpecialistDaoImpl extends BaseDaoImpl implements SpecialistDao {
                 if (resultSet.next()) {
                     specialist = new Specialist();
                     specialist.setId(id);
+                    specialist.setLogin(resultSet.getString("login"));
+                    specialist.setRole(Role.getById(resultSet.getInt("role")));
+                    specialist.setName(resultSet.getString("name"));
+                    specialist.setSurname(resultSet.getString("surname"));
+                    specialist.setPatronymic(resultSet.getString("patronymic"));
+                    specialist.setGender(Gender.getById(resultSet.getInt("gender")));
+                    specialist.setPhone(resultSet.getInt("phone"));
+                    specialist.setBirthDate(resultSet.getDate("birth_date"));
+                    specialist.setAvatar(resultSet.getBlob("avatar"));
                     specialist.setCabinetNumber(resultSet.getInt(
                             "cabinet_number"));
                     specialist.setSalary(resultSet.getDouble("salary"));
-                    specialist.setEmploymentDate(resultSet.getDate(
-                            "employment_date"));
+                    specialist.setEmploymentDate(resultSet.getDate("employment_date"));
                     specialist.setSpecialty(Specialty.getById(resultSet.getInt(
                             "specialty")));
 

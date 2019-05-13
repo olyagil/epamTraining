@@ -1,6 +1,5 @@
 package by.training.beautysalon.dao.mysql;
 
-import by.training.beautysalon.dao.BillDao;
 import by.training.beautysalon.domain.Bill;
 import by.training.beautysalon.domain.Service;
 import by.training.beautysalon.domain.Specialist;
@@ -15,12 +14,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BillDaoImpl extends BaseDaoImpl implements BillDao {
+public class BillDaoImpl extends BaseDaoImpl  {
     private static final String SQL = "insert into `talons` (`id`, `service_id`,"
             + " `specialist_id`, `client_id`, `reception_date`, `status`) "
             + "VALUES (?,?,?,?,?,?)";
 
-    @Override
     public Integer create(Bill bill) throws PersistentException {
         ResultSet resultSet = null;
         try (PreparedStatement statement = connection.prepareStatement(SQL,
@@ -44,22 +42,18 @@ public class BillDaoImpl extends BaseDaoImpl implements BillDao {
         return null;
     }
 
-    @Override
     public Bill read(Integer id) throws PersistentException {
         return null;
     }
 
-    @Override
     public void update(Bill entity) throws PersistentException {
 
     }
 
-    @Override
     public void delete(Integer id) throws PersistentException {
 
     }
 
-    @Override
     public List<Bill> readBySpecialist(Integer specialistId) throws PersistentException {
         String sql = "select `id`, `service_id`, `client_id`, " +
                 "`reception_date`, `status` from `talons` where " +
@@ -97,12 +91,10 @@ public class BillDaoImpl extends BaseDaoImpl implements BillDao {
         }
     }
 
-    @Override
     public List<Bill> readByService(Integer serviceId) throws PersistentException {
         return null;
     }
 
-    @Override
     public List<Bill> readByReceptionDate() throws PersistentException {
         return null;
     }

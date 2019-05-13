@@ -18,7 +18,12 @@ import java.util.List;
 
 public class FeedbackDaoImpl extends BaseDaoImpl implements FeedbackDao {
     private static final Logger LOGGER = LogManager.getLogger();
-
+    private static final String READ_ALL = "select  client.`name`, " +
+            "client.`surname`, specialist.`surname`, specialist.`name` ,\n" +
+            "      `date`, `review`\n" +
+            "from `feedback`join specialists on feedback.specialist_id = specialists.user_id\n" +
+            "  join user_info specialist on specialists.user_id = specialist.user_id\n" +
+            "  join user_info client on feedback.client_id = client.user_id";
     private static final String UPDATE_FEEDBACK = "update `feedback` set  `client_id`=?, `specialist_id`=?, `date`=?, `review`=?\n" +
             "where `id`=?";
     private static final String READ_FEEDBACK_BY_ID = "select `id`, `client_id`, `specialist_id`, `date`, " +
@@ -37,6 +42,11 @@ public class FeedbackDaoImpl extends BaseDaoImpl implements FeedbackDao {
             "join user_info specialist on specialists.user_id = specialist.user_id\n" +
             "join user_info client on feedback.client_id = client.user_id\n" +
             "where `date`=?";
+
+    @Override
+    public List<Feedback> readByClientId(Integer id) throws PersistentException {
+        return null;
+    }
 
     @Override
     public List<Feedback> readBySpecialist(Integer specialistId) throws PersistentException {
@@ -70,8 +80,7 @@ public class FeedbackDaoImpl extends BaseDaoImpl implements FeedbackDao {
     }
 
     @Override
-    public List<Feedback> readByDate(Date date) throws PersistentException {
-
+    public List<Feedback> read(Date date) throws PersistentException {
         try (PreparedStatement statement = connection.prepareStatement(READ_FEEDBACK_BY_DATE)) {
             statement.setDate(1, date);
             List<Feedback> feedbackList;
@@ -82,20 +91,47 @@ public class FeedbackDaoImpl extends BaseDaoImpl implements FeedbackDao {
                     feedback = new Feedback();
                     UserInfo client = new UserInfo();
                     Specialist specialist = new Specialist();
-
                     client.setId(resultSet.getInt("client_id"));
                     specialist.setId(resultSet.getInt("specialist_id"));
-
                     feedback.setClient(client);
                     feedback.setSpecialist(specialist);
                     feedback.setDate(date);
                     feedback.setReview(resultSet.getString("review"));
-
                     feedbackList.add(feedback);
                 }
                 return feedbackList;
             }
         } catch (SQLException e) {
+            throw new PersistentException(e);
+        }
+    }
+
+    @Override
+    public List<Feedback> read() throws PersistentException {
+
+        try (PreparedStatement statement =
+                     connection.prepareStatement(READ_ALL);
+             ResultSet resultSet = statement.executeQuery()) {
+            List<Feedback> feedbackList = new ArrayList<>();
+            Feedback feedback;
+            while (resultSet.next()) {
+                feedback = new Feedback();
+                UserInfo client = new UserInfo();
+                Specialist specialist = new Specialist();
+                client.setSurname(resultSet.getString("client.name"));
+                client.setName(resultSet.getString("client.surname"));
+                specialist.setSurname(resultSet.getString("specialist.name"));
+                specialist.setSurname(resultSet.getString("specialist" +
+                        ".surname"));
+                feedback.setClient(client);
+                feedback.setSpecialist(specialist);
+                feedback.setDate(resultSet.getDate("date"));
+                feedback.setReview(resultSet.getString("review"));
+                feedbackList.add(feedback);
+            }
+            return feedbackList;
+        } catch (SQLException e) {
+            LOGGER.error("Can't find all feedback from db", e);
             throw new PersistentException(e);
         }
     }

@@ -2,7 +2,7 @@ package by.training.beautysalon.dao.mysql;
 
 import by.training.beautysalon.dao.Transaction;
 import by.training.beautysalon.dao.TransactionFactory;
-import by.training.beautysalon.dao.pool.ConnectionPool;
+import by.training.beautysalon.dao.connection.ConnectionPool;
 import by.training.beautysalon.exception.PersistentException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,9 +32,10 @@ public class TransactionFactoryImpl implements TransactionFactory {
     @Override
     public void close() {
         try {
+            LOGGER.debug("Trying close connection");
             connection.close();
         } catch (SQLException e) {
-
+            LOGGER.error("Can't close the connection " + e);
         }
     }
 }

@@ -5,12 +5,14 @@ import by.training.beautysalon.exception.PersistentException;
 
 import java.util.List;
 
-public interface UserInfoDao extends Dao<UserInfo>{
-
-//    User readById(Integer id) throws PersistentException;
+public interface UserInfoDao extends Dao<UserInfo> {
 
     List<UserInfo> read() throws PersistentException;
 
-//    List<UserInfo> read(String search) throws PersistentException;
+    UserInfo read(Integer id) throws PersistentException;
+
+    UserInfo read(String login, String password) throws PersistentException;
+
+//    List<UserInfo> find(String search) throws PersistentException;
 
 }
