@@ -26,7 +26,7 @@
         <c:url value="/account/service/save.html" var="accountEditUrl"/>
         <form action="${accountEditUrl}" class="row">
             <div class="col-md-6">
-
+                <input type="hidden" value="${service.id}" name="id">
                 <div class="form-group">
                     <label for="name"> Name </label>
                     <input type="text" class="form-control"
@@ -74,13 +74,14 @@
                 </div>
             </div>
         </form>
+
         <c:if test="${not empty service}">
             <c:url value="/account/service/delete.html"
                    var="serviceDeleteUrl"/>
-            <form action="${serviceDeleteUrl}" method="post">
-                <button class="btn btn-lg" type="submit"
-                        name="id"
-                        value="${service.id}">Удалить
+
+            <form action="${serviceDeleteUrl}" method="get">
+                <input type="hidden" value="${service.id}" name="id">
+                <button class="btn btn-lg" type="submit">Удалить
                 </button>
             </form>
         </c:if>

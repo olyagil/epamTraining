@@ -199,7 +199,7 @@
 <%--<a href="${itemUrl}">${item.name}</a>--%>
 <%--</c:forEach>--%>
 
-<%--<c:url value="/jsp/account/edit.jsp"--%>
+<%--<c:url value="/jsp/account/info.jsp"--%>
 <%--var="accountEditUrl"/>--%>
 <%--<a href="${accountEditUrl}">Редактирование профиля</a>--%>
 
