@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ServiceListCommand extends Command {
+public class ServiceListCommand extends AdminCommand {
     private static final Logger LOGGER = LogManager.getLogger();
 
     @Override

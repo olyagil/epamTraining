@@ -1,23 +1,48 @@
 package by.training.beautysalon.command.admin;
 
-import by.training.beautysalon.command.Command;
+import by.training.beautysalon.domain.User;
 import by.training.beautysalon.exception.PersistentException;
-import by.training.beautysalon.service.UserInfoService;
+import by.training.beautysalon.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
-public class ClientListCommand extends Command {
+public class ClientListCommand extends AdminCommand {
     private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public Forward execute(HttpServletRequest request,
-                                  HttpServletResponse response) throws PersistentException {
-        UserInfoService service = factory.getService(UserInfoService.class);
-        request.setAttribute("clients", service.find());
-        LOGGER.debug("Get list of users: " + service.find());
+                           HttpServletResponse response) throws PersistentException {
+        UserService service = factory.getService(UserService.class);
+
+
+//        int currentPage = Integer.valueOf(request.getParameter("currentPage"));
+//        int recordsPerPage = Integer.valueOf(request.getParameter("recordsPerPage"));
+
+        if (request.getParameter("searchLogin") != null) {
+            LOGGER.debug("searchLogin " + request.getAttribute("searchLogin"));
+            String login = request.getParameter("searchLogin");
+            request.setAttribute("clients", service.find(login));
+            request.setAttribute("login", login);
+
+            LOGGER.debug("Client with ths login # " + login + " : " + service.find(login));
+        } else {
+            List<User> userList = service.find();
+            request.setAttribute("clients", userList);
+            LOGGER.debug("Get list of users: " + userList);
+//        int rows = service.getNumberOfRows();
+//        int nOfPages = rows / recordsPerPage;
+//        if (nOfPages % recordsPerPage > 0) {
+//            nOfPages++;
+//        }
+
+//        request.setAttribute("noOfPages", nOfPages);
+//        request.setAttribute("currentPage", currentPage);
+//        request.setAttribute("recordsPerPage", recordsPerPage);
+        }
         return null;
     }
 }
