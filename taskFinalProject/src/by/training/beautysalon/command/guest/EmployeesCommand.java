@@ -1,4 +1,4 @@
-package by.training.beautysalon.command.admin;
+package by.training.beautysalon.command.guest;
 
 import by.training.beautysalon.command.Command;
 import by.training.beautysalon.exception.PersistentException;
@@ -9,15 +9,15 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class SpecialistListCommand extends Command {
+public class EmployeesCommand extends Command {
     private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
-
+//        Forward forward = new Forward("/employees.jsp", false);
         SpecialistService service = factory.getService(SpecialistService.class);
         request.setAttribute("specialists", service.find());
-        LOGGER.debug("Get list of specialists");
+        LOGGER.info("Get list of specialists");
         return null;
     }
 }

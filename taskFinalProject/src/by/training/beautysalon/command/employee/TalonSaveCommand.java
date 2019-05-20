@@ -1,8 +1,8 @@
-package by.training.beautysalon.command.specialist;
+package by.training.beautysalon.command.employee;
 
 import by.training.beautysalon.command.Command;
+import by.training.beautysalon.domain.Employee;
 import by.training.beautysalon.domain.Service;
-import by.training.beautysalon.domain.Specialist;
 import by.training.beautysalon.domain.Talon;
 import by.training.beautysalon.domain.User;
 import by.training.beautysalon.exception.PersistentException;
@@ -24,14 +24,16 @@ public class TalonSaveCommand extends Command {
         Talon talon = new Talon();
         Service serv = new Service();
         User client = new User();
-        Specialist specialist = new Specialist();
+        Employee employee = new Employee();
         String id = request.getParameter("id");
         String serviceId = request.getParameter("serviceId");
         String clientId = request.getParameter("clientId");
         String specialistId = request.getParameter("specialistId");
-
+        if (id != null) {
+           talon.setId(Integer.parseInt(id));
+        }
         if (specialistId != null) {
-            specialist.setId(Integer.parseInt(specialistId));
+            employee.setId(Integer.parseInt(specialistId));
         }
         if (serviceId != null) {
             serv.setId(Integer.parseInt(serviceId));
@@ -39,15 +41,20 @@ public class TalonSaveCommand extends Command {
         if (clientId != null) {
             client.setId(Integer.parseInt(clientId));
         }
+
         talon.setService(serv);
         talon.setClient(client);
-        talon.setSpecialist(specialist);
+        talon.setEmployee(employee);
         LOGGER.debug("CLIENT ID: " + talon.getClient().getId() + "SERVICE " +
                 "ID: " + talon.getService().getId()
-                + "SPECIALIST ID: " + talon.getSpecialist().getId());
+                + "SPECIALIST ID: " + talon.getEmployee().getId());
         LOGGER.debug("DATE_LOCAL TIME: " + request.getParameter("receptionDate"));
+//        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        Date date = Date.valueOf(request.getParameter(
+//                "receptionDate"));
         talon.setReceptionDate(Timestamp.valueOf((request.getParameter(
-                "receptionDate") + ":00.0").replace("T", " ")));
+                "receptionDate")+":00.0").replace("T", " ")));
+//        talon.setReceptionDate(date.getTime());
         talon.setStatus(Boolean.valueOf(request.getParameter("status")));
         service.save(talon);
         forward.getAttributes().put("id", talon.getId());

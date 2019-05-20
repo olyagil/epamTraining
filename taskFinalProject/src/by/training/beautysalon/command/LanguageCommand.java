@@ -15,11 +15,11 @@ public class LanguageCommand extends Command {
     @Override
     public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
 
-        String locale = request.getParameter("locale");
-        LOGGER.debug(request.getSession().getAttribute("locale"));
-        request.getSession().setAttribute("locale", locale);
-        LOGGER.debug("LOCALE: " + locale);
-        LOGGER.debug(request.getSession().getAttribute("lang"));
+        String lang = request.getParameter("lang");
+        LOGGER.debug(request.getSession(false).getAttribute("lang"));
+        request.getSession().setAttribute("lang", lang);
+        LOGGER.debug("LOCALE: " + lang);
+        LOGGER.debug(request.getSession(false).getAttribute("lang"));
         URI uri = null;
         try {
             uri = new URI(request.getHeader("referer"));

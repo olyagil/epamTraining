@@ -1,5 +1,6 @@
 package by.training.beautysalon.command.admin;
 
+import by.training.beautysalon.command.Command;
 import by.training.beautysalon.domain.User;
 import by.training.beautysalon.exception.PersistentException;
 import by.training.beautysalon.service.UserService;
@@ -10,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-public class ClientListCommand extends AdminCommand {
+public class ClientListCommand extends Command {
     private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
@@ -26,7 +27,7 @@ public class ClientListCommand extends AdminCommand {
             LOGGER.debug("searchLogin " + request.getAttribute("searchLogin"));
             String login = request.getParameter("searchLogin");
             request.setAttribute("clients", service.find(login));
-            request.setAttribute("login", login);
+            request.setAttribute("searchLogin", login);
 
             LOGGER.debug("Client with ths login # " + login + " : " + service.find(login));
         } else {

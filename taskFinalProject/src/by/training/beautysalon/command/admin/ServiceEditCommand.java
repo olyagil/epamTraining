@@ -23,6 +23,7 @@ public class ServiceEditCommand extends Command {
             ServiceService service =
                     factory.getService(ServiceService.class);
             Service serv = service.find(id);
+            LOGGER.debug("SERVICE: " + serv);
             request.setAttribute("service", serv);
 
         } catch (NumberFormatException e) {

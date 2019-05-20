@@ -1,10 +1,9 @@
 package by.training.beautysalon.command;
 
-import by.training.beautysalon.domain.UserInfo;
+import by.training.beautysalon.domain.User;
 import by.training.beautysalon.domain.enumeration.Role;
 import by.training.beautysalon.exception.PersistentException;
-import by.training.beautysalon.service.ServiceEnum;
-import by.training.beautysalon.service.UserInfoService;
+import by.training.beautysalon.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class LoginCommand extends Command {
@@ -26,19 +26,18 @@ public class LoginCommand extends Command {
         menu.put(Role.ADMINISTRATOR, new ArrayList<>(Arrays.asList(
                 new MenuItem("/client/list.html", "Список " +
                         "клиентов"),
-                new MenuItem("/specialist/list.html", "Список " +
+                new MenuItem("/employee/list.html", "Список " +
                         "сотрудников"),
                 new MenuItem("/service/list.html", "Список услуг")
         )));
         menu.put(Role.SPECIALIST, new ArrayList<>(Arrays.asList(
-                new MenuItem("/client/list.html", "Клиенты"),
-                new MenuItem("/talon/list.html", "Мои талоны")
+                new MenuItem("/account/feedback.html", "Отзывы"),
+                new MenuItem("/account/talon/list.html", "Мои талоны")
         )));
         menu.put(Role.CLIENT, new ArrayList<>(Arrays.asList(
-                new MenuItem("/talon/list.html", "Мои талоны"),
-                new MenuItem("/specialist/list.html", "Специалисты")
+                new MenuItem("/account/talons.html", "Мои талоны"),
+                new MenuItem("/account/feedback/list.html", "Отзывы")
         )));
-
     }
 
     @Override
@@ -49,19 +48,18 @@ public class LoginCommand extends Command {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         if (login != null && password != null) {
-            UserInfoService service = factory.getService(UserInfoService.class);
+            UserService service = factory.getService(UserService.class);
 
-            UserInfo user = service.find(login, password);
+            User user = service.find(login, password);
             if (user != null) {
                 HttpSession session = request.getSession();
-//                session.setAttribute("id", user.getId());
-                session.setAttribute("user", user);
+                session.setAttribute("id", user.getId());
                 session.setAttribute("role", user.getRole().getId());
                 session.setAttribute("menu", menu.get(user.getRole()));
                 LOGGER.info(String.format("user \"%s\" is logged in " +
                                 "from %s (%s:%s)", login, request.getRemoteAddr(),
                         request.getRemoteHost(), request.getRemotePort()));
-                return new Forward("/jsp/account/main.jsp");
+                return new Forward("/account/main.html");
             } else {
                 request.setAttribute("message", "Имя пользовтеля или" +
                         " пароль не опознаны");
@@ -73,9 +71,9 @@ public class LoginCommand extends Command {
         }
         return null;
     }
-//
+
 //    @Override
-//    public Set<Role> getAllowedRoles() {
+//    public Set<Role> getAllowRoles() {
 //        return null;
 //    }
 }

@@ -22,11 +22,13 @@ public class ServiceSaveCommand extends Command {
         if (id != null) {
             serv.setId(Integer.parseInt(id));
         }
+        LOGGER.debug("ID: " + id);
         serv.setName(request.getParameter("name"));
         serv.setDescription(request.getParameter("description"));
         serv.setPrice(Double.parseDouble(request.getParameter("price")));
         serv.setDuration(Double.parseDouble(request.getParameter("duration")));
         service.save(serv);
+        LOGGER.debug("SERVICE: " + serv);
         forward.getAttributes().put("id", serv.getId());
 
         return forward;
