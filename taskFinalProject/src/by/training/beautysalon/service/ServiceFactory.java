@@ -1,14 +1,40 @@
 package by.training.beautysalon.service;
 
-import by.training.beautysalon.exception.PersistentException;
-import by.training.beautysalon.service.impl.UserInfoServiceImpl;
+import by.training.beautysalon.service.impl.EmployeeServiceImpl;
+import by.training.beautysalon.service.impl.FeedbackServiceImpl;
+import by.training.beautysalon.service.impl.ServiceServiceImpl;
+import by.training.beautysalon.service.impl.TalonServiceImpl;
+import by.training.beautysalon.service.impl.UserServiceImpl;
 
-public interface ServiceFactory {
+public class ServiceFactory {
 
-    UserInfoServiceImpl getUserServiceImpl();
+    private static final ServiceFactory instance = new ServiceFactory();
 
-    <Type extends Service> Type getService(Class<Type> key)
-            throws PersistentException;
+    private ServiceFactory() {
 
-    void close();
+    }
+
+    public static ServiceFactory getInstance() {
+        return instance;
+    }
+
+    public UserServiceImpl getUserService() {
+        return new UserServiceImpl();
+    }
+
+    public EmployeeServiceImpl getEmployeeService() {
+        return new EmployeeServiceImpl();
+    }
+
+    public ServiceServiceImpl getServiceService() {
+        return new ServiceServiceImpl();
+    }
+
+    public TalonServiceImpl getTalonService() {
+        return new TalonServiceImpl();
+    }
+
+    public FeedbackServiceImpl getFeedbackService() {
+        return new FeedbackServiceImpl();
+    }
 }
