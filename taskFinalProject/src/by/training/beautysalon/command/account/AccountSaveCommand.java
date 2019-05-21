@@ -1,9 +1,10 @@
 package by.training.beautysalon.command.account;
 
 import by.training.beautysalon.command.Command;
-import by.training.beautysalon.domain.User;
-import by.training.beautysalon.domain.enumeration.Gender;
-import by.training.beautysalon.domain.enumeration.Role;
+import by.training.beautysalon.command.Forward;
+import by.training.beautysalon.entity.User;
+import by.training.beautysalon.entity.enumeration.Gender;
+import by.training.beautysalon.entity.enumeration.Role;
 import by.training.beautysalon.exception.PersistentException;
 import by.training.beautysalon.service.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -25,7 +26,8 @@ public class AccountSaveCommand extends Command {
         Integer id = (Integer) session.getAttribute("id");
         Role role = Role.getById((Integer) session.getAttribute("role"));
         User user = new User();
-        UserService service = factory.getService(UserService.class);
+//        UserService service = factory.getService(UserService.class);
+        UserService service = serviceFactory.getUserService();
 
         user.setId(id);
         String login = request.getParameter("login");

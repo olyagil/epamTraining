@@ -1,9 +1,11 @@
 package by.training.beautysalon.command.account;
 
 import by.training.beautysalon.command.Command;
-import by.training.beautysalon.domain.enumeration.Role;
+import by.training.beautysalon.command.Forward;
+import by.training.beautysalon.entity.enumeration.Role;
 import by.training.beautysalon.exception.PersistentException;
-import by.training.beautysalon.service.SpecialistService;
+import by.training.beautysalon.service.EmployeeService;
+import by.training.beautysalon.service.ServiceFactory;
 import by.training.beautysalon.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,12 +24,11 @@ public class AccountMainCommand extends Command {
         Integer id = (Integer) session.getAttribute("id");
         LOGGER.debug("User id: " + id + " with role: " + role);
         if (role.equals(Role.SPECIALIST)) {
-            SpecialistService specialistService =
-                    factory.getService(SpecialistService.class);
-            request.setAttribute("loggedUser", specialistService.find(id));
-            LOGGER.debug("Employee: " + specialistService.find(id));
+            EmployeeService service = ServiceFactory.getInstance().getEmployeeService();
+            request.setAttribute("loggedUser", service.find(id));
+            LOGGER.debug("Employee: " + service.find(id));
         } else {
-            UserService service = factory.getService(UserService.class);
+            UserService service = ServiceFactory.getInstance().getUserService();
             request.setAttribute("loggedUser", service.find(id));
             LOGGER.debug("User: " + service.find(id));
         }

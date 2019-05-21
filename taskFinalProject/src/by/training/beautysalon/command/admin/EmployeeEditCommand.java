@@ -1,11 +1,11 @@
 package by.training.beautysalon.command.admin;
 
 import by.training.beautysalon.command.Command;
-import by.training.beautysalon.domain.User;
-import by.training.beautysalon.domain.enumeration.Role;
-import by.training.beautysalon.domain.enumeration.Specialty;
+import by.training.beautysalon.command.Forward;
+import by.training.beautysalon.entity.User;
+import by.training.beautysalon.entity.enumeration.Specialty;
 import by.training.beautysalon.exception.PersistentException;
-import by.training.beautysalon.service.SpecialistService;
+import by.training.beautysalon.service.EmployeeService;
 import by.training.beautysalon.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,13 +22,15 @@ public class EmployeeEditCommand extends Command {
             int id = Integer.parseInt(request.getParameter("specialistId"));
             LOGGER.debug("User id: " + id);
 
-            UserService service = factory.getService(UserService.class);
-            SpecialistService specialistService =
-                    factory.getService(SpecialistService.class);
+//            UserService service = factory.getService(UserService.class);
+            UserService service = serviceFactory.getUserService();
+//            EmployeeService service =
+//                    factory.getService(EmployeeService.class);
+            EmployeeService employeeService = serviceFactory.getEmployeeService();
             User user = service.find(id);
             if (user != null) {
                 request.setAttribute("user",
-                        specialistService.find(user.getId()));
+                        employeeService.find(user.getId()));
                 request.setAttribute("specialties", Specialty.values());
             }
             LOGGER.info("Edit User " + user.getId());

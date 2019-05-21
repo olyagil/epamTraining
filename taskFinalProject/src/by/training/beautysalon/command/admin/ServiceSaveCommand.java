@@ -1,7 +1,8 @@
 package by.training.beautysalon.command.admin;
 
 import by.training.beautysalon.command.Command;
-import by.training.beautysalon.domain.Service;
+import by.training.beautysalon.command.Forward;
+import by.training.beautysalon.entity.Service;
 import by.training.beautysalon.exception.PersistentException;
 import by.training.beautysalon.service.ServiceService;
 import org.apache.logging.log4j.LogManager;
@@ -15,8 +16,8 @@ public class ServiceSaveCommand extends Command {
 
     @Override
     public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
-        Forward forward = new Forward("/account/service/edit.html");
-        ServiceService service = factory.getService(ServiceService.class);
+        Forward forward = new Forward("/service/edit.html");
+        ServiceService service = serviceFactory.getServiceService();
         Service serv = new Service();
         String id = request.getParameter("id");
         if (id != null) {
@@ -29,7 +30,7 @@ public class ServiceSaveCommand extends Command {
         serv.setDuration(Double.parseDouble(request.getParameter("duration")));
         service.save(serv);
         LOGGER.debug("SERVICE: " + serv);
-        forward.getAttributes().put("id", serv.getId());
+//        forward.getAttributes().put("id", serv.getId());
 
         return forward;
     }

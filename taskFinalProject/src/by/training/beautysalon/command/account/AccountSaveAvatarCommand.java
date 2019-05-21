@@ -1,7 +1,8 @@
 package by.training.beautysalon.command.account;
 
 import by.training.beautysalon.command.Command;
-import by.training.beautysalon.domain.User;
+import by.training.beautysalon.command.Forward;
+import by.training.beautysalon.entity.User;
 import by.training.beautysalon.exception.PersistentException;
 import by.training.beautysalon.service.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -24,7 +25,8 @@ public class AccountSaveAvatarCommand extends Command {
         Integer id = (Integer) request.getSession().getAttribute("id");
         User user = new User();
         user.setId(id);
-        UserService service = factory.getService(UserService.class);
+//        UserService service = factory.getService(UserService.class);
+        UserService service = serviceFactory.getUserService();
         try {
             Part filePart = request.getPart("img");
             InputStream stream = filePart.getInputStream();

@@ -14,7 +14,7 @@ import by.training.beautysalon.command.guest.ServicesCommand;
 import by.training.beautysalon.command.guest.EmployeesCommand;
 
 public enum CommandEnum {
-
+    UNKNOWN_COMMAND(new UnknownCommand()),
     //COMMON COMMANDS
     LOGIN(new LoginCommand()),
     SIGNUP(new SignUpCommand()),
@@ -29,14 +29,15 @@ public enum CommandEnum {
 
     //ACCOUNT'S COMMANDS
     ACCOUNT_SAVE_AVATAR(new AccountSaveAvatarCommand()),
+    ACCOUNT_SAVE_INFO(new AccountSaveCommand()),
     //    ACCOUNT_SAVE_PASSWORD(new AccountSavePasswordCommand()),
     ACCOUNT_EDIT_INFO(new AccountEditCommand()),
     ACCOUNT_EDIT_PASSWORD(new AccountEditCommand()),
     ACCOUNT_MAIN(new AccountMainCommand()),
-    ACCOUNT_SAVE(new AccountSaveCommand()),
 
     //ADMIN'S COMMANDS
     CLIENT_LIST(new ClientListCommand()),
+//    CLIENT_ADD(new ClientAddCommand()),
 
     EMPLOYEE_LIST(new EmployeeListCommand()),
     EMPLOYEE_EDIT(new EmployeeEditCommand()),
@@ -45,6 +46,7 @@ public enum CommandEnum {
     //ADMIN'S COMMAND FOR BOTH USER AND EMPLOYEE
     USER_DELETE(new UserDeleteCommand()),
     USER_VIEW(new UserViewCommand()),
+
 
     //SERVICE'S COMMANDS
     SERVICE_LIST(new ServiceListCommand()),

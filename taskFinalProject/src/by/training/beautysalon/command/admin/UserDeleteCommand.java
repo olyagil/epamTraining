@@ -1,6 +1,7 @@
 package by.training.beautysalon.command.admin;
 
 import by.training.beautysalon.command.Command;
+import by.training.beautysalon.command.Forward;
 import by.training.beautysalon.exception.PersistentException;
 import by.training.beautysalon.service.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -14,9 +15,10 @@ public class UserDeleteCommand extends Command {
 
     @Override
     public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
-        Forward forward = new Forward("/account/client/list.html");
+        Forward forward = new Forward("/client/list.html");
         try {
-            UserService service = factory.getService(UserService.class);
+//            UserService service = factory.getService(UserService.class);
+            UserService service = serviceFactory.getUserService();
             LOGGER.debug("ID: " + request.getParameter("id"));
             Integer id = Integer.parseInt(request.getParameter("id"));
             service.delete(id);

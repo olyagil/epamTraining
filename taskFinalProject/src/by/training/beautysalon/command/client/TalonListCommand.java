@@ -1,6 +1,7 @@
 package by.training.beautysalon.command.client;
 
 import by.training.beautysalon.command.Command;
+import by.training.beautysalon.command.Forward;
 import by.training.beautysalon.exception.PersistentException;
 import by.training.beautysalon.service.TalonService;
 import org.apache.logging.log4j.LogManager;
@@ -17,7 +18,8 @@ public class TalonListCommand extends Command {
     @Override
     public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
         try {
-            TalonService service = factory.getService(TalonService.class);
+//            TalonService service = factory.getService(TalonService.class);
+            TalonService service = serviceFactory.getTalonService();
             HttpSession session = request.getSession();
             LOGGER.debug("TALON ID: " + session.getAttribute("id"));
             Integer id = (Integer) session.getAttribute("id");

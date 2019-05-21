@@ -1,6 +1,7 @@
 package by.training.beautysalon.command.guest;
 
 import by.training.beautysalon.command.Command;
+import by.training.beautysalon.command.Forward;
 import by.training.beautysalon.exception.PersistentException;
 import by.training.beautysalon.service.ServiceService;
 
@@ -11,8 +12,9 @@ public class ServicesCommand extends Command {
     @Override
     public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
 
-        ServiceService service =
-                factory.getService(ServiceService.class);
+//        ServiceService service =
+//                factory.getService(ServiceService.class);
+        ServiceService service = serviceFactory.getServiceService();
         request.setAttribute("services", service.find());
         return null;
     }

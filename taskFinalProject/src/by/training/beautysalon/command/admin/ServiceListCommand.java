@@ -1,6 +1,7 @@
 package by.training.beautysalon.command.admin;
 
 import by.training.beautysalon.command.Command;
+import by.training.beautysalon.command.Forward;
 import by.training.beautysalon.exception.PersistentException;
 import by.training.beautysalon.service.ServiceService;
 import org.apache.logging.log4j.LogManager;
@@ -23,7 +24,8 @@ public class ServiceListCommand extends Command {
             currentPage = DEFAULT_CURRENT_PAGE;
         }
 
-        ServiceService service = factory.getService(ServiceService.class);
+//        ServiceService service = factory.getService(ServiceService.class);
+        ServiceService service = serviceFactory.getServiceService();
 
         int rows = service.getNumberOfRows();
         int nOfPages = rows / RECORDS_PER_PAGE;

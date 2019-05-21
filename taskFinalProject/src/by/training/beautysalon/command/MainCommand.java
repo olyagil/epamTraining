@@ -9,7 +9,7 @@ import java.util.List;
 
 public class MainCommand extends Command {
     @Override
-    public Command.Forward execute(HttpServletRequest request,
+    public Forward execute(HttpServletRequest request,
                                    HttpServletResponse response) throws PersistentException {
         @SuppressWarnings("unchecked")
         List<MenuItem> menu = (List<MenuItem>) request.getSession(false).getAttribute("menu");

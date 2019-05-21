@@ -1,10 +1,11 @@
 package by.training.beautysalon.command.employee;
 
 import by.training.beautysalon.command.Command;
-import by.training.beautysalon.domain.Employee;
-import by.training.beautysalon.domain.Service;
-import by.training.beautysalon.domain.Talon;
-import by.training.beautysalon.domain.User;
+import by.training.beautysalon.command.Forward;
+import by.training.beautysalon.entity.Employee;
+import by.training.beautysalon.entity.Service;
+import by.training.beautysalon.entity.Talon;
+import by.training.beautysalon.entity.User;
 import by.training.beautysalon.exception.PersistentException;
 import by.training.beautysalon.service.TalonService;
 import org.apache.logging.log4j.LogManager;
@@ -20,7 +21,8 @@ public class TalonSaveCommand extends Command {
     @Override
     public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
         Forward forward = new Forward("/account/talon/edit.html");
-        TalonService service = factory.getService(TalonService.class);
+//        TalonService service = factory.getService(TalonService.class);
+       TalonService service = serviceFactory.getTalonService();
         Talon talon = new Talon();
         Service serv = new Service();
         User client = new User();
@@ -57,7 +59,7 @@ public class TalonSaveCommand extends Command {
 //        talon.setReceptionDate(date.getTime());
         talon.setStatus(Boolean.valueOf(request.getParameter("status")));
         service.save(talon);
-        forward.getAttributes().put("id", talon.getId());
+//        forward.getAttributes().put("id", talon.getId());
 
         return forward;
     }

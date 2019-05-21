@@ -1,8 +1,9 @@
 package by.training.beautysalon.command.guest;
 
 import by.training.beautysalon.command.Command;
+import by.training.beautysalon.command.Forward;
 import by.training.beautysalon.exception.PersistentException;
-import by.training.beautysalon.service.SpecialistService;
+import by.training.beautysalon.service.EmployeeService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,8 +15,7 @@ public class EmployeesCommand extends Command {
 
     @Override
     public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
-//        Forward forward = new Forward("/employees.jsp", false);
-        SpecialistService service = factory.getService(SpecialistService.class);
+        EmployeeService service = serviceFactory.getEmployeeService();
         request.setAttribute("specialists", service.find());
         LOGGER.info("Get list of specialists");
         return null;

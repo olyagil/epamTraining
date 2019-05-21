@@ -7,10 +7,15 @@ public class CommandFactory {
     private static final Logger LOGGER = LogManager.getLogger();
 
     public static Command create(String command) {
-        CommandEnum commandEnum =
-                CommandEnum.valueOf(command.toUpperCase().replaceAll("/", "_"));
+        CommandEnum commandEnum;
+        try {
+            commandEnum = CommandEnum.valueOf(command
+                    .toUpperCase()
+                    .replaceAll("/", "_"));
+        } catch (IllegalArgumentException e) {
+            LOGGER.error("Such command doesn't exist: " + command);
+            commandEnum = CommandEnum.UNKNOWN_COMMAND;
+        }
         return commandEnum.getCommand();
-//        LOGGER.error("There are not such command: " + command);
-//        throw new UnsupportedOperationException("Unknown command: " + command);
     }
 }

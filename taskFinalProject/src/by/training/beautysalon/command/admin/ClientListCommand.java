@@ -1,7 +1,8 @@
 package by.training.beautysalon.command.admin;
 
 import by.training.beautysalon.command.Command;
-import by.training.beautysalon.domain.User;
+import by.training.beautysalon.command.Forward;
+import by.training.beautysalon.entity.User;
 import by.training.beautysalon.exception.PersistentException;
 import by.training.beautysalon.service.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -17,7 +18,7 @@ public class ClientListCommand extends Command {
     @Override
     public Forward execute(HttpServletRequest request,
                            HttpServletResponse response) throws PersistentException {
-        UserService service = factory.getService(UserService.class);
+        UserService service = serviceFactory.getUserService();
 
 
 //        int currentPage = Integer.valueOf(request.getParameter("currentPage"));
@@ -34,7 +35,7 @@ public class ClientListCommand extends Command {
             List<User> userList = service.find();
             request.setAttribute("clients", userList);
             LOGGER.debug("Get list of users: " + userList);
-//        int rows = service.getNumberOfRows();
+//        int rows = service.countRows();
 //        int nOfPages = rows / recordsPerPage;
 //        if (nOfPages % recordsPerPage > 0) {
 //            nOfPages++;

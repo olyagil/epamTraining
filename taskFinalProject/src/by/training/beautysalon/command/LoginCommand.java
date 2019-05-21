@@ -1,8 +1,9 @@
 package by.training.beautysalon.command;
 
-import by.training.beautysalon.domain.User;
-import by.training.beautysalon.domain.enumeration.Role;
+import by.training.beautysalon.entity.User;
+import by.training.beautysalon.entity.enumeration.Role;
 import by.training.beautysalon.exception.PersistentException;
+import by.training.beautysalon.service.ServiceFactory;
 import by.training.beautysalon.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class LoginCommand extends Command {
@@ -48,7 +48,7 @@ public class LoginCommand extends Command {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         if (login != null && password != null) {
-            UserService service = factory.getService(UserService.class);
+            UserService service = ServiceFactory.getInstance().getUserService();
 
             User user = service.find(login, password);
             if (user != null) {
@@ -72,8 +72,4 @@ public class LoginCommand extends Command {
         return null;
     }
 
-//    @Override
-//    public Set<Role> getAllowRoles() {
-//        return null;
-//    }
 }

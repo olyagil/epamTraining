@@ -1,9 +1,9 @@
 package by.training.beautysalon.command;
 
-import by.training.beautysalon.dao.mysql.ImageUtil;
-import by.training.beautysalon.domain.User;
-import by.training.beautysalon.domain.enumeration.Gender;
-import by.training.beautysalon.domain.enumeration.Role;
+import by.training.beautysalon.utill.ImageUtill;
+import by.training.beautysalon.entity.User;
+import by.training.beautysalon.entity.enumeration.Gender;
+import by.training.beautysalon.entity.enumeration.Role;
 import by.training.beautysalon.exception.PersistentException;
 import by.training.beautysalon.service.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -28,7 +28,7 @@ public class SignUpCommand extends Command {
                            HttpServletResponse response)
             throws PersistentException {
         Forward forward = new Forward("/account/main.html");
-        UserService service = factory.getService(UserService.class);
+        UserService service = serviceFactory.getUserService();
         User user = new User();
         String avatar;
 
@@ -70,13 +70,13 @@ public class SignUpCommand extends Command {
                 user.setBirthDate(birthDate);
                 if (avatar.isEmpty()) {
                     if (user.getGender().equals(Gender.MALE)) {
-                        avatar = ImageUtil.encoderFromFile("D:" +
+                        avatar = ImageUtill.encoderFromFile("D:" +
                                 "/IdeaProjects/epamTraining" +
                                 "/taskFinalProject" +
                                 "/web/img/man_avatar.png");
 
                     } else {
-                        avatar = ImageUtil.encoderFromFile("D:" +
+                        avatar = ImageUtill.encoderFromFile("D:" +
                                 "/IdeaProjects/epamTraining" +
                                 "/taskFinalProject" +
                                 "/web/img/woman_avatar.png");
@@ -89,9 +89,9 @@ public class SignUpCommand extends Command {
                 throw new PersistentException(e);
             }
             service.save(user);
-            forward.getAttributes().put("message", "Вы успешно " +
-                    "зарегестрированы! Для продолжения введите логин и " +
-                    "пароль.");
+//            forward.getAttributes().put("message", "Вы успешно " +
+//                    "зарегестрированы! Для продолжения введите логин и " +
+//                    "пароль.");
             return forward;
         }
         return null;

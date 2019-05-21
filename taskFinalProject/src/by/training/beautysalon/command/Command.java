@@ -10,9 +10,11 @@ import java.util.Map;
 
 public abstract class Command {
     private String name;
+    protected ServiceFactory serviceFactory;
 
-    protected ServiceFactory factory;
-
+    public void setFactory(ServiceFactory serviceFactory) {
+        this.serviceFactory = serviceFactory;
+    }
 
     public String getName() {
         return name;
@@ -22,45 +24,9 @@ public abstract class Command {
         this.name = name;
     }
 
-    public void setFactory(ServiceFactory factory) {
-        this.factory = factory;
-    }
 
-    public abstract  Forward execute(HttpServletRequest request,
-                                 HttpServletResponse response) throws PersistentException;
+    public abstract Forward execute(HttpServletRequest request,
+                                    HttpServletResponse response)
+            throws PersistentException;
 
-    public static class Forward {
-        private String forward;
-        private boolean redirect;
-        private Map<String, Object> attributes = new HashMap<>();
-
-        public Forward(String forward, boolean redirect) {
-            this.forward = forward;
-            this.redirect = redirect;
-        }
-
-        public Forward(String forward) {
-            this(forward, true);
-        }
-
-        public String getForward() {
-            return forward;
-        }
-
-        public void setForward(String forward) {
-            this.forward = forward;
-        }
-
-        public boolean isRedirect() {
-            return redirect;
-        }
-
-        public void setRedirect(boolean redirect) {
-            this.redirect = redirect;
-        }
-
-        public Map<String, Object> getAttributes() {
-            return attributes;
-        }
-    }
 }

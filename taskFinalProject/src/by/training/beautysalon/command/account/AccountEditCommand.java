@@ -1,7 +1,8 @@
 package by.training.beautysalon.command.account;
 
 import by.training.beautysalon.command.Command;
-import by.training.beautysalon.domain.User;
+import by.training.beautysalon.command.Forward;
+import by.training.beautysalon.entity.User;
 import by.training.beautysalon.exception.PersistentException;
 import by.training.beautysalon.service.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -24,7 +25,7 @@ public class AccountEditCommand extends Command {
 
             LOGGER.debug("The id of the user: " + id);
 
-            UserService service = factory.getService(UserService.class);
+            UserService service = serviceFactory.getUserService();
             User user = service.find(id);
             if (user != null) {
                 request.setAttribute("user", user);

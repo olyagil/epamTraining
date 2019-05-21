@@ -1,10 +1,11 @@
 package by.training.beautysalon.command.admin;
 
 import by.training.beautysalon.command.Command;
-import by.training.beautysalon.domain.Employee;
-import by.training.beautysalon.domain.enumeration.Specialty;
+import by.training.beautysalon.command.Forward;
+import by.training.beautysalon.entity.Employee;
+import by.training.beautysalon.entity.enumeration.Specialty;
 import by.training.beautysalon.exception.PersistentException;
-import by.training.beautysalon.service.SpecialistService;
+import by.training.beautysalon.service.EmployeeService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,9 +17,10 @@ public class EmployeeSaveCommand extends Command {
     private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
-    public Command.Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
-        Forward forward = new Forward("/account/employee/list.html");
-        SpecialistService service = factory.getService(SpecialistService.class);
+    public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
+        Forward forward = new Forward("/employee/list.html");
+//        EmployeeService service = factory.getService(EmployeeService.class);
+        EmployeeService service = serviceFactory.getEmployeeService();
 
         Integer id = Integer.parseInt(request.getParameter("specialistId"));
         Employee employee = service.find(id);
