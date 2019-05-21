@@ -1,4 +1,4 @@
-package by.training.beautysalon.domain;
+package by.training.beautysalon.entity;
 
 public class Service extends Entity {
     private String name;
@@ -40,9 +40,9 @@ public class Service extends Entity {
 
     @Override
     public String toString() {
-        return "\nService{" +
-                "description='" + description + '\'' +
-                ", name='" + name + '\'' +
+        return "Service{" + super.toString() +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
                 ", price=" + price +
                 ", duration=" + duration +
                 "} ";

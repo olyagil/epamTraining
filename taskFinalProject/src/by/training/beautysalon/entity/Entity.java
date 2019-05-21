@@ -1,4 +1,4 @@
-package by.training.beautysalon.domain;
+package by.training.beautysalon.entity;
 
 import java.io.Serializable;
 

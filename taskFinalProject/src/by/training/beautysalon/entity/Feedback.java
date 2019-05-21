@@ -1,28 +1,28 @@
-package by.training.beautysalon.domain;
+package by.training.beautysalon.entity;
 
 import java.sql.Date;
 
 public class Feedback extends Entity {
 
-    private UserInfo client;
-    private Specialist specialist;
+    private User client;
+    private Employee employee;
     private Date date;
     private String review;
 
-    public UserInfo getClient() {
+    public User getClient() {
         return client;
     }
 
-    public void setClient(UserInfo client) {
+    public void setClient(User client) {
         this.client = client;
     }
 
-    public Specialist getSpecialist() {
-        return specialist;
+    public Employee getEmployee() {
+        return employee;
     }
 
-    public void setSpecialist(Specialist specialist) {
-        this.specialist = specialist;
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
     public Date getDate() {
@@ -45,7 +45,7 @@ public class Feedback extends Entity {
     public String toString() {
         return "\nFeedback{" + super.toString() +
                 "client=" + client +
-                ", specialist=" + specialist +
+                ", employee=" + employee +
                 ", date=" + date +
                 ", review='" + review + '\'' +
                 "} ";
