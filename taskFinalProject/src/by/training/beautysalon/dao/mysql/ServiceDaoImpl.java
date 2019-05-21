@@ -15,49 +15,45 @@ import java.util.List;
 
 public class ServiceDaoImpl extends BaseDaoImpl implements ServiceDao {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final String READ_ALL = "select `id`, `name`, " +
-            "`description`, `price`, `duration` " +
-            "from `services`";
-    private static final String DELETE_BY_ID = "delete from `services` where `id`=?";
-    private static final String UPDATE_SERVICE = "update `services` set `name`=?,"
-            + " `description`=?, `price`=?, `duration`=?"
-            + "where `id`=?";
-    private static final String READ_BY_ID = "select `name`, `description`, `price`, `duration` " +
-            "from `services` where `id`=?";
-    private static final String CREATE_SERVICE = "insert into `services`(`name`,"
-            + " `description`, `price`, `duration`) values (?,?,?,?)";
-    //    private static final String READ_SERVICES_BY_RANGE_OF_PRICE =
-//            "select `id`, `name`, `description`, `price`, `duration` from " +
-//                    "`services`"
-//                    + " where `price` between  ? and ? order by `price`";
-    private static final String READ_SERVICE_BY_NAME = "select `id`, `name`, " +
-            "`description`, `price`, `duration` from `services`\n" +
-            "where `name` like ? order by name";
+    private static final String SELECT_ALL = "select `id`, `name`, "
+            + "`description`, `price`, `duration` from `services`";
 
-    /**
-     * Though you can use the last() and getRow() method to first move to the
-     * last position and then return the current row, btw, you must return back
-     * to the previous position by calling beforeFirst(), otherwise, you will
-     * miss all records from ResultSet.
-     *
-     * @return
-     * @throws PersistentException
-     */
+    private static final String DELETE_BY_ID = "delete from `services` where `id`=?";
+
+    private static final String UPDATE_SERVICE = "update `services` set `name`=?,"
+            + " `description`=?, `price`=?, `duration`=? where `id`=?";
+
+    private static final String SELECT_BY_ID = "select `name`, `description`, "
+            + "`price`, `duration` from `services` where `id`=?";
+
+    private static final String INSERT_SERVICE = "insert into `services`"
+            + "(`name`, `description`, `price`, `duration`) values (?,?,?,?)";
+
+    private static final String READ_SERVICE_BY_NAME = "select `id`, `name`, "
+            + "`description`, `price`, `duration` " +
+            "from `services` where `name` like ? order by name";
+
+    private static final String COUNT_SERVICES = "select count(`id`) "
+            + "from `services`";
+    private static final String SELECT_ALL_BY_PARTS = "select `id`, `name`, "
+            + "`description`, `price`,  `duration` from `services` " +
+            "order by `id` limit ?,?";
+
+
     @Override
     public int getNumberOfRows() throws PersistentException {
-        String COUNT_ROWS = "select count(`id`) from `services`";
         int count = 0;
         try (PreparedStatement statement =
-                     connection.prepareStatement(COUNT_ROWS);
+                     connection.prepareStatement(COUNT_SERVICES);
              ResultSet resultSet = statement.executeQuery()) {
-         if(resultSet.next()){
-            count =resultSet.getInt(1);
-        } }catch (SQLException e) {
+            if (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
             LOGGER.error("Can't count the number of services", e);
             throw new PersistentException(e);
         }
         return count;
-
     }
 
     @Override
@@ -68,45 +64,29 @@ public class ServiceDaoImpl extends BaseDaoImpl implements ServiceDao {
             List<Service> serviceList;
             try (ResultSet resultSet = statement.executeQuery()) {
                 serviceList = new ArrayList<>();
-                Service service;
                 while (resultSet.next()) {
-                    service = new Service();
-                    service.setId(resultSet.getInt("id"));
-                    service.setName(resultSet.getString("name"));
-                    service.setDescription(resultSet.getString("description"));
-                    service.setPrice(resultSet.getDouble("price"));
-                    service.setDuration(resultSet.getDouble("duration"));
-                    serviceList.add(service);
+                    serviceList.add(getBuilder().build(resultSet));
                 }
                 return serviceList;
             }
         } catch (SQLException e) {
+            LOGGER.error("Can't read the services from DB", e);
             throw new PersistentException(e);
         }
     }
 
     @Override
     public List<Service> read(int currentPage, int recordsPerPage) throws PersistentException {
-        String READ_ALL_PARTS = "  select `id`, `name`, `description`, `price`, " +
-                "`duration` from `services` order by `id` limit ?,?";
         int start = currentPage * recordsPerPage - recordsPerPage;
 
         try (PreparedStatement statement =
-                     connection.prepareStatement(READ_ALL_PARTS)) {
+                     connection.prepareStatement(SELECT_ALL_BY_PARTS)) {
             statement.setInt(1, start);
             statement.setInt(2, recordsPerPage);
-            List<Service> serviceList;
             try (ResultSet resultSet = statement.executeQuery()) {
-                serviceList = new ArrayList<>();
-                Service service;
+                List<Service> serviceList = new ArrayList<>();
                 while (resultSet.next()) {
-                    service = new Service();
-                    service.setId(resultSet.getInt("id"));
-                    service.setName(resultSet.getString("name"));
-                    service.setDescription(resultSet.getString("description"));
-                    service.setPrice(resultSet.getDouble("price"));
-                    service.setDuration(resultSet.getDouble("duration"));
-                    serviceList.add(service);
+                    serviceList.add(getBuilder().build(resultSet));
                 }
                 return serviceList;
             }
@@ -120,26 +100,19 @@ public class ServiceDaoImpl extends BaseDaoImpl implements ServiceDao {
     @Override
     public List<Service> read() throws PersistentException {
         try (PreparedStatement statement =
-                     connection.prepareStatement(READ_ALL);
+                     connection.prepareStatement(SELECT_ALL);
              ResultSet resultSet = statement.executeQuery()) {
             List<Service> serviceList = new ArrayList<>();
             Service service;
             while (resultSet.next()) {
-                service = new Service();
-                service.setId(resultSet.getInt("id"));
-                service.setName(resultSet.getString("name"));
-                service.setDescription(resultSet.getString("description"));
-                service.setPrice(resultSet.getDouble("price"));
-                service.setDuration(resultSet.getDouble("duration"));
+                service = getBuilder().build(resultSet);
                 serviceList.add(service);
             }
             return serviceList;
-
         } catch (SQLException e) {
+            LOGGER.error("Can't read all services from DB", e);
             throw new PersistentException(e);
-
         }
-
     }
 
 //    @Override
@@ -173,7 +146,7 @@ public class ServiceDaoImpl extends BaseDaoImpl implements ServiceDao {
 
     @Override
     public Integer create(Service service) throws PersistentException {
-        try (PreparedStatement statement = connection.prepareStatement(CREATE_SERVICE,
+        try (PreparedStatement statement = connection.prepareStatement(INSERT_SERVICE,
                 Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, service.getName());
             statement.setString(2, service.getDescription());
@@ -197,28 +170,24 @@ public class ServiceDaoImpl extends BaseDaoImpl implements ServiceDao {
 
     @Override
     public Service read(Integer id) throws PersistentException {
-        try (PreparedStatement statement = connection.prepareStatement(READ_BY_ID)) {
+        try (PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 Service service = null;
                 if (resultSet.next()) {
-                    service = new Service();
-                    service.setId(id);
-                    service.setName(resultSet.getString("name"));
-                    service.setDescription(resultSet.getString("description"));
-                    service.setPrice(resultSet.getDouble("price"));
-                    service.setDuration(resultSet.getDouble("duration"));
+                    service = getBuilder().build(resultSet);
                 }
                 return service;
             }
         } catch (SQLException e) {
-            throw new PersistentException();
+            LOGGER.error("Can't find the service with id: " + id, e);
+            throw new PersistentException(e);
         }
 
     }
 
     @Override
-    public void update(Service service) throws PersistentException {
+    public boolean update(Service service) throws PersistentException {
         try (PreparedStatement statement =
                      connection.prepareStatement(UPDATE_SERVICE)) {
             statement.setString(1, service.getName());
@@ -227,20 +196,22 @@ public class ServiceDaoImpl extends BaseDaoImpl implements ServiceDao {
             statement.setDouble(4, service.getDuration());
             statement.setInt(5, service.getId());
             statement.executeUpdate();
+            return true;
         } catch (SQLException e) {
-            throw new PersistentException();
+            LOGGER.error("Can't update service", e);
+            throw new PersistentException(e);
         }
     }
 
     @Override
-    public void delete(Integer id) throws PersistentException {
+    public boolean delete(Integer id) throws PersistentException {
         try (PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID)) {
             statement.setInt(1, id);
             statement.executeUpdate();
+            return true;
         } catch (SQLException e) {
-            throw new PersistentException();
+            LOGGER.error("Can't delete service with id: " + id, e);
+            throw new PersistentException(e);
         }
-
-
     }
 }

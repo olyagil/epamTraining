@@ -1,6 +1,7 @@
 package by.training.beautysalon.dao;
 
-import by.training.beautysalon.domain.Bill;
+import by.training.beautysalon.builder.Builder;
+import by.training.beautysalon.builder.TalonBuilder;
 import by.training.beautysalon.domain.Talon;
 import by.training.beautysalon.exception.PersistentException;
 
@@ -12,10 +13,10 @@ public interface TalonDao extends Dao<Talon> {
 
     List<Talon> readBySpecialist(Integer specialistId) throws PersistentException;
 
-    List<Talon> readByService(Integer serviceId) throws PersistentException;
-
     List<Talon> read(Date date) throws PersistentException;
 
-    List<Talon> read();
+    default Builder<Talon> getBuilder() {
+        return new TalonBuilder();
+    }
 
 }
