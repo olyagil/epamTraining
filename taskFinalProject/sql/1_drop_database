@@ -1,1 +1,1 @@
-drop database if exists `salon_db`
+drop database if exists `salon_db`;

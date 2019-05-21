@@ -1,3 +1,4 @@
+use `salon_db`;
 insert into `users`(`id`,
                     `login`,
                     `password`,
