@@ -1,5 +1,7 @@
-package by.training.beautysalon.command;
+package by.training.beautysalon.command.comman;
 
+import by.training.beautysalon.command.Command;
+import by.training.beautysalon.command.Forward;
 import by.training.beautysalon.utill.ImageUtill;
 import by.training.beautysalon.entity.User;
 import by.training.beautysalon.entity.enumeration.Gender;
@@ -27,7 +29,7 @@ public class SignUpCommand extends Command {
     public Forward execute(HttpServletRequest request,
                            HttpServletResponse response)
             throws PersistentException {
-        Forward forward = new Forward("/account/main.html");
+        Forward forward = new Forward("/login.html");
         UserService service = serviceFactory.getUserService();
         User user = new User();
         String avatar;
@@ -84,6 +86,7 @@ public class SignUpCommand extends Command {
 
                 }
                 user.setAvatar(avatar);
+
                 LOGGER.debug("AVATAR: " + user.getAvatar());
             } catch (SQLException e) {
                 throw new PersistentException(e);

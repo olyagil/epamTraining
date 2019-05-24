@@ -5,6 +5,7 @@ import by.training.beautysalon.command.Forward;
 import by.training.beautysalon.entity.User;
 import by.training.beautysalon.exception.PersistentException;
 import by.training.beautysalon.service.UserService;
+import by.training.beautysalon.utill.PaginationUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,36 +15,36 @@ import java.util.List;
 
 public class ClientListCommand extends Command {
     private static final Logger LOGGER = LogManager.getLogger();
+    private static final int DEFAULT_CURRENT_PAGE = 1;
+    private static final int RECORDS_PER_PAGE = 5;
 
     @Override
     public Forward execute(HttpServletRequest request,
                            HttpServletResponse response) throws PersistentException {
         UserService service = serviceFactory.getUserService();
+        int currentPage;
+        if (request.getParameter("currentPage") != null) {
+            currentPage = Integer.valueOf(request.getParameter("currentPage"));
+        } else {
+            currentPage = DEFAULT_CURRENT_PAGE;
+        }
+        int nOfPages = PaginationUtil.getNumOfPages(service.countRows());
 
-
-//        int currentPage = Integer.valueOf(request.getParameter("currentPage"));
-//        int recordsPerPage = Integer.valueOf(request.getParameter("recordsPerPage"));
+        request.setAttribute("noOfPages", nOfPages);
+        request.setAttribute("currentPage", currentPage);
+        LOGGER.debug("NUM OF PAGES: " + nOfPages);
+        LOGGER.debug("rows: ", service.countRows());
+        LOGGER.debug("currentPage: ", currentPage);
 
         if (request.getParameter("searchLogin") != null) {
-            LOGGER.debug("searchLogin " + request.getAttribute("searchLogin"));
             String login = request.getParameter("searchLogin");
             request.setAttribute("clients", service.find(login));
             request.setAttribute("searchLogin", login);
-
-            LOGGER.debug("Client with ths login # " + login + " : " + service.find(login));
         } else {
-            List<User> userList = service.find();
+            List<User> userList = service.find(currentPage, RECORDS_PER_PAGE);
             request.setAttribute("clients", userList);
             LOGGER.debug("Get list of users: " + userList);
-//        int rows = service.countRows();
-//        int nOfPages = rows / recordsPerPage;
-//        if (nOfPages % recordsPerPage > 0) {
-//            nOfPages++;
-//        }
 
-//        request.setAttribute("noOfPages", nOfPages);
-//        request.setAttribute("currentPage", currentPage);
-//        request.setAttribute("recordsPerPage", recordsPerPage);
         }
         return null;
     }

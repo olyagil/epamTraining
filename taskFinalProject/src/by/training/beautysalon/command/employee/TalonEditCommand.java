@@ -18,19 +18,15 @@ public class TalonEditCommand extends Command {
     @Override
     public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
         try {
-            Integer id = (Integer) request.getAttribute("id");
-            if (id == null) {
-                id = Integer.parseInt(request.getParameter("id"));
-            }
-//            TalonService talonService = factory.getService(TalonService.class);
+            int id = Integer.parseInt(request.getParameter("id"));
             TalonService talonService = serviceFactory.getTalonService();
-//            ServiceService service = factory.getService(ServiceService.class);
             ServiceService service = serviceFactory.getServiceService();
             LOGGER.debug("ID: " + id);
             Talon talon = talonService.find(id);
             request.setAttribute("talon", talon);
             request.setAttribute("services", service.find());
-        } catch (NumberFormatException e) {
+        } catch (
+                NumberFormatException e) {
             LOGGER.error("Can't parse the id", e);
         }
         return null;

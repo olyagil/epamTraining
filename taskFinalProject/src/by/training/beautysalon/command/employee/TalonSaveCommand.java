@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 
 public class TalonSaveCommand extends Command {
@@ -20,22 +21,23 @@ public class TalonSaveCommand extends Command {
 
     @Override
     public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
-        Forward forward = new Forward("/account/talon/edit.html");
-//        TalonService service = factory.getService(TalonService.class);
-       TalonService service = serviceFactory.getTalonService();
+        Forward forward = new Forward("/account/talon/list.html");
+        HttpSession session = request.getSession();
+        TalonService service = serviceFactory.getTalonService();
         Talon talon = new Talon();
         Service serv = new Service();
         User client = new User();
         Employee employee = new Employee();
+
         String id = request.getParameter("id");
         String serviceId = request.getParameter("serviceId");
         String clientId = request.getParameter("clientId");
-        String specialistId = request.getParameter("specialistId");
+        String employeeId = request.getParameter("employeeId");
         if (id != null) {
-           talon.setId(Integer.parseInt(id));
+            talon.setId(Integer.parseInt(id));
         }
-        if (specialistId != null) {
-            employee.setId(Integer.parseInt(specialistId));
+        if (employeeId != null) {
+            employee.setId(Integer.parseInt(employeeId));
         }
         if (serviceId != null) {
             serv.setId(Integer.parseInt(serviceId));
@@ -49,18 +51,14 @@ public class TalonSaveCommand extends Command {
         talon.setEmployee(employee);
         LOGGER.debug("CLIENT ID: " + talon.getClient().getId() + "SERVICE " +
                 "ID: " + talon.getService().getId()
-                + "SPECIALIST ID: " + talon.getEmployee().getId());
-        LOGGER.debug("DATE_LOCAL TIME: " + request.getParameter("receptionDate"));
-//        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        Date date = Date.valueOf(request.getParameter(
-//                "receptionDate"));
+                + "EMPLOYEE ID: " + talon.getEmployee().getId());
         talon.setReceptionDate(Timestamp.valueOf((request.getParameter(
-                "receptionDate")+":00.0").replace("T", " ")));
-//        talon.setReceptionDate(date.getTime());
+                "receptionDate") + ":00.0")
+                .replace("T", " ")));
         talon.setStatus(Boolean.valueOf(request.getParameter("status")));
         service.save(talon);
-//        forward.getAttributes().put("id", talon.getId());
-
+        session.setAttribute("success_save_talon", "Talon is successfully" +
+                " saved!");
         return forward;
     }
 }

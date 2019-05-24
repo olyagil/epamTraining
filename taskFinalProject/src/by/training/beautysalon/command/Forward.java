@@ -1,9 +1,13 @@
 package by.training.beautysalon.command;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Forward {
 
     private String page;
     private boolean redirect;
+    private Map<String, Object> attributes = new HashMap<>();
 
     public Forward(String page) {
         this(page, true);
@@ -28,5 +32,9 @@ public class Forward {
 
     public void setRedirect(boolean redirect) {
         this.redirect = redirect;
+    }
+
+    public Map<String, Object> getAttributes() {
+        return attributes;
     }
 }

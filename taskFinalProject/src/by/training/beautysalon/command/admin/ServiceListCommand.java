@@ -4,6 +4,7 @@ import by.training.beautysalon.command.Command;
 import by.training.beautysalon.command.Forward;
 import by.training.beautysalon.exception.PersistentException;
 import by.training.beautysalon.service.ServiceService;
+import by.training.beautysalon.utill.PaginationUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,6 +18,8 @@ public class ServiceListCommand extends Command {
 
     @Override
     public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
+        ServiceService service = serviceFactory.getServiceService();
+
         int currentPage;
         if (request.getParameter("currentPage") != null) {
             currentPage = Integer.valueOf(request.getParameter("currentPage"));
@@ -24,14 +27,8 @@ public class ServiceListCommand extends Command {
             currentPage = DEFAULT_CURRENT_PAGE;
         }
 
-//        ServiceService service = factory.getService(ServiceService.class);
-        ServiceService service = serviceFactory.getServiceService();
-
-        int rows = service.getNumberOfRows();
-        int nOfPages = rows / RECORDS_PER_PAGE;
-        if (rows % RECORDS_PER_PAGE > 0) {
-            nOfPages++;
-        }
+        int rows = service.countRows();
+        int nOfPages = PaginationUtil.getNumOfPages(rows);
         request.setAttribute("noOfPages", nOfPages);
         request.setAttribute("currentPage", currentPage);
         LOGGER.debug("NUM OF PAGES: " + nOfPages);

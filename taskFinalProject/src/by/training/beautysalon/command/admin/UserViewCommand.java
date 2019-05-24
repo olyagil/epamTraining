@@ -27,7 +27,7 @@ public class UserViewCommand extends Command {
                     Role.getById(Integer.parseInt(request.getParameter("role")));
             LOGGER.debug("User id: " + id + " role: " + role);
 
-            if (role == Role.SPECIALIST) {
+            if (role == Role.EMPLOYEE) {
 //                EmployeeService service = factory.getService(EmployeeService.class);
                 EmployeeService service = serviceFactory.getEmployeeService();
                 request.setAttribute("user", service.find(id));

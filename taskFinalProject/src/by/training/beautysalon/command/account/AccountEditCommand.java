@@ -29,8 +29,10 @@ public class AccountEditCommand extends Command {
             User user = service.find(id);
             if (user != null) {
                 request.setAttribute("user", user);
+
             }
-        } catch (NumberFormatException e) {
+        } catch (
+                NumberFormatException e) {
             LOGGER.error("Can't parse the id", e);
             throw new PersistentException(e);
         }

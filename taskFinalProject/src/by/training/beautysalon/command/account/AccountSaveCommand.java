@@ -26,12 +26,10 @@ public class AccountSaveCommand extends Command {
         Integer id = (Integer) session.getAttribute("id");
         Role role = Role.getById((Integer) session.getAttribute("role"));
         User user = new User();
-//        UserService service = factory.getService(UserService.class);
         UserService service = serviceFactory.getUserService();
 
         user.setId(id);
         String login = request.getParameter("login");
-//        String password = request.getParameter("password");
         String name = request.getParameter("name");
         String surname = request.getParameter("surname");
         String patronymic = request.getParameter("patronymic");
@@ -55,6 +53,11 @@ public class AccountSaveCommand extends Command {
             user.setBirthDate(birthDate);
             LOGGER.debug("user: " + user);
             service.save(user);
+            session.setAttribute("success_save_info", "The information is " +
+                    "successful updated");
+        }else{
+            session.setAttribute("failure_save_info", "The information " +
+                    "can't be updated");
         }
 
         return forward;

@@ -23,7 +23,7 @@ public class AccountMainCommand extends Command {
         Role role = Role.getById((Integer) session.getAttribute("role"));
         Integer id = (Integer) session.getAttribute("id");
         LOGGER.debug("User id: " + id + " with role: " + role);
-        if (role.equals(Role.SPECIALIST)) {
+        if (role.equals(Role.EMPLOYEE)) {
             EmployeeService service = ServiceFactory.getInstance().getEmployeeService();
             request.setAttribute("loggedUser", service.find(id));
             LOGGER.debug("Employee: " + service.find(id));
