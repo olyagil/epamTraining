@@ -11,7 +11,6 @@ public interface UserService extends Service<User> {
 //                      int  recordsPerPage) throws PersistentException;
 
     List<User> find(String login) throws PersistentException;
-
     User find(String login, String password)
             throws PersistentException;
 

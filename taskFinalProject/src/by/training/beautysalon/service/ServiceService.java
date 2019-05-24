@@ -7,9 +7,6 @@ import java.sql.Date;
 import java.util.List;
 
 public interface ServiceService extends by.training.beautysalon.service.Service<Service> {
-    int getNumberOfRows() throws PersistentException;
-
-    List<Service> find(int currentPage, int recordsPerPage) throws PersistentException;
 
     List<Service> find(String name) throws PersistentException;
 

@@ -16,13 +16,22 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    //    @Override
-//    public List<User> find(int currentPage,
-//                              int recordsPerPage) throws PersistentException {
+    @Override
+    public int countRows() throws PersistentException {
+        UserDao dao = DaoFactory.getInstance().getUserDao();
+        return dao.countRows();
+    }
+
     @Override
     public List<User> find() throws PersistentException {
         UserDao dao = DaoFactory.getInstance().getUserDao();
         return dao.read();
+    }
+
+    public List<User> find(int currentPage, int recordsPerPage)
+            throws PersistentException {
+        UserDao dao = DaoFactory.getInstance().getUserDao();
+        return dao.read(currentPage, recordsPerPage);
     }
 
     @Override
@@ -33,7 +42,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User find(Integer id) throws PersistentException {
-      UserDao dao = DaoFactory.getInstance().getUserDao();
+        UserDao dao = DaoFactory.getInstance().getUserDao();
         return dao.read(id);
     }
 
@@ -44,7 +53,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(User user) throws PersistentException {
+    public Integer save(User user) throws PersistentException {
         UserDao dao = DaoFactory.getInstance().getUserDao();
 
         if (user.getId() != null) {
@@ -60,9 +69,10 @@ public class UserServiceImpl implements UserService {
             }
         } else {
             user.setPassword(md5(new String()));
-            dao.create(user);
+            user.setId(dao.create(user));
             LOGGER.debug("Create user info");
         }
+        return user.getId();
 
     }
 

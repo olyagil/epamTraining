@@ -11,6 +11,18 @@ import java.util.List;
 
 public class FeedbackServiceImpl implements FeedbackService {
     @Override
+    public int countRows() throws PersistentException {
+        FeedbackDao dao = DaoFactory.getInstance().getFeedbackDao();
+        return dao.countRows();
+    }
+
+    @Override
+    public List<Feedback> find(int currentPage, int recordsPerPage) throws PersistentException {
+        FeedbackDao dao = DaoFactory.getInstance().getFeedbackDao();
+        return dao.read(currentPage, recordsPerPage);
+    }
+
+    @Override
     public List<Feedback> findBySpecialistId(Integer id) throws PersistentException {
         FeedbackDao dao = DaoFactory.getInstance().getFeedbackDao();
         return dao.readByEmployee(id);
@@ -24,8 +36,10 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public List<Feedback> findByClientId(Integer clientId) throws PersistentException {
-        return null;
+        FeedbackDao dao = DaoFactory.getInstance().getFeedbackDao();
+        return dao.readByClientId(clientId);
     }
+
 
     @Override
     public List<Feedback> find() throws PersistentException {
@@ -35,13 +49,15 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public Feedback find(Integer id) throws PersistentException {
-        return null;
+        FeedbackDao dao = DaoFactory.getInstance().getFeedbackDao();
+        return dao.read(id);
     }
 
     @Override
-    public void save(Feedback feedback) throws PersistentException {
+    public Integer save(Feedback feedback) throws PersistentException {
         FeedbackDao dao = DaoFactory.getInstance().getFeedbackDao();
-        dao.create(feedback);
+        return dao.create(feedback);
+
     }
 
     @Override

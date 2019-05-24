@@ -11,9 +11,9 @@ import java.util.List;
 
 public class ServiceServiceImpl implements ServiceService {
     @Override
-    public int getNumberOfRows() throws PersistentException {
+    public int countRows() throws PersistentException {
         ServiceDao dao = DaoFactory.getInstance().getServiceDao();
-        return dao.getNumberOfRows();
+        return dao.countRows();
     }
 
     @Override
@@ -49,13 +49,14 @@ public class ServiceServiceImpl implements ServiceService {
 
 
     @Override
-    public void save(Service service) throws PersistentException {
+    public Integer save(Service service) throws PersistentException {
         ServiceDao dao = DaoFactory.getInstance().getServiceDao();
         if (service.getId() != null) {
             dao.update(service);
         } else {
             service.setId(dao.create(service));
         }
+        return service.getId();
     }
 
     @Override

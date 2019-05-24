@@ -10,6 +10,12 @@ import java.util.List;
 
 public class EmployeeServiceImpl implements EmployeeService {
     @Override
+    public int countRows() throws PersistentException {
+        EmployeeDao dao = DaoFactory.getInstance().getEmployeeDao();
+        return dao.countRows();
+    }
+
+    @Override
     public List<Employee> find() throws PersistentException {
         EmployeeDao dao = DaoFactory.getInstance().getEmployeeDao();
         return dao.read();
@@ -22,19 +28,26 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public List<Employee> find(int currentPage, int recordsPerPage) throws PersistentException {
+        EmployeeDao dao = DaoFactory.getInstance().getEmployeeDao();
+        return dao.read(currentPage, recordsPerPage);
+    }
+
+    @Override
     public Employee find(Integer id) throws PersistentException {
         EmployeeDao dao = DaoFactory.getInstance().getEmployeeDao();
         return dao.read(id);
     }
 
     @Override
-    public void save(Employee employee) throws PersistentException {
+    public Integer save(Employee employee) throws PersistentException {
         EmployeeDao dao = DaoFactory.getInstance().getEmployeeDao();
-        if (employee.getId() != null) {
-            dao.update(employee);
-        } else {
+        if (employee.getLogin() != null) {
             dao.create(employee);
+        } else {
+            dao.update(employee);
         }
+        return employee.getId();
     }
 
     @Override

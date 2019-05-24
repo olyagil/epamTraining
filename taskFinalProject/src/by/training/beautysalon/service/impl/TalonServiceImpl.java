@@ -14,30 +14,48 @@ import java.util.List;
 public class TalonServiceImpl implements TalonService {
     private static final Logger LOGGER = LogManager.getLogger();
 
+    @Override
+    public int countRows() throws PersistentException {
+        TalonDao dao = DaoFactory.getInstance().getTalonDao();
+        return dao.countRows();
+    }
+
+    @Override
+    public List<Talon> find(int currentPage, int recordsPerPage) throws PersistentException {
+        TalonDao dao = DaoFactory.getInstance().getTalonDao();
+        return dao.read(currentPage, recordsPerPage);
+    }
 
     @Override
     public List<Talon> findByClient(Integer clientId) throws PersistentException {
         TalonDao dao = DaoFactory.getInstance().getTalonDao();
-        return null;
+        return dao.readByClient(clientId);
     }
 
     @Override
-    public List<Talon> findBySpecialist(Integer specialistId) throws PersistentException {
+    public List<Talon> findByEmployee(Integer specialistId) throws PersistentException {
         TalonDao dao = DaoFactory.getInstance().getTalonDao();
-        return dao.readBySpecialist(specialistId);
+        return dao.readByEmployee(specialistId);
     }
 
     @Override
     public List<Talon> find(Date date) throws PersistentException {
         TalonDao dao = DaoFactory.getInstance().getTalonDao();
-        return null;
+        return dao.read(date);
+    }
+
+    @Override
+    public List<Talon> find(Boolean status) throws PersistentException {
+        TalonDao dao = DaoFactory.getInstance().getTalonDao();
+        return dao.read(status);
     }
 
     @Override
     public List<Talon> find() throws PersistentException {
         TalonDao dao = DaoFactory.getInstance().getTalonDao();
-        return null;
+        return dao.read();
     }
+
 
     @Override
     public Talon find(Integer id) throws PersistentException {
@@ -46,7 +64,7 @@ public class TalonServiceImpl implements TalonService {
     }
 
     @Override
-    public void save(Talon talon) throws PersistentException {
+    public Integer save(Talon talon) throws PersistentException {
         TalonDao dao = DaoFactory.getInstance().getTalonDao();
         LOGGER.debug("TALON ID: " + talon.getId());
         if (talon.getId() != null) {
@@ -54,6 +72,7 @@ public class TalonServiceImpl implements TalonService {
         } else {
             talon.setId(dao.create(talon));
         }
+        return talon.getId();
     }
 
     @Override
