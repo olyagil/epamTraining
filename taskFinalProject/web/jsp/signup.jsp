@@ -5,10 +5,8 @@
     <title>SignUp</title>
 <body>
 <jsp:include page="fragments/header.jsp"/>
-
+<br><br>
 <div class="container">
-
-
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
@@ -17,8 +15,17 @@
             </div>
             <div class="card-body">
                 <c:url value="/signup.html" var="signupUrl"/>
-                <form action="${signupUrl}" method="get">
+                <form action="${signupUrl}" method="post"
+                      enctype="multipart/form-data">
+                    <c:if test="${not empty sessionScope.message_signup}">
+                        <div class="alert alert-danger" role="alert">
+                                ${sessionScope.message_signup}
+                            <c:remove var="message_signup"
+                                      scope="session"/>
+                        </div>
+                    </c:if>
                     <div class="form-group row">
+
                         <label for="login"
                                class="col-md-4 col-form-label text-md-right">
                             *Логин </label>
@@ -113,24 +120,24 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="birthdate"
+                        <label for="birth_date"
                                class="col-md-4 col-form-label text-md-right">
                             * Date of birth </label>
                         <div class="col-md-6">
-                            <input type="date" id="birthdate"
+                            <input type="date" id="birth_date"
                                    placeholder="Enter date of birth "
-                                   class="form-control" name="birthdate"
+                                   class="form-control" name="birth_date"
                                    required>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label for="photo"
+                        <label for="img"
                                class="col-md-4 col-form-label text-md-right">
                             Photo </label>
                         <div class="col-md-6">
-                            <input type="file" id="photo"
-                                   class="form-control" name="photo">
+                            <input type="file" id="img"
+                                   class="form-control" name="img">
                         </div>
                     </div>
 

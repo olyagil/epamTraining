@@ -5,31 +5,29 @@
 </head>
 <body>
 <%@include file="../fragments/header.jsp" %>
-<%@include file="../fragments/sidebar.jsp" %>
+<%@include file="../fragments/menu.jsp" %>
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-10"><h2>Welcome, ${user.login}</h2></div>
+        <div class="col-sm-10"><h2>Welcome, ${loggedUser.login}</h2></div>
     </div>
     <br>
     <div class="row">
         <div class="col-sm-4"><!--left col-->
             <div class="text-center">
-                <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png"
+                <img src="data:image/png;base64, ${loggedUser.avatar}"
                      class="avatar img-circle img-thumbnail img-responsive"
                      alt="avatar">
-                <h6>Upload a different photo...</h6>
-                <input type="file" class="text-center center-block file-upload">
             </div>
-            <hr>
         </div>
+
         <div class="col-sm-8">
 
             <div class="row">
                 <div class="col-md-6">
                     <div>
-                        <h5>${user.surname} ${user.name} ${user.patronymic}</h5>
-                        <h6> ${user.role.name} </h6>
+                        <h5>${loggedUser.surname} ${loggedUser.name} ${loggedUser.patronymic}</h5>
+                        <h6> ${loggedUser.role.name} </h6>
                     </div>
                 </div>
             </div>
@@ -40,7 +38,7 @@
                         <label>Login</label>
                     </div>
                     <div class="col-md-6">
-                        <p>${user.login}</p>
+                        <p>${loggedUser.login}</p>
                     </div>
                 </div>
                 <div class="row">
@@ -48,7 +46,7 @@
                         <label>ФИО</label>
                     </div>
                     <div class="col-md-6">
-                        <p>${user.surname} ${user.name} ${user.patronymic}</p>
+                        <p>${loggedUser.surname} ${loggedUser.name} ${loggedUser.patronymic}</p>
                     </div>
                 </div>
                 <div class="row">
@@ -56,7 +54,7 @@
                         <label>Gender</label>
                     </div>
                     <div class="col-md-6">
-                        <p>${user.gender.name}</p>
+                        <p>${loggedUser.gender.name}</p>
                     </div>
                 </div>
                 <div class="row">
@@ -64,7 +62,7 @@
                         <label>Phone</label>
                     </div>
                     <div class="col-md-6">
-                        <p>${user.phone}</p>
+                        <p>${loggedUser.phone}</p>
                     </div>
                 </div>
                 <div class="row">
@@ -72,17 +70,17 @@
                         <label>Date of birth</label>
                     </div>
                     <div class="col-md-6">
-                        <p>${user.birthDate}</p>
+                        <p>${loggedUser.birthDate}</p>
                     </div>
                 </div>
 
-                <c:if test="${user.role.id eq 1}">
+                <c:if test="${loggedUser.role.id eq 1}">
                     <div class="row">
                         <div class="col-md-6">
                             <label>Cabinet number</label>
                         </div>
                         <div class="col-md-6">
-                            <p>${user2.cabinetNumber}</p>
+                            <p>${loggedUser.cabinetNumber}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -90,7 +88,7 @@
                             <label>Salary</label>
                         </div>
                         <div class="col-md-6">
-                            <p>${user2.salary}</p>
+                            <p>${loggedUser.salary}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -98,7 +96,7 @@
                             <label>Employment date</label>
                         </div>
                         <div class="col-md-6">
-                            <p>${user2.employmentDate}</p>
+                            <p>${loggedUser.employmentDate}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -106,7 +104,7 @@
                             <label>Specialty</label>
                         </div>
                         <div class="col-md-6">
-                            <p>${user2.specialty.name}</p>
+                            <p>${loggedUser.specialty.name}</p>
                         </div>
                     </div>
                 </c:if>

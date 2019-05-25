@@ -5,7 +5,7 @@
 </head>
 <body>
 <%@include file="../fragments/header.jsp" %>
-<%@include file="../fragments/sidebar.jsp" %>
+<%@include file="../fragments/menu.jsp" %>
 
 <div class="container register">
 

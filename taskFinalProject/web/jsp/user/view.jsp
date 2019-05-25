@@ -4,20 +4,20 @@
     <title>Title</title>
 </head>
 <body>
-<%@include file="../../fragments/header.jsp" %>
-<%@include file="../../fragments/sidebar.jsp" %>
+<%@include file="../fragments/header.jsp" %>
+<%@include file="../fragments/menu.jsp" %>
 
 <div class="container">
-    <c:url value="/account/user/edit.html" var="userEditUrl"/>
-    <c:url value="/account/user/delete.html" var="userDeleteUrl"/>
+    <c:url value="/employee/edit.html" var="userEditUrl"/>
+    <c:url value="/user/delete.html" var="userDeleteUrl"/>
     <br>
     <div class="row">
 
         <div class="col-sm-4"><!--left col-->
             <div class="text-center">
-                <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png"
+                <img src="data:image/png;base64,${user.avatar}"
                      class="avatar img-circle img-thumbnail img-responsive"
-                     alt="avatar">
+                     width="250" height="250" alt="avatar">
             </div>
         </div>
         <div class="col-sm-8">
@@ -25,25 +25,32 @@
             <div class="row">
                 <div class="col-md-6">
                     <div>
-                        <h5>${user2.surname} ${user2.name}
-                            ${user2.patronymic}</h5>
-                        <h6> ${user2.role.name} </h6>
+                        <h5>${user.surname} ${user.name}
+                            ${user.patronymic}</h5>
+                        <h6> ${user.role.name} </h6>
                     </div>
                 </div>
                 <div class="col text-right">
                     <div class="btn-group">
-                        <%--<form action="${userEditUrl}" method="get"--%>
-                        <%--class="col-md-6">--%>
-                        <%--<button type="submit" class="btn btn-primary">--%>
-                        <%--Редактировать--%>
-                        <%--</button>--%>
-                        <%--</form>--%>
-
+                        <c:if test="${user.role.id eq 1}">
+                            <form action="${userEditUrl}"
+                                  method="get"
+                                  class="col-md-6">
+                                <input type="hidden" name="specialistId"
+                                       value="${user.id}">
+                                <button type="submit"
+                                        class="btn btn-primary btn-lg">
+                                    Редактировать
+                                </button>
+                            </form>
+                        </c:if>
                         <form action="${userDeleteUrl}" method="post"
                               class="col-md-6">
+                            <input type="hidden" name="userRole"
+                                   value="${user.role.id}">
                             <button class="btn btn-lg btn-primary" type="submit"
-                                    name="id"
-                                    value="${user2.id}">Удалить
+                                    name="userId"
+                                    value="${user.id}">Удалить
                             </button>
                         </form>
                     </div>
@@ -57,7 +64,7 @@
                         <label>Login</label>
                     </div>
                     <div class="col-md-6">
-                        <p>${user2.login}</p>
+                        <p>${user.login}</p>
                     </div>
                 </div>
                 <div class="row">
@@ -65,8 +72,8 @@
                         <label>ФИО</label>
                     </div>
                     <div class="col-md-6">
-                        <p>${user2.surname} ${user2.name}
-                            ${user2.patronymic}</p>
+                        <p>${user.surname} ${user.name}
+                            ${user.patronymic}</p>
                     </div>
                 </div>
                 <div class="row">
@@ -74,7 +81,7 @@
                         <label>Gender</label>
                     </div>
                     <div class="col-md-6">
-                        <p>${user2.gender.name}</p>
+                        <p>${user.gender.name}</p>
                     </div>
                 </div>
                 <div class="row">
@@ -82,7 +89,7 @@
                         <label>Phone</label>
                     </div>
                     <div class="col-md-6">
-                        <p>${user2.phone}</p>
+                        <p>${user.phone}</p>
                     </div>
                 </div>
                 <div class="row">
@@ -90,17 +97,17 @@
                         <label>Date of birth</label>
                     </div>
                     <div class="col-md-6">
-                        <p>${user2.birthDate}</p>
+                        <p>${user.birthDate}</p>
                     </div>
                 </div>
 
-                <c:if test="${user2.role.id eq 1}">
+                <c:if test="${user.role.id eq 1}">
                     <div class="row">
                         <div class="col-md-6">
                             <label>Cabinet number</label>
                         </div>
                         <div class="col-md-6">
-                            <p>${user2.cabinetNumber}</p>
+                            <p>${user.cabinetNumber}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -108,7 +115,7 @@
                             <label>Salary</label>
                         </div>
                         <div class="col-md-6">
-                            <p>${user2.salary}</p>
+                            <p>${user.salary}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -116,7 +123,7 @@
                             <label>Employment date</label>
                         </div>
                         <div class="col-md-6">
-                            <p>${user2.employmentDate}</p>
+                            <p>${user.employmentDate}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -124,7 +131,7 @@
                             <label>Specialty</label>
                         </div>
                         <div class="col-md-6">
-                            <p>${user2.specialty.name}</p>
+                            <p>${user.specialty.name}</p>
                         </div>
                     </div>
                 </c:if>
@@ -133,7 +140,7 @@
     </div>
 </div>
 
-
-<%@include file="../../fragments/footer.jsp" %>
+<br><br>
+<%@include file="../fragments/footer.jsp" %>
 </body>
 </html>

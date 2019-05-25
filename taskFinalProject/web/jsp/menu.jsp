@@ -3,15 +3,11 @@
 <html>
 <head>
     <title>Menu</title>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link
-            rel="stylesheet"
-            href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+</head>
 <body>
 
 <%@include file="fragments/header.jsp" %>
-<%@include file="fragments/sidebar.jsp" %>
+<%@include file="fragments/menu.jsp" %>
 
 <hr>
 <div class="container bootstrap snippet">

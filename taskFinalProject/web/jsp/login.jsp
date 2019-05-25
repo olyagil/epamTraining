@@ -18,6 +18,12 @@
         <form class="border border-light p-5 needs-validation"
               action="${loginUrl}" method="post" novalidate>
             <p class="h4 mb-4 text-center">Login</p>
+            <c:if test="${not empty sessionScope.message_success_signup}">
+                <div class="alert alert-success" role="alert">
+                    <p> ${sessionScope.message_success_signup}</p>
+                    <c:remove var="message_success_signup" scope="session"/>
+                </div>
+            </c:if>
 
             <!-- Login -->
             <div class="form-group ">
