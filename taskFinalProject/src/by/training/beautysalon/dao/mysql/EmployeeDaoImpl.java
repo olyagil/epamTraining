@@ -1,11 +1,13 @@
 package by.training.beautysalon.dao.mysql;
 
 import by.training.beautysalon.dao.EmployeeDao;
-import by.training.beautysalon.domain.Employee;
+import by.training.beautysalon.entity.Employee;
+import by.training.beautysalon.entity.Service;
 import by.training.beautysalon.exception.PersistentException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,7 +32,14 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
             + "join user_info ui on employees.user_info_id = ui.user_id "
             + "join users users on employees.user_info_id = users.`id` "
             + "order by users.`id`";
-
+    private static final String SELECT_ALL_BY_PARTS = "select `user_id`, `login`,"
+            + "`role`, `name`,  `surname`,  `patronymic`, `gender`, "
+            + "`phone`, `birth_date`, `avatar`, `cabinet_number`, `salary`, "
+            + "`employment_date`, `specialty`"
+            + "from employees "
+            + "join user_info ui on employees.user_info_id = ui.user_id "
+            + "join users users on employees.user_info_id = users.`id` "
+            + "order by users.`id` limit ?,?";
     private static final String SELECT_BY_LOGIN = "select `user_id`, `login`, "
             + "`role`, `name`,  `surname`,  `patronymic`, `gender`, `phone`, "
             + "`birth_date`, `avatar`, `cabinet_number`, `salary`, "
@@ -48,6 +57,28 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
             + "join user_info ui on employees.user_info_id = ui.user_id "
             + "join users users on employees.user_info_id = users.`id` "
             + "where `id`=?";
+    private static final String COUNT_EMPLOYEES = "select count" +
+            "(`user_info_id`) from `employees`";
+
+    EmployeeDaoImpl(Connection connection) {
+        this.connection = connection;
+    }
+
+    @Override
+    public int countRows() throws PersistentException {
+        int count = 0;
+        try (PreparedStatement statement =
+                     connection.prepareStatement(COUNT_EMPLOYEES);
+             ResultSet resultSet = statement.executeQuery()) {
+            if (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Can't count the number of employees", e);
+            throw new PersistentException(e);
+        }
+        return count;
+    }
 
     @Override
     public List<Employee> read() throws PersistentException {
@@ -60,6 +91,27 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
             return employeeList;
 
         } catch (SQLException e) {
+            throw new PersistentException(e);
+        }
+    }
+
+    @Override
+    public List<Employee> read(int currentPage, int recordsPerPage) throws PersistentException {
+        int start = currentPage * recordsPerPage - recordsPerPage;
+
+        try (PreparedStatement statement =
+                     connection.prepareStatement(SELECT_ALL_BY_PARTS)) {
+            statement.setInt(1, start);
+            statement.setInt(2, recordsPerPage);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                List<Employee> employeeList = new ArrayList<>();
+                while (resultSet.next()) {
+                    employeeList.add(getBuilder().build(resultSet));
+                }
+                return employeeList;
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Can't read by page the employees", e);
             throw new PersistentException(e);
         }
     }
@@ -83,8 +135,8 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
 
     @Override
     public Integer create(Employee employee) throws PersistentException {
-        try (PreparedStatement statement = connection.prepareStatement(INSERT_EMPLOYEE,
-                Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement statement =
+                     connection.prepareStatement(INSERT_EMPLOYEE)) {
 
             statement.setInt(1, employee.getId());
             statement.setInt(2, employee.getCabinetNumber());
@@ -92,15 +144,7 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
             statement.setDate(4, employee.getEmploymentDate());
             statement.setInt(5, employee.getSpecialty().getId());
             statement.executeUpdate();
-            try (ResultSet resultSet = statement.getGeneratedKeys()) {
-                if (resultSet.next()) {
-                    return resultSet.getInt(1);
-                } else {
-                    LOGGER.error("There is no autoincremented index after trying " +
-                            "to add record into `employees` ");
-                    throw new PersistentException();
-                }
-            }
+            return employee.getId();
 
         } catch (SQLException e) {
             LOGGER.error("Can't insert the employee into the DB", e);

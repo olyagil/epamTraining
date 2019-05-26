@@ -1,6 +1,7 @@
 package by.training.beautysalon.command.employee;
 
 import by.training.beautysalon.command.Command;
+import by.training.beautysalon.command.CommandEnum;
 import by.training.beautysalon.command.Forward;
 import by.training.beautysalon.entity.enumeration.Role;
 import by.training.beautysalon.exception.PersistentException;
@@ -41,6 +42,6 @@ public class TalonAddCommand extends Command {
         } catch (NumberFormatException e) {
             LOGGER.error("Can't parse the id" + e);
         }
-        return null;
+        return new Forward(CommandEnum.TALON_ADD.getName(), false);
     }
 }

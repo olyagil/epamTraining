@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
                 LOGGER.debug("Update info about user");
             }
         } else {
-            user.setPassword(md5(new String()));
+            user.setPassword(md5(user.getPassword()));
             user.setId(dao.create(user));
             LOGGER.debug("Create user info");
         }
@@ -79,7 +79,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(Integer id) throws PersistentException {
         UserDao dao = DaoFactory.getInstance().getUserDao();
-//        dao.deleteUser(id);
         dao.delete(id);
 
     }

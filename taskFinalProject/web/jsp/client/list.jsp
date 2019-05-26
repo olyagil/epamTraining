@@ -3,6 +3,8 @@
 <html>
 <head>
     <title>Client list</title>
+    <script type="text/javascript"
+            src="${pageContext.servletContext.contextPath}/js/main.js"></script>
 </head>
 
 <body>
@@ -20,7 +22,7 @@
             <label for="search">Найти клиента по логину: </label>
             <input class="form-control mr-sm-4" aria-label="Search"
                    name="searchLogin" type="text" placeholder="Search"
-                   id="search" required>
+                   id="search" pattern="[a-zA-Zа-яА-Я0-9]{2,30}" required>
             <button type="submit"
                     class="btn btn-rounded btn-primary btn-lg">
                 Search
@@ -59,7 +61,6 @@
                             <tr onclick="submitFormById('form-${client.id}')">
                                 <td><c:out value="${client.id}"/>
                                     <form id="form-${client.id}"
-                                          method="post"
                                           action="${userEditUrl}">
                                         <input type="hidden" name="id"
                                                value="${client.id}">
@@ -90,7 +91,7 @@
                 </div>
 
                 <c:if test="${requestScope.noOfPages gt 1}">
-                    <form action="${clientListUrl}" method="get"
+                    <form action="${clientListUrl}"
                           class="col text-center card-footer p-0">
                         <ul class="pagination justify-content-center mt-3">
                             <c:if test="${requestScope.currentPage != 1}">
@@ -146,16 +147,5 @@
     </div>
 </div>
 <%@include file="../fragments/footer.jsp" %>
-<script> function submitFormById(id) {
-    var form = document.getElementById(id);
-    var isSubmit = true;
-    if (form.onsubmit != null) {
-        isSubmit = form.onsubmit();
-    }
-    if (isSubmit) {
-        form.submit();
-    }
-    return false;
-}</script>
 </body>
 </html>

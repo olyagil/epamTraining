@@ -11,7 +11,7 @@
 <div class="container">
     <ul class="breadcrumb">
         <li class="breadcrumb-item"><a href="${accountMainUrl}">Главная</a></li>
-        <li class="breadcrumb-item"><a href="${accountMainUrl}">Талоны</a></li>
+        <li class="breadcrumb-item"><a href="${talonListUrl}">Талоны</a></li>
         <li class="breadcrumb-item active">Добавление отзыва</li>
     </ul>
     <div class="row">
@@ -23,15 +23,16 @@
 
         <div class="col-md-9">
             <c:url value="/feedback/save.html" var="feedbackSaveUrl"/>
-            <form action="${feedbackSaveUrl}" class="row">
+            <form action="${feedbackSaveUrl}" class="row" method="post">
                 <div class="col-md-5">
                     <br>
-                    <p><b>Процедура: </b>${requestScope.talon.service.name}
+                    <p><b>Процедура: </b><c:out
+                            value="${requestScope.talon.service.name}"/>
                         <br><br> <b>Специалист: </b>
-                        ${requestScope.talon.employee.surname}
-                        ${requestScope.talon.employee.name}
+                        <c:out value="${requestScope.talon.employee.surname}
+                        ${requestScope.talon.employee.name}"/>
                         <br><br><b>Дата приема: </b>
-                        ${requestScope.talon.receptionDate}
+                        <c:out value="${requestScope.talon.receptionDate}"/>
                     </p>
                 </div>
 
@@ -48,7 +49,7 @@
                             <div class="col">
                                 <input type="hidden" name="employeeId"
                                        value="${requestScope.talon.employee.id}">
-                                <button class="btn btn-lg btn-primary"
+                                <button class="btn btn-lg btn-success"
                                         type="submit"> Save
                                 </button>
                             </div>

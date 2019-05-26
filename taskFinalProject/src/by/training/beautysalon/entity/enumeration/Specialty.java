@@ -1,0 +1,26 @@
+package by.training.beautysalon.entity.enumeration;
+
+public enum Specialty {
+
+    DERMATOLOGIST("Дерматолог"),
+    COSMETOLOGIST("Косметолог");
+
+
+    private String name;
+
+    Specialty(String name) {
+        this.name = name;
+    }
+    public String getName() {
+        return name;
+    }
+
+    public Integer getId() {
+        return ordinal();
+    }
+
+    public static Specialty getById(Integer id) {
+        return Specialty.values()[id];
+    }
+
+}

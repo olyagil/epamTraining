@@ -1,6 +1,7 @@
-package by.training.beautysalon.command.comman;
+package by.training.beautysalon.command.common;
 
 import by.training.beautysalon.command.Command;
+import by.training.beautysalon.command.CommandEnum;
 import by.training.beautysalon.command.Forward;
 import by.training.beautysalon.entity.User;
 import by.training.beautysalon.exception.PersistentException;
@@ -31,7 +32,7 @@ public class LoginCommand extends Command {
             if (user != null) {
                 HttpSession session = request.getSession();
                 session.setAttribute("id", user.getId());
-                session.setAttribute("login", user.getLogin());
+//                session.setAttribute("login", user.getLogin());
                 session.setAttribute("role", user.getRole().getId());
                 LOGGER.info(String.format("user \"%s\" is logged in " +
                                 "from %s (%s:%s)", login, request.getRemoteAddr(),
@@ -46,7 +47,7 @@ public class LoginCommand extends Command {
                         request.getRemotePort()));
             }
         }
-        return null;
+        return new Forward(CommandEnum.LOGIN.getName(), false);
     }
 
 }

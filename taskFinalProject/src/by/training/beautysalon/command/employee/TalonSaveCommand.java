@@ -15,13 +15,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class TalonSaveCommand extends Command {
     private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
-        Forward forward = new Forward("/account/talon/list.html");
         HttpSession session = request.getSession();
         TalonService service = serviceFactory.getTalonService();
         Talon talon = new Talon();
@@ -49,16 +51,25 @@ public class TalonSaveCommand extends Command {
         talon.setService(serv);
         talon.setClient(client);
         talon.setEmployee(employee);
-        LOGGER.debug("CLIENT ID: " + talon.getClient().getId() + "SERVICE " +
-                "ID: " + talon.getService().getId()
-                + "EMPLOYEE ID: " + talon.getEmployee().getId());
-        talon.setReceptionDate(Timestamp.valueOf((request.getParameter(
-                "receptionDate") + ":00.0")
-                .replace("T", " ")));
+        Date date;
+        try {
+            if (request.getParameter("receptionDateCol") != null) {
+                date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm")
+                        .parse(request.getParameter("receptionDateCol"));
+            } else {
+                date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                        .parse(request.getParameter("receptionDate"));
+            }
+        } catch (ParseException e) {
+            LOGGER.debug("Can't parse the date");
+            throw new PersistentException(e);
+        }
+
+        talon.setReceptionDate(new Timestamp(date.getTime()));
         talon.setStatus(Boolean.valueOf(request.getParameter("status")));
         service.save(talon);
         session.setAttribute("success_save_talon", "Talon is successfully" +
                 " saved!");
-        return forward;
+        return new Forward("/talon/list.html");
     }
 }

@@ -1,6 +1,7 @@
-package by.training.beautysalon.command.comman;
+package by.training.beautysalon.command.common;
 
 import by.training.beautysalon.command.Command;
+import by.training.beautysalon.command.CommandEnum;
 import by.training.beautysalon.command.Forward;
 import by.training.beautysalon.exception.PersistentException;
 
@@ -11,12 +12,6 @@ public class MainCommand extends Command {
     @Override
     public Forward execute(HttpServletRequest request,
                            HttpServletResponse response) throws PersistentException {
-//        request.getSession().setAttribute("lang", request.getParameter(
-//                "lang"));
-//        RequestDispatcher dispatcher = getServletContext()
-//                .getRequestDispatcher("/index.jsp");
-//        dispatcher.forward(request, response);
-//        return null;
-    return new Forward("main.jsp", false);
+        return new Forward(CommandEnum.MAIN.getName(), false);
     }
 }

@@ -2,7 +2,7 @@ package by.training.beautysalon.dao;
 
 import by.training.beautysalon.builder.Builder;
 import by.training.beautysalon.builder.FeedbackBuilder;
-import by.training.beautysalon.domain.Feedback;
+import by.training.beautysalon.entity.Feedback;
 import by.training.beautysalon.exception.PersistentException;
 
 import java.sql.Date;

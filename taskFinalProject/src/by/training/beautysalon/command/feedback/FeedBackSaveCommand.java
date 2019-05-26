@@ -27,9 +27,7 @@ public class FeedBackSaveCommand extends Command {
         String review = request.getParameter("review");
         Date date = new Date(System.currentTimeMillis());
 
-        LOGGER.debug("CLIENT ID: " + id + " EMPLOYEE ID: " + employeeId + " " +
-                " REVIEW: " + review +
-                " DATE: " + date);
+
         Feedback feedback = new Feedback();
         User client = new User();
         Employee employee = new Employee();
@@ -40,6 +38,6 @@ public class FeedBackSaveCommand extends Command {
         feedback.setDate(date);
         feedback.setReview(review);
         service.save(feedback);
-        return new Forward("/account/talon/list.html");
+        return new Forward("/talon/list.html");
     }
 }

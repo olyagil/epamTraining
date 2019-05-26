@@ -16,9 +16,7 @@ public class ServiceDeleteCommand extends Command {
 
     @Override
     public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
-        Forward forward = new Forward("/account/service/list.html");
 
-//        ServiceService service = factory.getService(ServiceService.class);
         ServiceService service = serviceFactory.getServiceService();
         Integer id = Integer.parseInt(request.getParameter("id"));
 
@@ -29,6 +27,6 @@ public class ServiceDeleteCommand extends Command {
             service.delete(id);
         }
 
-        return forward;
+        return new Forward("/service/list.html");
     }
 }

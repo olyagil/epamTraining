@@ -6,12 +6,12 @@ import by.training.beautysalon.command.account.AccountSaveAvatarCommand;
 import by.training.beautysalon.command.account.AccountSaveCommand;
 import by.training.beautysalon.command.account.AccountSavePasswordCommand;
 import by.training.beautysalon.command.admin.*;
-import by.training.beautysalon.command.comman.LanguageCommand;
-import by.training.beautysalon.command.comman.LoginCommand;
-import by.training.beautysalon.command.comman.LogoutCommand;
-import by.training.beautysalon.command.comman.MainCommand;
-import by.training.beautysalon.command.comman.SignUpCommand;
-import by.training.beautysalon.command.comman.UnknownCommand;
+import by.training.beautysalon.command.common.LanguageCommand;
+import by.training.beautysalon.command.common.LoginCommand;
+import by.training.beautysalon.command.common.LogoutCommand;
+import by.training.beautysalon.command.common.MainCommand;
+import by.training.beautysalon.command.common.SignUpCommand;
+import by.training.beautysalon.command.common.NotFoundCommand;
 import by.training.beautysalon.command.employee.TalonAddCommand;
 import by.training.beautysalon.command.employee.TalonDeleteCommand;
 import by.training.beautysalon.command.employee.TalonEditCommand;
@@ -26,71 +26,73 @@ import by.training.beautysalon.command.guest.ServicesCommand;
 import by.training.beautysalon.command.guest.EmployeesCommand;
 
 public enum CommandEnum {
-    UNKNOWN_COMMAND(new UnknownCommand()),
-    //COMMON COMMANDS
-    INDEX(new MainCommand()),
-    LOGIN(new LoginCommand()),
-    SIGNUP(new SignUpCommand()),
-    MAIN(new MainCommand()),
-    LOGOUT(new LogoutCommand()),
-    LANGUAGE(new LanguageCommand()),
+    NOTFOUND("notfound", new NotFoundCommand()),
+
     //GUEST'S COMMANDS
-    FEEDBACK(new FeedBackCommand()),
-    SERVICES(new ServicesCommand()),
-    EMPLOYEES(new EmployeesCommand()),
+    LOGIN("login",new LoginCommand()),
+    SIGNUP("signup",new SignUpCommand()),
+    LANGUAGE("language",new LanguageCommand()),
+
+    FEEDBACK("feedback",new FeedBackCommand()),
+    SERVICES("services",new ServicesCommand()),
+    EMPLOYEES("employees",new EmployeesCommand()),
+    INDEX("index",new MainCommand()),
+    MAIN("main",new MainCommand()),
+    LOGOUT("logout",new LogoutCommand()),
 
     //ACCOUNT'S COMMANDS
-    ACCOUNT_SAVE_AVATAR(new AccountSaveAvatarCommand()),
-    ACCOUNT_SAVE_INFO(new AccountSaveCommand()),
-    ACCOUNT_SAVE_PASSWORD(new AccountSavePasswordCommand()),
-    ACCOUNT_EDIT_INFO(new AccountEditCommand()),
-    ACCOUNT_EDIT_PASSWORD(new AccountEditCommand()),
-    ACCOUNT_MAIN(new AccountMainCommand()),
+    ACCOUNT_SAVE_AVATAR("account/save/avatar",new AccountSaveAvatarCommand()),
+    ACCOUNT_SAVE_INFO("account/save/info",new AccountSaveCommand()),
+    ACCOUNT_SAVE_PASSWORD("account/save/password",
+            new AccountSavePasswordCommand()),
+    ACCOUNT_EDIT_INFO("account/edit/info",new AccountEditCommand()),
+    ACCOUNT_EDIT_PASSWORD("account/edit/password",new AccountEditCommand()),
+    ACCOUNT_MAIN("account/main",new AccountMainCommand()),
 
     //ADMIN'S COMMANDS
-    CLIENT_LIST(new ClientListCommand()),
-//    CLIENT_ADD(new ClientAddCommand()),
+    CLIENT_LIST("client/list",new ClientListCommand()),
 
-    EMPLOYEE_LIST(new EmployeeListCommand()),
-    EMPLOYEE_EDIT(new EmployeeEditCommand()),
-    EMPLOYEE_SAVE(new EmployeeSaveCommand()),
-    EMPLOYEE_ADD(new EmployeeAddCommand()),
-    //ADMIN'S COMMAND FOR BOTH USER AND EMPLOYEE
-    USER_DELETE(new UserDeleteCommand()),
-    USER_VIEW(new UserViewCommand()),
-
+    EMPLOYEE_LIST("employee/list",new EmployeeListCommand()),
+    EMPLOYEE_EDIT("employee/edit",new EmployeeEditCommand()),
+    EMPLOYEE_SAVE("employee/save",new EmployeeSaveCommand()),
+    EMPLOYEE_ADD("employee/add",new EmployeeAddCommand()),
 
     //SERVICE'S COMMANDS
-    SERVICE_LIST(new ServiceListCommand()),
-    SERVICE_EDIT(new ServiceEditCommand()),
-    SERVICE_SAVE(new ServiceSaveCommand()),
-    SERVICE_DELETE(new ServiceDeleteCommand()),
+    SERVICE_LIST("service/list",new ServiceListCommand()),
+    SERVICE_EDIT("service/edit",new ServiceEditCommand()),
+    SERVICE_SAVE("service/save",new ServiceSaveCommand()),
+    SERVICE_DELETE("service/delete",new ServiceDeleteCommand()),
+
+    //ADMIN'S COMMAND
+    USER_DELETE("user/delete",new UserDeleteCommand()),
+    USER_VIEW("user/view",new UserViewCommand()),
+
+    //COMMANDS WITH TALONS FOR EMPLOYEE
+    TALON_ADD("talon/add",new TalonAddCommand()),
+    TALON_EDIT("talon/edit",new TalonEditCommand()),
+    TALON_SAVE("talon/save",new TalonSaveCommand()),
+    TALON_DELETE("talon/delete",new TalonDeleteCommand()),
+    TALON_LIST("talon/list",new TalonListCommand()),
 
 
-    //COMMANDS WITH TALONS
-    TALON_LIST(new TalonListCommand()),
-    TALON_ADD(new TalonAddCommand()),
-    TALON_EDIT(new TalonEditCommand()),
-    TALON_SAVE(new TalonSaveCommand()),
-    TALON_DELETE(new TalonDeleteCommand()),
-
-
-    //COMMENDS WITH FEEDBACK
-    FEEDBACK_LIST(new FeedBackListCommand()),
-    FEEDBACK_DELETE(new FeedBackDeleteCommand()),
-    FEEDBACK_ADD(new FeedBackAddCommand()),
-    FEEDBACK_SAVE(new FeedBackSaveCommand());
-
-
-    //CLIENT"S COMMANDS
+    //COMMANDS WITH FEEDBACK
+    FEEDBACK_LIST("feedback/list",new FeedBackListCommand()),
+    FEEDBACK_DELETE("feedback/delete",new FeedBackDeleteCommand()),
+    FEEDBACK_ADD("feedback/add",new FeedBackAddCommand()),
+    FEEDBACK_SAVE("feedback/save",new FeedBackSaveCommand());
 
     private Command command;
+    private String name;
 
-    CommandEnum(Command command) {
+    CommandEnum(String name, Command command) {
+        this.name = name;
         this.command = command;
     }
 
     public Command getCommand() {
         return command;
+    }
+    public String  getName() {
+        return name;
     }
 }

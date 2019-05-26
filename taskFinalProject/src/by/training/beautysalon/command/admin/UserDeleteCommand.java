@@ -17,14 +17,13 @@ public class UserDeleteCommand extends Command {
     @Override
     public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
         try {
-//            UserService service = factory.getService(UserService.class);
             UserService service = serviceFactory.getUserService();
-            LOGGER.debug("ID: " + request.getParameter("id"));
-            Integer id = Integer.parseInt(request.getParameter("id"));
+            Integer id = Integer.parseInt(request.getParameter("userId"));
             Role role = Role.getById(Integer.parseInt(request.getParameter(
-                    "role")));
+                    "userRole")));
 
             service.delete(id);
+
             switch (role) {
                 case EMPLOYEE:
                     return new Forward("/employee/list.html");

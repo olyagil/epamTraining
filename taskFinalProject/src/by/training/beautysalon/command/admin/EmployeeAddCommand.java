@@ -1,6 +1,7 @@
 package by.training.beautysalon.command.admin;
 
 import by.training.beautysalon.command.Command;
+import by.training.beautysalon.command.CommandEnum;
 import by.training.beautysalon.command.Forward;
 import by.training.beautysalon.entity.enumeration.Specialty;
 import by.training.beautysalon.exception.PersistentException;
@@ -17,6 +18,6 @@ public class EmployeeAddCommand extends Command {
     public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
 
         request.setAttribute("specialties", Specialty.values());
-        return null;
+        return new Forward(CommandEnum.EMPLOYEE_ADD.getName(), false);
     }
 }

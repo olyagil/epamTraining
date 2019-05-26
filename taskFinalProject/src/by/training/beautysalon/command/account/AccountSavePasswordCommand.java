@@ -3,8 +3,6 @@ package by.training.beautysalon.command.account;
 import by.training.beautysalon.command.Command;
 import by.training.beautysalon.command.Forward;
 import by.training.beautysalon.entity.User;
-import by.training.beautysalon.entity.enumeration.Gender;
-import by.training.beautysalon.entity.enumeration.Role;
 import by.training.beautysalon.exception.PersistentException;
 import by.training.beautysalon.service.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -21,7 +19,6 @@ public class AccountSavePasswordCommand extends Command {
 
     @Override
     public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
-        Forward forward = new Forward("/account/edit/password.html");
         HttpSession session = request.getSession();
 
         String login = (String) session.getAttribute("login");
@@ -42,6 +39,6 @@ public class AccountSavePasswordCommand extends Command {
                         "The password is not recognized! Repeat password, please.");
             }
         }
-        return forward;
+        return new Forward("/account/edit/password.html");
     }
 }

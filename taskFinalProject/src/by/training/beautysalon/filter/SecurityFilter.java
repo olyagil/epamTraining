@@ -1,7 +1,7 @@
 package by.training.beautysalon.filter;
 
-import by.training.beautysalon.command.Command;
-import by.training.beautysalon.domain.enumeration.Role;
+import by.training.beautysalon.command.CommandEnum;
+import by.training.beautysalon.entity.enumeration.Role;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,9 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.EnumSet;
 
 public class SecurityFilter implements Filter {
     private final static Logger LOGGER = LogManager.getLogger();
@@ -33,99 +31,85 @@ public class SecurityFilter implements Filter {
         if (request instanceof HttpServletRequest && response instanceof HttpServletResponse) {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
             HttpServletResponse httpResponse = (HttpServletResponse) response;
-
             HttpSession session = httpRequest.getSession(false);
 
-            Command command = (Command) httpRequest.getAttribute("action");
-            LOGGER.debug("COMMAND: " + command.getName());
+            CommandEnum commandEnum = (CommandEnum) request.getAttribute(
+                    "commandEnum");
 
-            if (!guestCommand(command.getName())) {
+            if (!guestCommand(commandEnum)) {
                 if (session.getAttribute("role") != null) {
                     Role role = Role.getById((Integer) session.getAttribute("role"));
-                    if (userCommand(command.getName())) {
+                    LOGGER.debug("ROLE: " + role);
+                    if (userCommand(commandEnum)) {
+                        LOGGER.debug("It's a authorized user command " + commandEnum);
                         chain.doFilter(request, response);
                     } else if (role == Role.ADMINISTRATOR
-                            && adminCommand(command.getName())) {
+                            && adminCommand(commandEnum)) {
+                        LOGGER.debug("It's a admin command " + commandEnum);
                         chain.doFilter(request, response);
 
-                    } else if (role == Role.SPECIALIST
-                            && specialistCommand(command.getName())) {
+                    } else if (role == Role.EMPLOYEE
+                            && employeeCommand(commandEnum)) {
+                        LOGGER.debug("It's a employee command " + commandEnum);
                         chain.doFilter(request, response);
 
                     } else if (role == Role.CLIENT
-                            && clientCommand(command.getName())) {
+                            && clientCommand(commandEnum)) {
+                        LOGGER.debug("It's a client command " + commandEnum);
                         chain.doFilter(request, response);
 
                     } else {
                         LOGGER.info("Trying to access forbidden recourse: "
-                                + command.getName());
+                                + commandEnum);
                         httpResponse.sendRedirect(httpRequest.getContextPath() +
-                                "/jsp/404page.jsp");
+                                "/notfound.html");
                     }
                 } else {
                     LOGGER.info("Trying to access forbidden recourse: "
-                            + command.getName());
-                    //TODO add message
+                            + commandEnum);
+                    session.setAttribute("message_forbidden", "Please, " +
+                            "log in to continue this action.");
                     httpResponse.sendRedirect(httpRequest.getContextPath() +
                             "/login.html");
-
-
                 }
             } else {
-                LOGGER.debug("It's a guest command " + command.getName());
+                LOGGER.debug("It's a guest command " + commandEnum);
                 chain.doFilter(request, response);
             }
-
         }
-
     }
-
-    private boolean clientCommand(String commandName) {
-        return false;
-    }
-
-    private boolean specialistCommand(String commandName) {
-
-        return false;
-    }
-
 
     @Override
     public void destroy() {
     }
 
-    private boolean adminCommand(String command) {
-        List<String> commands = new ArrayList<>();
-
-        commands.add("/account/specialist/list");
-        commands.add("/account/specialist/edit");
-        commands.add("/account/specialist/save");
-        commands.add("/account/specialist/delete");
-
-        commands.add("/account/client/list");
-        commands.add("/account/client/edit");
-        commands.add("/account/client/save");
-        commands.add("/account/client/delete");
-
-        commands.add("/account/service/list");
-        commands.add("/account/service/edit");
-        commands.add("/account/service/delete");
-        commands.add("/account/service/save");
-
-        return commands.contains(command);
+    private boolean guestCommand(CommandEnum command) {
+        EnumSet<CommandEnum> set = EnumSet.range(CommandEnum.NOTFOUND,
+                CommandEnum.INDEX);
+        return set.contains(command);
     }
 
-    private boolean guestCommand(String command) {
-        return (Arrays.asList("/specialists",
-                "/services", "/feedback",
-                "/login", "/signup",
-                "/language")).contains(command);
+    private boolean userCommand(CommandEnum command) {
+        EnumSet<CommandEnum> set = EnumSet.range(CommandEnum.LOGOUT,
+                CommandEnum.ACCOUNT_MAIN);
+        return set.contains(command);
     }
 
-    private boolean userCommand(String command) {
-        List<String> commands = Arrays.asList("/account/main",
-                "/account/edit/info", "/account/edit/password",
-                "/logout");
-        return commands.contains(command);
+    private boolean adminCommand(CommandEnum command) {
+        EnumSet<CommandEnum> set = EnumSet.range(CommandEnum.CLIENT_LIST,
+                CommandEnum.FEEDBACK_DELETE);
+        return set.contains(command);
     }
+
+    private boolean employeeCommand(CommandEnum command) {
+        EnumSet<CommandEnum> set = EnumSet.range(CommandEnum.USER_VIEW,
+                CommandEnum.FEEDBACK_LIST);
+        return set.contains(command);
+    }
+
+    private boolean clientCommand(CommandEnum command) {
+        return EnumSet.range(CommandEnum.TALON_LIST,
+                CommandEnum.FEEDBACK_SAVE).contains(command);
+    }
+
 }

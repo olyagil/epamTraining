@@ -66,7 +66,9 @@ public class ConnectionPool {
             }
         }
         usedConnections.add(connection);
-        LOGGER.debug(String.format("Connection was received from pool. Current pool size: %d used connections; %d free connection", usedConnections.size(), freeConnections.size()));
+        LOGGER.debug(String.format("Connection was received from pool. " +
+                "Current pool size: %d used connections; %d free connection",
+                usedConnections.size(), freeConnections.size()));
         return connection;
     }
 
@@ -75,7 +77,7 @@ public class ConnectionPool {
         try {
             if (connection.isValid(checkConnectionTimeout)) {
                 connection.clearWarnings();
-                connection.setAutoCommit(true);
+//                connection.setAutoCommit(true);
                 usedConnections.remove(connection);
                 freeConnections.put(connection);
                 LOGGER.debug(String.format("Connection was released into pool. "

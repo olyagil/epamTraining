@@ -1,11 +1,12 @@
 package by.training.beautysalon.dao.mysql;
 
 import by.training.beautysalon.dao.FeedbackDao;
-import by.training.beautysalon.domain.Feedback;
+import by.training.beautysalon.entity.Feedback;
 import by.training.beautysalon.exception.PersistentException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,25 +17,27 @@ import java.util.List;
 
 public class FeedbackDaoImpl extends BaseDaoImpl implements FeedbackDao {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final String SELECT_ALL = "select  client.`name`, "
-            + "client.`surname`, employee.`surname`, employee.`name` ,"
-            + "employee.`avatar`, `date`, `review` "
-            + "from `feedback`join employees on feedback.employee_id = employees.user_info_id\n" +
+    private static final String SELECT_ALL = "select `id`, `client_id`, "
+            + "`employee_id`, client.`name`, client.`surname`, employee" +
+            ".`surname`, employee.`name`, client.`avatar`, `date`, `review` "
+            + "from `feedback`" +
+            " join employees on feedback.employee_id = employees.user_info_id\n" +
             "  join user_info employee on employees.user_info_id = employee.user_id\n" +
-            "  join user_info client on feedback.client_id = client.user_id";
+            "  join user_info client on feedback.client_id = client.user_id ";
+
+    private static final String SELECT_ALL_BY_PARTS = SELECT_ALL + "order by " +
+            "`date` DESC limit ?";
     private static final String UPDATE_FEEDBACK = "update `feedback` set  `client_id`=?, employee_id=?, `date`=?, `review`=?\n" +
             "where `id`=?";
     private static final String READ_FEEDBACK_BY_ID = "select `id`, `client_id`, employee_id, `date`, " +
-            "`review` from `feedback` where `id`=?";
-    private static final String INSERT_FEEDBACK = "insert into `feedback` (`id`, `client_id`, employee_id, `date`, `review`)\n" +
-            "values (?,?,?,?,?)";
-    private static final String SELECT_BY_EMPLOYEE_ID = "select `client_id`, "
-            + "client.`name`, client.surname, employee_id, employee.surname, "
-            + "employee.`name`,employee.`avatar`, `date`, `review` from `feedback` "
-            + "join employees on feedback.employee_id = employees.user_info_id "
-            + "join user_info employee on employees.user_info_id = employee.user_id"
-            + " join user_info client on feedback.client_id = client.user_id "
-            + "where employee_id=?";
+            "`review` from `feedback` where `id`=? order by `date` DESC ";
+    private static final String INSERT_FEEDBACK = "insert into `feedback` " +
+            "(`client_id`, employee_id, `date`, `review`)" +
+            "values (?,?,?,?)";
+    private static final String SELECT_BY_EMPLOYEE_ID = SELECT_ALL
+            + "where employee_id=? order by `date` DESC ";
+    private static final String SELECT_BY_CLIENT_ID = SELECT_ALL
+            + "where client_id=? order by `date` DESC ";
     private static final String DELETE_BY_ID = "delete from feedback where id = ?";
     private static final String SELECT_FEEDBACK_BY_DATE = "select `client_id`, "
             + "client.`name`, client.surname, employee_id, employee.surname, "
@@ -42,12 +45,31 @@ public class FeedbackDaoImpl extends BaseDaoImpl implements FeedbackDao {
             + "join employees on feedback.employee_id = employees.user_info_id "
             + "join user_info employee on employees.user_info_id = employee.user_id"
             + " join user_info client on feedback.client_id = client.user_id "
-            + "where `date`=?";
+            + "where `date`=? order by `date` DESC ";
+    private static final String COUNT_FEEDBACK = "select count(`id`) "
+            + "from `feedback`";
 
-    //TODO
+    public FeedbackDaoImpl(Connection connection) {
+        this.connection = connection;
+    }
+
     @Override
-    public List<Feedback> readByClientId(Integer id) throws PersistentException {
-        return null;
+    public List<Feedback> readByClientId(Integer clientId) throws PersistentException {
+
+        try (PreparedStatement statement = connection.prepareStatement(SELECT_BY_CLIENT_ID)) {
+            statement.setInt(1, clientId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                List<Feedback> feedbackList = new ArrayList<>();
+                while (resultSet.next()) {
+                    feedbackList.add(getBuilder().build(resultSet));
+                }
+                return feedbackList;
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Can't read the feedback by client id: "
+                    + clientId, e);
+            throw new PersistentException(e);
+        }
     }
 
     @Override
@@ -88,6 +110,43 @@ public class FeedbackDaoImpl extends BaseDaoImpl implements FeedbackDao {
     }
 
     @Override
+    public int countRows() throws PersistentException {
+        int count = 0;
+        try (PreparedStatement statement =
+                     connection.prepareStatement(COUNT_FEEDBACK);
+             ResultSet resultSet = statement.executeQuery()) {
+            if (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Can't count the number of feedback", e);
+            throw new PersistentException(e);
+        }
+        return count;
+    }
+
+    @Override
+    public List<Feedback> read(int currentPage, int recordsPerPage) throws PersistentException {
+        int start = currentPage * recordsPerPage;
+
+        try (PreparedStatement statement =
+                     connection.prepareStatement(SELECT_ALL_BY_PARTS)) {
+            statement.setInt(1, start);
+//            statement.setInt(2, recordsPerPage);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                List<Feedback> feedbackList = new ArrayList<>();
+                while (resultSet.next()) {
+                    feedbackList.add(getBuilder().build(resultSet));
+                }
+                return feedbackList;
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Can't read by page the feedback", e);
+            throw new PersistentException(e);
+        }
+    }
+
+    @Override
     public List<Feedback> read() throws PersistentException {
 
         try (PreparedStatement statement =
@@ -108,11 +167,10 @@ public class FeedbackDaoImpl extends BaseDaoImpl implements FeedbackDao {
     public Integer create(Feedback feedback) throws PersistentException {
         try (PreparedStatement statement = connection.prepareStatement(INSERT_FEEDBACK,
                 Statement.RETURN_GENERATED_KEYS)) {
-            statement.setInt(1, feedback.getId());
-            statement.setInt(2, feedback.getClient().getId());
-            statement.setInt(3, feedback.getEmployee().getId());
-            statement.setDate(4, feedback.getDate());
-            statement.setString(5, feedback.getReview());
+            statement.setInt(1, feedback.getClient().getId());
+            statement.setInt(2, feedback.getEmployee().getId());
+            statement.setDate(3, feedback.getDate());
+            statement.setString(4, feedback.getReview());
             statement.executeUpdate();
             try (ResultSet resultSet = statement.getGeneratedKeys()) {
                 if (resultSet.next()) {

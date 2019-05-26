@@ -16,8 +16,7 @@
         <li class="breadcrumb-item active">Добавление талона</li>
     </ul>
     <div class="row">
-        <div class="col-sm-3">
-        </div>
+        <div class="col-sm-3"></div>
         <div class="modal-body">
             <c:url value="/talon/save.html" var="talonSave"/>
             <form action="${talonSave}" method="get">
@@ -26,9 +25,10 @@
                     <select class="form-control selectpicker"
                             id="service"
                             name="serviceId" data-live-search="true">
-                        <c:forEach items="${services}" var="service">
+                        <c:forEach items="${requestScope.services}"
+                                   var="service">
                             <option value="${service.id}">
-                                    ${service.name} </option>
+                                <c:out value="${service.name}"/></option>
                         </c:forEach>
                     </select>
                 </div>
@@ -38,22 +38,24 @@
                         <c:when test="${sessionScope.role eq 1}">
                             <select class="form-control" id="employee"
                                     name="employeeId">
-                                <option selected value="${employees.id}">
-                                        ${employees.surname} ${employees.name}
+                                <option selected
+                                        value="${requestScope.employees.id}">
+                                        ${requestScope.employees.surname}
+                                        ${requestScope.employees.name}
                                 </option>
                             </select>
                         </c:when>
                         <c:otherwise>
-                                <select class="form-control selectpicker"
-                                        data-live-search="true" id="employee"
-                                        name="employeeId">
-                                    <c:forEach items="${employees}"
-                                               var="employee">
-                                        <option value="${employee.id}">
-                                                ${employee.surname} ${employee.name}
-                                        </option>
-                                    </c:forEach>
-                                </select>
+                            <select class="form-control selectpicker"
+                                    data-live-search="true" id="employee"
+                                    name="employeeId">
+                                <c:forEach items="${requestScope.employees}"
+                                           var="employee">
+                                    <option value="${employee.id}">
+                                            ${employee.surname} ${employee.name}
+                                    </option>
+                                </c:forEach>
+                            </select>
                         </c:otherwise>
                     </c:choose>
                 </div>
@@ -63,7 +65,7 @@
                     <select class="form-control selectpicker"
                             data-live-search="true" id="clients"
                             name="clientId">
-                        <c:forEach items="${clients}" var="client">
+                        <c:forEach items="${requestScope.clients}" var="client">
                             <option value="${client.id}">
                                     ${client.surname} ${client.name}
                             </option>
@@ -80,7 +82,7 @@
                 <div class="modal-footer">
 
                     <button type="submit"
-                            class="btn tn-lg btn-primary">Добавить талон
+                            class="btn tn-lg btn-success">Добавить талон
                     </button>
                 </div>
             </form>

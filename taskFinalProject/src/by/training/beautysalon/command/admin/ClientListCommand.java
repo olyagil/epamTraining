@@ -1,6 +1,7 @@
 package by.training.beautysalon.command.admin;
 
 import by.training.beautysalon.command.Command;
+import by.training.beautysalon.command.CommandEnum;
 import by.training.beautysalon.command.Forward;
 import by.training.beautysalon.entity.User;
 import by.training.beautysalon.exception.PersistentException;
@@ -28,24 +29,23 @@ public class ClientListCommand extends Command {
         } else {
             currentPage = DEFAULT_CURRENT_PAGE;
         }
-        int nOfPages = PaginationUtil.getNumOfPages(service.countRows());
 
-        request.setAttribute("noOfPages", nOfPages);
-        request.setAttribute("currentPage", currentPage);
-        LOGGER.debug("NUM OF PAGES: " + nOfPages);
-        LOGGER.debug("rows: ", service.countRows());
-        LOGGER.debug("currentPage: ", currentPage);
+        int rows;
 
         if (request.getParameter("searchLogin") != null) {
             String login = request.getParameter("searchLogin");
-            request.setAttribute("clients", service.find(login));
+            List<User> userList = service.find(login);
+            rows = userList.size();
+            request.setAttribute("clients", userList);
             request.setAttribute("searchLogin", login);
         } else {
-            List<User> userList = service.find(currentPage, RECORDS_PER_PAGE);
-            request.setAttribute("clients", userList);
-            LOGGER.debug("Get list of users: " + userList);
-
+            request.setAttribute("clients",
+                    service.find(currentPage, RECORDS_PER_PAGE));
+            rows = service.countRows();
         }
-        return null;
+        request.setAttribute("noOfPages", PaginationUtil.getNumOfPages(rows));
+        request.setAttribute("currentPage", currentPage);
+
+        return new Forward(CommandEnum.CLIENT_LIST.getName(), false);
     }
 }

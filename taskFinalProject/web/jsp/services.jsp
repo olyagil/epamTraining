@@ -17,7 +17,7 @@
     <!-- Grid row -->
     <div class="row">
 
-        <c:forEach items="${services}" var="service">
+        <c:forEach items="${requestScope.services}" var="service">
 
             <!-- Grid column -->
             <div class="col-md-4 mb-md-0 mb-5">

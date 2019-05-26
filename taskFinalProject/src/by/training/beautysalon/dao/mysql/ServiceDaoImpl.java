@@ -1,11 +1,12 @@
 package by.training.beautysalon.dao.mysql;
 
 import by.training.beautysalon.dao.ServiceDao;
-import by.training.beautysalon.domain.Service;
+import by.training.beautysalon.entity.Service;
 import by.training.beautysalon.exception.PersistentException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,7 +24,8 @@ public class ServiceDaoImpl extends BaseDaoImpl implements ServiceDao {
     private static final String UPDATE_SERVICE = "update `services` set `name`=?,"
             + " `description`=?, `price`=?, `duration`=? where `id`=?";
 
-    private static final String SELECT_BY_ID = "select `name`, `description`, "
+    private static final String SELECT_BY_ID = "select `id`, `name`, " +
+            "`description`, "
             + "`price`, `duration` from `services` where `id`=?";
 
     private static final String INSERT_SERVICE = "insert into `services`"
@@ -39,9 +41,13 @@ public class ServiceDaoImpl extends BaseDaoImpl implements ServiceDao {
             + "`description`, `price`,  `duration` from `services` " +
             "order by `id` limit ?,?";
 
+    public ServiceDaoImpl(Connection connection) {
+        this.connection = connection;
+    }
+
 
     @Override
-    public int getNumberOfRows() throws PersistentException {
+    public int countRows() throws PersistentException {
         int count = 0;
         try (PreparedStatement statement =
                      connection.prepareStatement(COUNT_SERVICES);
@@ -114,35 +120,6 @@ public class ServiceDaoImpl extends BaseDaoImpl implements ServiceDao {
             throw new PersistentException(e);
         }
     }
-
-//    @Override
-//    public List<Service> read(double startPrice, double endPrice)
-//            throws PersistentException {
-//        List<Service> serviceList;
-//        try (PreparedStatement statement =
-//                     connection.prepareStatement(READ_SERVICES_BY_RANGE_OF_PRICE)) {
-//            statement.setDouble(1, startPrice);
-//            statement.setDouble(2, endPrice);
-//
-//            try (ResultSet resultSet = statement.executeQuery()) {
-//                serviceList = new ArrayList<>();
-//                Service service;
-//                while (resultSet.next()) {
-//                    service = new Service();
-//                    service.setId(resultSet.getInt("id"));
-//                    service.setName(resultSet.getString("name"));
-//                    service.setDescription(resultSet.getString("description"));
-//                    service.setPrice(resultSet.getDouble("price"));
-//                    service.setDuration(resultSet.getDouble("duration"));
-//                    serviceList.add(service);
-//                }
-//                return serviceList;
-//            }
-//        } catch (SQLException e) {
-//            throw new PersistentException(e);
-//
-//        }
-//    }
 
     @Override
     public Integer create(Service service) throws PersistentException {

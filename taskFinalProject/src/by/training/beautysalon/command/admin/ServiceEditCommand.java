@@ -1,6 +1,7 @@
 package by.training.beautysalon.command.admin;
 
 import by.training.beautysalon.command.Command;
+import by.training.beautysalon.command.CommandEnum;
 import by.training.beautysalon.command.Forward;
 import by.training.beautysalon.entity.Service;
 import by.training.beautysalon.exception.PersistentException;
@@ -17,13 +18,12 @@ public class ServiceEditCommand extends Command {
     @Override
     public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
         try {
-            Integer id = (Integer) request.getAttribute("id");
+            Integer id = (Integer) request.getAttribute("serviceId");
             if (id == null) {
-                id = Integer.parseInt(request.getParameter("id"));
+                id = Integer.parseInt(request.getParameter("serviceId"));
             }
             ServiceService service = serviceFactory.getServiceService();
             Service serv = service.find(id);
-            LOGGER.debug("SERVICE: " + serv);
             request.setAttribute("service", serv);
 
         } catch (NumberFormatException e) {
@@ -31,6 +31,6 @@ public class ServiceEditCommand extends Command {
         }
 
 
-        return null;
+        return new Forward(CommandEnum.SERVICE_EDIT.getName(), false);
     }
 }

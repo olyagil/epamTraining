@@ -3,6 +3,8 @@
 <html>
 <head>
     <title>Service list</title>
+    <script type="text/javascript"
+            src="${pageContext.servletContext.contextPath}/js/main.js"></script>
 </head>
 
 <body>
@@ -30,15 +32,15 @@
             <label for="search">Найти услугу по названию: </label>
             <input class="form-control mr-sm-2" aria-label="Search"
                    name="searchName" type="text" placeholder="Search"
-                   id="search" required>
+                   id="search" pattern="[a-zA-Zа-яА-Я0-9]{2,20}" required>
             <button class="btn btn-rounded btn-primary btn-lg"
                     type="submit">Search
             </button>
         </form>
-        <c:if test="${empty services}">
-            <p>Услугу с названием ${searchName} не найдено</p>
+        <c:if test="${empty requestScope.services}">
+            <p>Услугу с названием ${requestScope.searchName} не найдено</p>
         </c:if>
-        <c:if test="${not empty services}">
+        <c:if test="${not empty requestScope.services}">
             <div class="card mb-5">
                 <div class="card-header"><h2>Список услуг</h2>
                     <p>Для редактирования информации об услуге нажмите на
@@ -58,16 +60,13 @@
                         <tbody>
                         <c:url value="/service/edit.html"
                                var="serviceEditUrl"/>
-                        <c:forEach items="${services}" var="service">
+                        <c:forEach items="${requestScope.services}"
+                                   var="service">
                             <tr onclick="submitFormById('form-${service.id}')">
                                 <td><c:out value="${service.id}"/>
                                     <form id="form-${service.id}"
-                                          method="post"
                                           action="${serviceEditUrl}">
-                                        <input type="hidden"
-                                               name="serviceId"
-                                               value="${service.id}">
-                                        <input type="hidden" name="role"
+                                        <input type="hidden" name="serviceId"
                                                value="${service.id}">
                                     </form>
                                 </td>
@@ -83,24 +82,26 @@
                         </tbody>
                     </table>
                 </div>
-                <c:if test="${noOfPages gt 1}">
+                <c:if test="${requestScope.noOfPages gt 1}">
                     <form action="${serviceListUrl}" method="post"
                           class="col text-center card-footer p-0">
                         <ul class="pagination justify-content-center mt-3">
-                            <c:if test="${currentPage != 1}">
+                            <c:if test="${requestScope.currentPage != 1}">
                                 <li class="page-item">
                                     <button type="submit" class="page-link"
                                             name="currentPage"
-                                            value="${currentPage - 1}">
+                                            value="${requestScope.currentPage
+                                             - 1}">
                                         Previous
                                     </button>
                                 </li>
                             </c:if>
 
-                            <c:forEach begin="1" end="${noOfPages}"
+                            <c:forEach begin="1" end="${requestScope.noOfPages}"
                                        var="page">
                                 <c:choose>
-                                    <c:when test="${currentPage eq page}">
+                                    <c:when test="${requestScope.currentPage
+                                    eq page}">
                                         <li class="page-item active">
                                             <button type="submit"
                                                     class="page-link"
@@ -122,10 +123,12 @@
                                 </c:choose>
                             </c:forEach>
 
-                            <c:if test="${currentPage lt noOfPages}">
+                            <c:if test="${requestScope.currentPage lt
+                            requestScope.noOfPages}">
                                 <li class="page-item">
                                     <button type="submit" name="currentPage"
-                                            value="${currentPage + 1}"
+                                            value="${requestScope.currentPage
+                                             + 1}"
                                             class="page-link">Next
                                     </button>
                                 </li>
@@ -155,6 +158,7 @@
                             <input type="text" class="form-control" id="name"
                                    name="name"
                                    placeholder="Введите название услуги"
+                                   pattern="[a-zA-Zа-яА-Я0-9 ]{2,50}"
                                    required>
                         </div>
 
@@ -162,15 +166,21 @@
                             <label for="price"> Введите цену</label>
                             <input type="text" class="form-control" id="price"
                                    name="price" placeholder="Введите цену"
+                                   pattern="[0-9]+([,\.][0-9]+)?"
+                                   title="The number input must start with a
+                                   number and use either comma or a dot as a
+                                   decimal character."
                                    required/>
                         </div>
 
 
                         <div class="form-group">
-                            <label for="duration"> Введите длительность</label>
+                            <label for="duration"> Введите длительность
+                                (в минутах)</label>
                             <input type="text" class="form-control"
                                    id="duration" name="duration" required
-                                   placeholder="Введите длительность"/>
+                                   placeholder="Введите длительность"
+                            pattern="[0-9]{0,4}"/>
                         </div>
 
                         <div class="form-group">
@@ -196,16 +206,6 @@
     </div>
 </div>
 <%@include file="../fragments/footer.jsp" %>
-<script> function submitFormById(id) {
-    var form = document.getElementById(id);
-    var isSubmit = true;
-    if (form.onsubmit != null) {
-        isSubmit = form.onsubmit();
-    }
-    if (isSubmit) {
-        form.submit();
-    }
-    return false;
-}</script>
+
 </body>
 </html>

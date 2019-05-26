@@ -20,7 +20,6 @@ public class AccountSaveCommand extends Command {
 
     @Override
     public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
-        Forward forward = new Forward("/account/edit/info.html");
         HttpSession session = request.getSession();
 
         Integer id = (Integer) session.getAttribute("id");
@@ -35,31 +34,25 @@ public class AccountSaveCommand extends Command {
         String patronymic = request.getParameter("patronymic");
         Gender gender;
         if (login != null) {
-            if (request.getParameter("gender").equals(Gender.FEMALE.getName())) {
-                gender = Gender.FEMALE;
-            } else {
-                gender = Gender.MALE;
-            }
             Integer phone = Integer.parseInt(request.getParameter("phone"));
             Date birthDate = Date.valueOf(request.getParameter("birth_date"));
-
+            user.setGender(Gender.valueOf(request.getParameter("gender").toUpperCase()));
             user.setLogin(login);
             user.setRole(role);
             user.setName(name);
             user.setSurname(surname);
             user.setPatronymic(patronymic);
-            user.setGender(gender);
             user.setPhone(phone);
             user.setBirthDate(birthDate);
             LOGGER.debug("user: " + user);
             service.save(user);
             session.setAttribute("success_save_info", "The information is " +
                     "successful updated");
-        }else{
+        } else {
             session.setAttribute("failure_save_info", "The information " +
                     "can't be updated");
         }
 
-        return forward;
+        return new Forward("/account/edit/info.html");
     }
 }

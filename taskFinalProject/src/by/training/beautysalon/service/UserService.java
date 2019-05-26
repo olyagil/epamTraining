@@ -1,6 +1,7 @@
 package by.training.beautysalon.service;
 
 import by.training.beautysalon.entity.User;
+import by.training.beautysalon.entity.enumeration.Role;
 import by.training.beautysalon.exception.PersistentException;
 
 import java.util.List;

@@ -10,6 +10,7 @@ import by.training.beautysalon.exception.PersistentException;
 import by.training.beautysalon.service.EmployeeService;
 import by.training.beautysalon.service.UserService;
 import by.training.beautysalon.utill.ImageUtill;
+import by.training.beautysalon.validator.UserValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,6 +21,7 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.Base64;
 
 public class EmployeeSaveCommand extends Command {
@@ -27,56 +29,60 @@ public class EmployeeSaveCommand extends Command {
 
     @Override
     public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
-        Forward forward = new Forward("/employee/list.html");
         EmployeeService service = serviceFactory.getEmployeeService();
         UserService userService = serviceFactory.getUserService();
         String id = request.getParameter("specialistId");
         String login = request.getParameter("login");
         Employee employee = new Employee();
-        if (id != null) {
-            employee.setId(Integer.parseInt(id));
-        }
-        if (login != null) {
-            employee.setLogin(request.getParameter("login"));
-            employee.setPassword(request.getParameter("password"));
-            employee.setRole(Role.EMPLOYEE);
-            employee.setSurname(request.getParameter("surname"));
-            employee.setName(request.getParameter("name"));
-            employee.setPatronymic(request.getParameter("patronymic"));
-            if (request.getParameter("gender").equals(Gender.FEMALE.getName())) {
-                employee.setGender(Gender.FEMALE);
-            } else {
-                employee.setGender(Gender.MALE);
+        try {
+            if (id != null) {
+                employee.setId(Integer.parseInt(id));
             }
-            employee.setPhone(Integer.valueOf(request.getParameter("phone")));
-            employee.setBirthDate(Date.valueOf(request.getParameter(
-                    "birth_date")));
-            try {
-                Part filePart = request.getPart("img");
-                InputStream stream = filePart.getInputStream();
-                byte[] imageBytes = stream.readAllBytes();
-                employee.setAvatar(Base64.getEncoder().encodeToString(imageBytes));
-            } catch (IOException | ServletException e) {
-                LOGGER.error("Can't read the image from file", e);
-                throw new PersistentException(e);
+
+            if (login != null) {
+                employee.setLogin(request.getParameter("login"));
+                employee.setPassword(request.getParameter("password"));
+                employee.setRole(Role.EMPLOYEE);
+                employee.setSurname(request.getParameter("surname"));
+                employee.setName(request.getParameter("name"));
+                employee.setPatronymic(request.getParameter("patronymic"));
+                employee.setGender(Gender.valueOf(request.getParameter(
+                        "gender").toUpperCase()));
+
+                employee.setPhone(Integer.valueOf(request.getParameter("phone")));
+                employee.setBirthDate(Date.valueOf(request.getParameter(
+                        "birth_date")));
+                try {
+                    employee.setAvatar(UserValidator.getAvatar(request.getPart("img"),
+                            employee.getGender()));
+                } catch (IOException | ServletException | SQLException e) {
+                    LOGGER.error("Can't read the image from file", e);
+                    throw new PersistentException(e);
+                }
+                employee.setId(userService.save(employee));
+                LOGGER.debug("Employee is saved.");
             }
-            employee.setId(userService.save(employee));
-            LOGGER.debug("Employee is saved.");
-        }
-        LOGGER.debug("Employee id: " + employee.getId());
-        employee.setCabinetNumber(Integer.parseInt(request.getParameter(
-                "cabinet_number")));
-        employee.setSalary(Double.parseDouble(request.getParameter(
-                "salary")));
-        employee.setEmploymentDate(Date.valueOf(request.getParameter(
-                "employment_date")));
-        employee.setSpecialty(Specialty.getById(Integer
-                .parseInt(request.getParameter("specialty"))));
+            LOGGER.debug("Employee id: " + employee.getId());
+            employee.setCabinetNumber(Integer.parseInt(request.getParameter(
+                    "cabinet_number")));
+            employee.setSalary(Double.parseDouble(request.getParameter(
+                    "salary")));
+            employee.setEmploymentDate(Date.valueOf(request.getParameter(
+                    "employment_date")));
+            employee.setSpecialty(Specialty.getById(Integer
+                    .parseInt(request.getParameter("specialty"))));
 
 
-        service.save(employee);
-        LOGGER.debug("Employee is changed");
-        return forward;
+            service.save(employee);
+            LOGGER.debug("Employee is changed");
+        } catch (IllegalArgumentException e) {
+            LOGGER.error("Can't parse the data of the user");
+            request.setAttribute("alert_message", "Please, enter the correct " +
+                    "date.");
+            return new Forward("/employee/edit.html?specialistId=" + id);
+        }
+        return new Forward("/employee/list.html");
+
     }
 }
 

@@ -32,7 +32,8 @@
                         <div class="col-md-6">
                             <input type="text" id="login"
                                    placeholder="Enter Login"
-                                   class="form-control" name="login" required>
+                                   class="form-control" name="login"
+                                   pattern="[a-zA-Zа-яА-Я0-9]{2,30}" required>
                         </div>
                     </div>
 
@@ -43,19 +44,7 @@
                             <input type="password" id="password"
                                    placeholder="Enter password"
                                    class="form-control" name="password"
-                                   required>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="password-repeat"
-                               class="col-md-4 col-form-label text-md-right">
-                            * Repeat password</label>
-                        <div class="col-md-6">
-                            <input type="password" id="password-repeat"
-                                   placeholder="Enter password"
-                                   class="form-control" name="password-repeat"
-                                   required>
+                                   pattern="[a-zA-Zа-яА-Я0-9]{2,13}" required>
                         </div>
                     </div>
 
@@ -66,7 +55,8 @@
                         <div class="col-md-6">
                             <input type="text" id="name"
                                    placeholder="Enter name"
-                                   class="form-control" name="name" required>
+                                   class="form-control" name="name"
+                                   pattern="[a-zA-Zа-яА-Я0-9]{2,30}" required>
                         </div>
                     </div>
 
@@ -77,7 +67,8 @@
                         <div class="col-md-6">
                             <input type="text" id="surname"
                                    placeholder="Enter surname"
-                                   class="form-control" name="surname" required>
+                                   class="form-control" name="surname"
+                                   pattern="[a-zA-Zа-яА-Я0-9]{2,30}" required>
                         </div>
                     </div>
 
@@ -89,7 +80,7 @@
                             <input type="text" id="patronymic"
                                    placeholder="Enter patronymic"
                                    class="form-control" name="patronymic"
-                                   required>
+                                   pattern="[a-zA-Zа-яА-Я0-9]{2,30}" required>
                         </div>
                     </div>
                     <div class="form-group ">
@@ -113,9 +104,11 @@
                         <div class="col-md-6">
                             <input type="text" id="phone"
                                    placeholder="Enter phone"
-                                   class="form-control" name="phone" required>
-                            <%--<input type="text" class="input-medium bfh-phone"--%>
-                            <%--data-format="+375(dd)ddd-dd-dd">--%>
+                                   class="form-control phone_mask"
+                                   name="phone" required>
+                            <script src="js/jquery.maskedinput.min.js"></script>
+                            <script>$(".phone_mask").mask("+375(99)999-99-99");
+                            </script>
                         </div>
                     </div>
 

@@ -1,4 +1,4 @@
-package by.training.beatysalon.controller;
+package by.training.beautysalon.filter;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -7,9 +7,9 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/jsp/*"})
 public class EncodingFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -18,7 +18,12 @@ public class EncodingFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        servletRequest.setCharacterEncoding("utf-8");
+        servletRequest.setCharacterEncoding("UTF-8");
+        HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
+        httpResponse.setCharacterEncoding("UTF-8");
+        httpResponse.setHeader("Cache-Control", "no-cache");
+        httpResponse.setHeader("Pragma", "no-cache");
+        httpResponse.setDateHeader("Expires", 0);
         filterChain.doFilter(servletRequest, servletResponse);
     }
 

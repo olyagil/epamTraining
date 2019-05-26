@@ -1,9 +1,9 @@
 package by.training.beautysalon.builder;
 
-import by.training.beautysalon.dao.mysql.ImageUtill;
-import by.training.beautysalon.domain.User;
-import by.training.beautysalon.domain.enumeration.Gender;
-import by.training.beautysalon.domain.enumeration.Role;
+import by.training.beautysalon.utill.ImageUtill;
+import by.training.beautysalon.entity.User;
+import by.training.beautysalon.entity.enumeration.Gender;
+import by.training.beautysalon.entity.enumeration.Role;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

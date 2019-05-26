@@ -1,6 +1,6 @@
 package by.training.beautysalon.builder;
 
-import by.training.beautysalon.domain.Service;
+import by.training.beautysalon.entity.Service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

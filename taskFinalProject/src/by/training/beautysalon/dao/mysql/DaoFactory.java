@@ -32,33 +32,23 @@ public class DaoFactory {
     }
 
     public UserDao getUserDao() {
-        UserDao dao = new UserDaoImpl(connection);
-        ((UserDaoImpl) dao).setConnection(connection);
-        return dao;
+        return new UserDaoImpl(connection);
     }
 
     public EmployeeDao getEmployeeDao() {
-        EmployeeDao dao = new EmployeeDaoImpl();
-        ((EmployeeDaoImpl) dao).setConnection(connection);
-        return dao;
+        return new EmployeeDaoImpl(connection);
     }
 
     public ServiceDao getServiceDao() {
-        ServiceDao dao = new ServiceDaoImpl();
-        ((ServiceDaoImpl) dao).setConnection(connection);
-        return dao;
+        return new ServiceDaoImpl(connection);
     }
 
     public TalonDao getTalonDao() {
-        TalonDao dao = new TalonDaoImpl();
-        ((TalonDaoImpl) dao).setConnection(connection);
-        return dao;
+        return new TalonDaoImpl(connection);
     }
 
     public FeedbackDao getFeedbackDao() {
-        FeedbackDao dao = new FeedbackDaoImpl();
-        ((FeedbackDaoImpl) dao).setConnection(connection);
-        return dao;
+        return new FeedbackDaoImpl(connection);
     }
 
     public void commit() throws PersistentException {
@@ -81,6 +71,8 @@ public class DaoFactory {
 
     public void close() {
         try {
+            LOGGER.debug("Closing connection to DB");
+
             connection.close();
         } catch (SQLException e) {
             LOGGER.error("Can't close connection to DB", e);

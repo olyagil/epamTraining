@@ -41,18 +41,18 @@
         <filter-name>Action</filter-name>
         <url-pattern>*.html</url-pattern>
     </filter-mapping>
-    <!--<filter>-->
-        <!--<filter-name>Security</filter-name>-->
-        <!--<filter-class>by.training.beautysalon.filter.SecurityFilter-->
-        <!--</filter-class>-->
-    <!--</filter>-->
-    <!--<filter-mapping>-->
-        <!--<filter-name>Security</filter-name>-->
-        <!--<url-pattern>*.html</url-pattern>-->
-    <!--</filter-mapping>-->
+    <filter>
+        <filter-name>Security</filter-name>
+        <filter-class>by.training.beautysalon.filter.SecurityFilter
+        </filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>Security</filter-name>
+        <url-pattern>*.html</url-pattern>
+    </filter-mapping>
 
     <error-page>
         <error-code>404</error-code>
-        <location>/jsp/404page.jsp</location>
+        <location>/jsp/notfound.jsp</location>
     </error-page>
 </web-app>

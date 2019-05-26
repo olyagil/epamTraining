@@ -27,9 +27,7 @@ create table `user_info`
   */
   `phone`      bigint      not null,
   `birth_date` date        not null,
-  `avatar`     blob        null,
-  index idx_surname (surname),
-  unique index idx_unique_phone (phone),
+  `avatar`     blob        not null,
   constraint FK_user_info_users foreign key (`user_id`)
     references users (`id`)
     on update cascade

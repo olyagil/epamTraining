@@ -20,7 +20,7 @@
     <!-- Grid row -->
     <div class="row">
         <!-- Grid column -->
-        <c:forEach items="${specialists}" var="employee">
+        <c:forEach items="${requestScope.specialists}" var="employee">
             <div class="col-lg-4 col-md-6 mb-lg-0 mb-5">
                 <div class="avatar mx-auto">
                     <img src="data:image/png;base64,${employee.avatar}"

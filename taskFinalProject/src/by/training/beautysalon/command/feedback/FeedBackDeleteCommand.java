@@ -1,6 +1,7 @@
 package by.training.beautysalon.command.feedback;
 
 import by.training.beautysalon.command.Command;
+import by.training.beautysalon.command.CommandEnum;
 import by.training.beautysalon.command.Forward;
 import by.training.beautysalon.exception.PersistentException;
 import by.training.beautysalon.service.FeedbackService;
@@ -18,6 +19,6 @@ public class FeedBackDeleteCommand extends Command {
             return new Forward("/feedback/list.html");
         }
 
-        return null;
+        return new Forward(CommandEnum.FEEDBACK_DELETE.getName(), false);
     }
 }

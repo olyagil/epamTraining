@@ -16,22 +16,19 @@ public class ServiceSaveCommand extends Command {
 
     @Override
     public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
-        Forward forward = new Forward("/service/edit.html");
         ServiceService service = serviceFactory.getServiceService();
         Service serv = new Service();
         String id = request.getParameter("id");
-        if (id != null) {
-            serv.setId(Integer.parseInt(id));
-        }
-        LOGGER.debug("ID: " + id);
+
         serv.setName(request.getParameter("name"));
         serv.setDescription(request.getParameter("description"));
         serv.setPrice(Double.parseDouble(request.getParameter("price")));
         serv.setDuration(Double.parseDouble(request.getParameter("duration")));
-        service.save(serv);
-        LOGGER.debug("SERVICE: " + serv);
-//        forward.getAttributes().put("id", serv.getId());
 
-        return forward;
+        if (id != null) {
+            serv.setId(Integer.parseInt(id));
+        }
+        service.save(serv);
+        return new Forward("/service/list.html");
     }
 }

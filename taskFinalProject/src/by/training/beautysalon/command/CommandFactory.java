@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 public class CommandFactory {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public static Command create(String command) {
+    public static CommandEnum create(String command) {
         CommandEnum commandEnum;
         try {
             commandEnum = CommandEnum.valueOf(command
@@ -14,8 +14,8 @@ public class CommandFactory {
                     .replaceAll("/", "_"));
         } catch (IllegalArgumentException e) {
             LOGGER.error("Such command doesn't exist: " + command);
-            commandEnum = CommandEnum.UNKNOWN_COMMAND;
+            commandEnum = CommandEnum.NOTFOUND;
         }
-        return commandEnum.getCommand();
+        return commandEnum;
     }
 }

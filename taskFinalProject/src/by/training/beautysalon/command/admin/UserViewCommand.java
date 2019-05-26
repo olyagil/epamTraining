@@ -1,6 +1,7 @@
 package by.training.beautysalon.command.admin;
 
 import by.training.beautysalon.command.Command;
+import by.training.beautysalon.command.CommandEnum;
 import by.training.beautysalon.command.Forward;
 import by.training.beautysalon.entity.enumeration.Role;
 import by.training.beautysalon.exception.PersistentException;
@@ -18,7 +19,6 @@ public class UserViewCommand extends Command {
     @Override
     public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
 
-//        UserService userService = factory.getService(UserService.class);
         UserService userService = serviceFactory.getUserService();
 
         try {
@@ -28,7 +28,6 @@ public class UserViewCommand extends Command {
             LOGGER.debug("User id: " + id + " role: " + role);
 
             if (role == Role.EMPLOYEE) {
-//                EmployeeService service = factory.getService(EmployeeService.class);
                 EmployeeService service = serviceFactory.getEmployeeService();
                 request.setAttribute("user", service.find(id));
             } else {
@@ -39,6 +38,6 @@ public class UserViewCommand extends Command {
             throw new PersistentException(e);
 
         }
-        return null;
+        return new Forward(CommandEnum.USER_VIEW.getName(), false);
     }
 }

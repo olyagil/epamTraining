@@ -3,8 +3,6 @@
 <html>
 <head>
     <title>Измениние пароля</title>
-    <script type="text/javascript"
-            src="${pageContext.servletContext.contextPath}/js/validator-of-change-password-form.js"></script>
 </head>
 <body>
 <%@include file="../../fragments/header.jsp" %>
@@ -24,11 +22,8 @@
 
         <div class="col-md-9">
             <c:url value="/account/save/password.html" var="accountEditUrl"/>
-            <form action="${accountEditUrl}" class="row" method="post"
-                  onsubmit="return validateChangePassword(this)">
-                <div class="col-md-6">
-
-                </div>
+            <form action="${accountEditUrl}" class="row" method="post">
+                <div class="col-md-6"></div>
 
                 <div class="col-md-6">
 
@@ -36,27 +31,22 @@
                         <label for="old-password"> Old Password </label>
                         <input type="password" class="form-control"
                                name="old-password" id="old-password"
-                               placeholder="Введите старый пароль" required>
+                               placeholder="Введите старый пароль"
+                               pattern="[a-zA-Zа-яА-Я0-9]{2,13}" required>
                     </div>
 
                     <div class="form-group">
                         <label for="password">Password </label>
                         <input type="password" class="form-control"
                                name="password" id="password"
-                               placeholder="Введите пароль" required>
+                               placeholder="Введите пароль"
+                               pattern="[a-zA-Zа-яА-Я0-9]{2,13}" required>
                     </div>
-
-                    <%--<div class="form-group">--%>
-                        <%--<label for="password-repeat">Repeat password </label>--%>
-                        <%--<input type="password" class="form-control"--%>
-                               <%--name="password-repeat"--%>
-                               <%--id="password-repeat"--%>
-                               <%--placeholder="Повторите пароль" required>--%>
-                    <%--</div>--%>
                     <c:if test="${not empty sessionScope.success_save_password}">
                         <div class="alert alert-success" role="alert">
                                 ${sessionScope.success_save_password}
-                            <c:remove var="success_save_password" scope="session"/>
+                            <c:remove var="success_save_password"
+                                      scope="session"/>
                         </div>
                     </c:if>
                     <c:if test="${not empty sessionScope.message}">
@@ -68,7 +58,8 @@
                     <c:if test="${not empty sessionScope.failure_save_password}">
                         <div class="alert alert-danger" role="alert">
                                 ${sessionScope.failure_save_password}
-                            <c:remove var="failure_save_password" scope="session"/>
+                            <c:remove var="failure_save_password"
+                                      scope="session"/>
                         </div>
                     </c:if>
 
@@ -87,7 +78,6 @@
                         </div>
                     </div>
                 </div>
-
             </form>
         </div>
     </div>

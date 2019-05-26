@@ -1,6 +1,7 @@
 package by.training.beautysalon.command.account;
 
 import by.training.beautysalon.command.Command;
+import by.training.beautysalon.command.CommandEnum;
 import by.training.beautysalon.command.Forward;
 import by.training.beautysalon.entity.User;
 import by.training.beautysalon.exception.PersistentException;
@@ -14,7 +15,7 @@ import javax.servlet.http.HttpSession;
 
 public class AccountEditCommand extends Command {
     private static final Logger LOGGER = LogManager.getLogger();
-
+//TODO разделить info and password
     @Override
     public Forward execute(HttpServletRequest request,
                            HttpServletResponse response) throws PersistentException {
@@ -31,12 +32,11 @@ public class AccountEditCommand extends Command {
                 request.setAttribute("user", user);
 
             }
-        } catch (
-                NumberFormatException e) {
+        } catch (NumberFormatException e) {
             LOGGER.error("Can't parse the id", e);
             throw new PersistentException(e);
         }
-        return null;
+        return new Forward(CommandEnum.ACCOUNT_EDIT_INFO.getName(), false);
 
     }
 }

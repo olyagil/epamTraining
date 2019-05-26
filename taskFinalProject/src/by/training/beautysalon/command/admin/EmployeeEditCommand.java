@@ -1,7 +1,9 @@
 package by.training.beautysalon.command.admin;
 
 import by.training.beautysalon.command.Command;
+import by.training.beautysalon.command.CommandEnum;
 import by.training.beautysalon.command.Forward;
+import by.training.beautysalon.entity.Employee;
 import by.training.beautysalon.entity.User;
 import by.training.beautysalon.entity.enumeration.Specialty;
 import by.training.beautysalon.exception.PersistentException;
@@ -12,33 +14,34 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class EmployeeEditCommand extends Command {
     private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
+        EmployeeService service = serviceFactory.getEmployeeService();
+
         try {
             int id = Integer.parseInt(request.getParameter("specialistId"));
-            LOGGER.debug("User id: " + id);
 
-//            UserService service = factory.getService(UserService.class);
-            UserService service = serviceFactory.getUserService();
-//            EmployeeService service =
-//                    factory.getService(EmployeeService.class);
-            EmployeeService employeeService = serviceFactory.getEmployeeService();
-            User user = service.find(id);
-            if (user != null) {
-                request.setAttribute("user",
-                        employeeService.find(user.getId()));
+            Employee employee = service.find(id);
+            if (employee != null) {
+                request.setAttribute("user", service.find(employee.getId()));
                 request.setAttribute("specialties", Specialty.values());
+            } else {
+                LOGGER.debug(String.format("The user with id %s is not found"
+                        , id));
+                request.setAttribute("alert_message", "Such user doesn't " +
+                        "exist!");
+
             }
-            LOGGER.info("Edit User " + user.getId());
         } catch (NumberFormatException e) {
             LOGGER.error("Can't parse the id of the user");
             throw new PersistentException(e);
         }
-        return null;
+        return new Forward(CommandEnum.EMPLOYEE_EDIT.getName(), false);
 
     }
 }

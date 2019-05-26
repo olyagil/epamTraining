@@ -16,7 +16,7 @@
 
 
     <div class="row">
-        <c:forEach items="${feedback}" var="feedback">
+        <c:forEach items="${requestScope.feedback}" var="feedback">
             <div class="col-md-4">
                 <div class="card">
                     <img class="card-img-top"
@@ -32,7 +32,6 @@
                 </div>
             </div>
         </c:forEach>
-
     </div>
 </div>
 

@@ -2,7 +2,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>Menu</title>
+    <title>Реааьивпола</title>
 </head>
 <body>
 <%@include file="../../fragments/header.jsp" %>
@@ -26,17 +26,17 @@
             <form action="${saveImgUrl}" method="post"
                   enctype="multipart/form-data">
                 <div class="text-center">
-                    <img src="data:image/png;base64,${user.avatar}"
+                    <img src="data:image/png;base64,${requestScope.user.avatar}"
                          class="avatar img-circle img-thumbnail img-responsive"
                          alt="avatar">
                     <h6>Upload a different photo...</h6>
                     <input type="file" name="img"
-                           class="text-center center-block file-upload">
+                           class="text-center center-block file-upload"
+                           required>
                     <button type="submit"
-                            class="btn btn-primary btn-lg">Изменить
+                            class="btn btn-success float-right">Изменить
                     </button>
                 </div>
-                <hr>
 
             </form>
         </div>
@@ -51,27 +51,30 @@
                         <label for="surname"> Surname </label>
                         <input type="text" class="form-control"
                                name="surname" id="surname"
-                               value="${user.surname}"
-                               placeholder="Введите фамилию">
+                               value="${requestScope.user.surname}"
+                               placeholder="Введите фамилию"
+                               pattern="[a-zA-Zа-яА-Я0-9-]{2,30}" required>
                     </div>
 
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" name="name"
-                               id="name" value="${user.name}"
-                               placeholder="Введите имя">
+                               id="name" value="${requestScope.user.name}"
+                               placeholder="Введите имя"
+                               pattern="[a-zA-Zа-яА-Я0-9]{2,30}" required>
                     </div>
 
                     <div class="form-group">
                         <label for="patronymic">Patronymic </label>
                         <input type="text" class="form-control"
                                name="patronymic" id="patronymic"
-                               value="${user.patronymic}"
-                               placeholder="Введите отчество">
+                               value="${requestScope.user.patronymic}"
+                               placeholder="Введите отчество"
+                               pattern="[a-zA-Zа-яА-Я0-9]{2,30}" required>
                     </div>
                     <div class="form-group">
                         <div class="maxl">
-                            <c:if test="${user.gender.id eq 0}">
+                            <c:if test="${requestScope.user.gender.id eq 0}">
                                 <label class="radio inline">
                                     <input type="radio" name="gender"
                                            value="male">
@@ -83,7 +86,7 @@
                                     <span>Female </span>
                                 </label>
                             </c:if>
-                            <c:if test="${user.gender.id eq 1}">
+                            <c:if test="${requestScope.user.gender.id eq 1}">
                                 <label class="radio inline">
                                     <input type="radio" name="gender"
                                            value="male" checked>
@@ -116,31 +119,35 @@
                     <div class="form-group">
                         <label for="login"> Login </label>
                         <input type="text" class="form-control" name="login"
-                               id="login" value="${user.login}"
-                               placeholder="Введите логин">
+                               id="login" value="${requestScope.user.login}"
+                               placeholder="Введите логин"
+                               pattern="[a-zA-Zа-яА-Я0-9]{2,30}" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="phone"> Phone </label>
+                        <label for="phone"> Phone (9 цифр) </label>
                         <input type="text" class="form-control"
-                               name="phone" id="phone" value="${user.phone}"
-                               placeholder="Введите телефон">
+                               name="phone" id="phone"
+                               value="${requestScope.user.phone}"
+                               placeholder="Введите телефон"
+                               pattern="[0-9]{9}" required>
                     </div>
 
                     <div class="form-group">
                         <label for="birth_date"> Date of birth </label>
                         <input type="date" class="form-control"
                                name="birth_date" id="birth_date"
-                               value="${user.birthDate}"
-                               placeholder="Введите дату рождения">
+                               value="${requestScope.user.birthDate}"
+                               placeholder="Введите дату рождения" required>
                     </div>
 
                     <div class="row">
-                        <input type="hidden" name="id" value="${user.id}"/>
+                        <input type="hidden" name="id"
+                               value="${requestScope.user.id}"/>
                         <div class="form-group ">
                             <div class="col">
                                 <br>
-                                <button class="btn btn-lg btn-primary"
+                                <button class="btn btn-lg btn-success"
                                         type="submit"> Save
                                 </button>
                                 <button class="btn btn-lg" type="reset">

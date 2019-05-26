@@ -1,36 +1,44 @@
 package by.training.beautysalon.dao.mysql;
 
 import by.training.beautysalon.dao.TalonDao;
-import by.training.beautysalon.domain.Service;
-import by.training.beautysalon.domain.Talon;
-import by.training.beautysalon.domain.User;
+import by.training.beautysalon.entity.Service;
+import by.training.beautysalon.entity.Talon;
 import by.training.beautysalon.exception.PersistentException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class TalonDaoImpl extends BaseDaoImpl implements TalonDao {
     private static final Logger LOGGER = LogManager.getLogger();
-
-    private static final String SELECT_BY_SPECIALIST = "select talons.`id`, "
-            + "`client_id`, ui.`surname`,ui.`patronymic`, ui.`phone`, ui"
-            + ".`name`, s.`id`, s.`name`, `reception_date`, `status` "
-            + "from talons join services s on service_id = s.id "
-            + "join user_info ui on talons.client_id = ui.user_id "
-            + "where employee_id = ?;";
-    private static final String SELECT_BY_ID = "select talons.`id`, `client_id`,"
-            + " ui.`surname`, ui.`name`, ui.`patronymic`, ui.`phone`, s.`id`, "
-            + "s.`name`, `reception_date`, `status`"
-            + "from talons join services s on service_id = s.id "
-            + "join user_info ui on talons.client_id = ui.user_id "
-            + "where talons.`id` = ?;";
+    private static final String SELECT_ALL = "select talons.`id`, "
+            + "`client_id`, `employee_id`, client.`surname`, client.`name`,"
+            + "client.`phone`, employee.`surname`, employee.`name`, "
+            + "employee.`phone`, s.`id`, s.`name`,`reception_date`,"
+            + " `status` from talons join services s on service_id = s.id "
+            + "join user_info client on talons.client_id = client.user_id "
+            + "join user_info employee on talons.employee_id = employee.user_id ";
+    private static final String SELECT_ALL_BY_PARTS = SELECT_ALL
+            + "order by `reception_date` DESC limit ?,?";
+    private static final String SELECT_BY_EMPLOYEE = SELECT_ALL
+            + "where employee_id = ? order by `reception_date` DESC ;";
+    private static final String SELECT_BY_CLIENT = SELECT_ALL
+            + "where client_id = ? order by `reception_date` DESC ;";
+    private static final String SELECT_BY_ID = SELECT_ALL
+            + "where talons.`id` = ? order by `reception_date` DESC ;";
+    private static final String SELECT_BY_STATUS = SELECT_ALL
+            + "where status = ? order by `reception_date` DESC ;";
+    private static final String SELECT_BY_DATE = SELECT_ALL
+            + "where reception_date between ? and ? order by `reception_date` DESC ;";
     private static final String INSERT_TALON = "insert into `talons`"
             + "(client_id, service_id, employee_id, reception_date, status) "
             + "values (?, ?, ?, ?, ?);";
@@ -38,17 +46,37 @@ public class TalonDaoImpl extends BaseDaoImpl implements TalonDao {
             + " `reception_date`=?, `status`=? where id=?";
     private static final String DELETE_BY_ID = "delete from `talons` "
             + "where `id`=?;";
+    private static final String COUNT_TALONS = "select count(`id`) "
+            + "from `talons`";
 
-    //TODO
-    @Override
-    public List<Talon> readByClient(Integer clientId) throws PersistentException {
-        return null;
+    public TalonDaoImpl(Connection connection) {
+        this.connection = connection;
     }
 
     @Override
-    public List<Talon> readBySpecialist(Integer specialistId) throws PersistentException {
+    public List<Talon> readByClient(Integer clientId) throws PersistentException {
         try (PreparedStatement statement =
-                     connection.prepareStatement(SELECT_BY_SPECIALIST)) {
+                     connection.prepareStatement(SELECT_BY_CLIENT)) {
+            statement.setInt(1, clientId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                List<Talon> talonList = new ArrayList<>();
+                while (resultSet.next()) {
+                    Talon talon = getBuilder().build(resultSet);
+                    talonList.add(talon);
+                }
+                return talonList;
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Can't read clients by client id: " + clientId, e);
+            throw new PersistentException(e);
+        }
+    }
+
+    @Override
+    public List<Talon> readByEmployee(Integer specialistId) throws PersistentException {
+        try (PreparedStatement statement =
+                     connection.prepareStatement(SELECT_BY_EMPLOYEE)) {
             statement.setInt(1, specialistId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -64,16 +92,103 @@ public class TalonDaoImpl extends BaseDaoImpl implements TalonDao {
         }
     }
 
-    //TODO
     @Override
-    public List<Talon> read(Date date) throws PersistentException {
-        return null;
+    public List<Talon> read(Boolean status) throws PersistentException {
+        try (PreparedStatement statement =
+                     connection.prepareStatement(SELECT_BY_STATUS)) {
+            statement.setBoolean(1, status);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                List<Talon> talonList = new ArrayList<>();
+                while (resultSet.next()) {
+                    talonList.add(getBuilder().build(resultSet));
+                }
+                return talonList;
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Can't read talons with status: " + status, e);
+            throw new PersistentException(e);
+        }
     }
 
-    //TODO
     @Override
-    public List<Talon> read() {
-        return null;
+    public List<Talon> read(Date date) throws PersistentException {
+        try (PreparedStatement statement =
+                     connection.prepareStatement(SELECT_BY_DATE)) {
+            Timestamp data = new Timestamp(date.getTime());
+            LOGGER.debug("DATE:" + data);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            cal.add(Calendar.DAY_OF_WEEK, 1);
+            statement.setTimestamp(1, data);
+            statement.setTimestamp(2, new Timestamp(cal.getTime().getTime()));
+            try (ResultSet resultSet = statement.executeQuery()) {
+                List<Talon> talonList = new ArrayList<>();
+                while (resultSet.next()) {
+                    talonList.add(getBuilder().build(resultSet));
+                }
+                LOGGER.debug("List of talons: " + talonList);
+                return talonList;
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Can't read talons by date id: " + date, e);
+            throw new PersistentException(e);
+        }
+    }
+
+    @Override
+    public int countRows() throws PersistentException {
+        int count = 0;
+        try (PreparedStatement statement =
+                     connection.prepareStatement(COUNT_TALONS);
+             ResultSet resultSet = statement.executeQuery()) {
+            if (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Can't count the number of talons", e);
+            throw new PersistentException(e);
+        }
+        return count;
+    }
+
+    @Override
+    public List<Talon> read(int currentPage, int recordsPerPage) throws PersistentException {
+        int start = currentPage * recordsPerPage - recordsPerPage;
+
+        try (PreparedStatement statement =
+                     connection.prepareStatement(SELECT_ALL_BY_PARTS)) {
+            statement.setInt(1, start);
+            statement.setInt(2, recordsPerPage);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                List<Talon> talonList = new ArrayList<>();
+                while (resultSet.next()) {
+                    talonList.add(getBuilder().build(resultSet));
+                }
+                return talonList;
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Can't read by page the talons", e);
+            throw new PersistentException(e);
+        }
+    }
+
+    @Override
+    public List<Talon> read() throws PersistentException {
+        try (PreparedStatement statement =
+                     connection.prepareStatement(SELECT_ALL);
+             ResultSet resultSet = statement.executeQuery()) {
+            List<Talon> talonList = new ArrayList<>();
+            while (resultSet.next()) {
+                Talon talon = getBuilder().build(resultSet);
+                talonList.add(talon);
+            }
+            return talonList;
+
+        } catch (SQLException e) {
+            LOGGER.error("Can't read all talons", e);
+            throw new PersistentException(e);
+        }
     }
 
     @Override

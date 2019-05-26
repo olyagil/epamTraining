@@ -1,6 +1,7 @@
-package by.training.beautysalon.command.comman;
+package by.training.beautysalon.command.common;
 
 import by.training.beautysalon.command.Command;
+import by.training.beautysalon.command.CommandEnum;
 import by.training.beautysalon.command.Forward;
 import by.training.beautysalon.exception.PersistentException;
 import org.apache.logging.log4j.LogManager;
@@ -17,11 +18,9 @@ public class LogoutCommand extends Command {
     public Forward execute(HttpServletRequest request,
                            HttpServletResponse response)
             throws PersistentException {
-//        User user = getAuthorizedUser();
-//        LOGGER.debug(String.format("user \"%s\" is logged out", user.getLogin()));
-        LOGGER.debug(String.format("user \"%s\" is logged out", "TestUser") );
+
         request.getSession(false).invalidate();
-        LOGGER.debug(String.format("user \"%s\" is logged out", "TestUser") );
-        return new Forward("/index.jsp");
+        LOGGER.debug("User is logged out.");
+        return new Forward(CommandEnum.MAIN.getName(), false);
     }
 }

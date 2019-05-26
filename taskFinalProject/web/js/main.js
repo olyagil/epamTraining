@@ -1,29 +1,3 @@
-var startMessage = null;
-var dropClicked = false;
-var currentMenu = null;
-
-window.onload = function() {
-	var menus = document.getElementById("header").getElementsByClassName("drop");
-	for(var index = 0, size = menus.length; index < size; index++) {
-		menus[index].style.display = "none";
-		menus[index].parentNode.getElementsByTagName("A")[0].onclick = dropMenu;
-	}
-	if(startMessage !== null) {
-		show(startMessage);
-	}
-}
-
-window.onclick = function() {
-	if(currentMenu != null) {
-		if(!dropClicked) {
-			currentMenu.style.display = "none";
-			currentMenu = null;
-		} else {
-			dropClicked = false;
-		}
-	}
-}
-
 function show(message, action) {
 	showMessage(message, [{
 		caption: "Закрыть",
@@ -43,7 +17,18 @@ function confirmation(form, message) {
 	}]);
 	return false;
 }
+$('[data-toggle=confirmation]').confirm({
+    rootSelector: '[data-toggle=confirmation]',
+    onConfirm: function() {
+        alert("2");
+        $('[data-toggle=confirmation]').confirmation('hide');
+    },
+    popout: true
+});
 
+$("#bt1").click(function() {
+    alert("77");
+});
 function submitFormById(id) {
 	var form = document.getElementById(id);
 	var isSubmit = true;
@@ -79,17 +64,4 @@ function showMessage(message, buttons) {
 	messageContent.appendChild(buttonsElement);
 	messageElement.appendChild(messageContent);
 	body.insertBefore(messageElement, body.firstChild);
-}
-
-function dropMenu(e) {
-	var menu = e.currentTarget.parentNode.getElementsByClassName("drop")[0];
-	if(menu.style.display === "none") {
-		if(currentMenu != null && menu != currentMenu) {
-			currentMenu.style.display = "none";
-		}
-		menu.style.display = "block";
-		currentMenu = menu;
-		dropClicked = true;
-	}
-	return false;
 }

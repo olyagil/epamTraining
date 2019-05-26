@@ -25,32 +25,22 @@ public class DispatcherServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         Command command = (Command) request.getAttribute("command");
-        LOGGER.debug(command.getName());
-
+        LOGGER.debug("COMMAND: " + command.getName());
+        ServiceFactory factory = ServiceFactory.getInstance();
         try {
-            command.setFactory(ServiceFactory.getInstance());
+            command.setFactory(factory);
             Forward forward = command.execute(request, response);
-            LOGGER.debug("forward: " + forward);
-//            actionManager.close();
+            factory.close();
 
             String requestedUri = request.getRequestURI();
-            LOGGER.debug("Requested Uri: " + requestedUri);
-            LOGGER.debug("Context path: " + request.getContextPath());
-
-            if (forward != null && forward.isRedirect()) {
-                LOGGER.debug("Page: " + forward.getPage());
+            if (request.getMethod().equalsIgnoreCase("post")
+                    || forward.isRedirect()) {
                 String redirectedUri = request.getContextPath() + forward.getPage();
-                LOGGER.debug(String.format("Request for URI \"%s\" is " +
+                LOGGER.debug(String.format("Request for URI \"%s\" id " +
                         "redirected to URI \"%s\"", requestedUri, redirectedUri));
                 response.sendRedirect(redirectedUri);
             } else {
-                String jspPage;
-                if (forward != null) {
-                    jspPage = forward.getPage();
-                } else {
-                    jspPage = command.getName() + ".jsp";
-                }
-                jspPage = "/jsp/" + jspPage;
+                String jspPage = "/jsp/" + forward.getPage() + ".jsp";
                 LOGGER.debug(String.format("Request for URI \"%s\" is forwarded " +
                         "to JSP \"%s\"", requestedUri, jspPage));
                 getServletContext().getRequestDispatcher(jspPage).forward(request, response);
@@ -77,12 +67,15 @@ public class DispatcherServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws
             ServletException, IOException {
+        LOGGER.debug("This is a get-method.");
         processRequest(req, resp);
+
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws
             ServletException, IOException {
+        LOGGER.debug("This is a post-method.");
         processRequest(req, resp);
     }
 

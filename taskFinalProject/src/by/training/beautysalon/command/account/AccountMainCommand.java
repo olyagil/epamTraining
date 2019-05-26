@@ -1,6 +1,7 @@
 package by.training.beautysalon.command.account;
 
 import by.training.beautysalon.command.Command;
+import by.training.beautysalon.command.CommandEnum;
 import by.training.beautysalon.command.Forward;
 import by.training.beautysalon.entity.enumeration.Role;
 import by.training.beautysalon.exception.PersistentException;
@@ -33,6 +34,6 @@ public class AccountMainCommand extends Command {
             LOGGER.debug("User: " + service.find(id));
         }
 
-        return null;
+        return new Forward(CommandEnum.ACCOUNT_MAIN.getName(), false);
     }
 }

@@ -24,7 +24,12 @@
                     <c:remove var="message_success_signup" scope="session"/>
                 </div>
             </c:if>
-
+            <c:if test="${not empty requestScope.message_forbidden}">
+                <div class="alert alert-danger" role="alert">
+                    <p> ${requestScope.message_forbidden}</p>
+                    <c:remove var="message" scope="session"/>
+                </div>
+            </c:if>
             <!-- Login -->
             <div class="form-group ">
                 <label for="login">Имя пользователя:</label>

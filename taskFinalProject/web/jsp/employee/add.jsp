@@ -23,7 +23,8 @@
                             <label for="login">* Логин </label>
                             <input type="text" id="login"
                                    placeholder="Enter Login"
-                                   class="form-control" name="login" required>
+                                   class="form-control" name="login"
+                                   pattern="[a-zA-Zа-яА-Я0-9]{2,30}" required>
                         </div>
 
                         <div class="form-group">
@@ -31,23 +32,15 @@
                             <input type="password" id="password"
                                    placeholder="Enter password"
                                    class="form-control" name="password"
-                                   required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password-repeat"> * Repeat
-                                password </label>
-                            <input type="password" id="password-repeat"
-                                   placeholder="Enter password"
-                                   class="form-control" name="password-repeat"
-                                   required>
+                                   pattern="[a-zA-Zа-яА-Я0-9]{2,13}" required>
                         </div>
 
                         <div class="form-group">
                             <label for="name"> * Name </label>
                             <input type="text" id="name"
                                    placeholder="Enter name" class="form-control"
-                                   name="name" required>
+                                   name="name"
+                                   pattern="[a-zA-Zа-яА-Я]{2,30}" required>
                         </div>
 
                         <div class="form-group">
@@ -55,7 +48,7 @@
                             <input type="text" id="surname"
                                    placeholder="Enter surname"
                                    class="form-control" name="surname"
-                                   required>
+                                   pattern="[a-zA-Zа-яА-Я-]{2,30}" required>
                         </div>
 
                         <div class="form-group">
@@ -63,8 +56,15 @@
                             <input type="text" id="patronymic"
                                    placeholder="Enter patronymic"
                                    class="form-control" name="patronymic"
-                                   required>
+                                   pattern="[a-zA-Zа-яА-Я]{2,30}" required>
                         </div>
+
+                        <div class="form-group">
+                            <label for="img"> * Photo </label>
+                            <input type="file" name="img" id="img"
+                                   class="form-control" required>
+                        </div>
+
                         <div class="form-group">
                             <label class="radio inline">
                                 <input type="radio" name="gender"
@@ -85,7 +85,7 @@
                             <input type="text" id="phone"
                                    placeholder="Enter phone"
                                    class="form-control" name="phone"
-                                   required>
+                                   pattern="[0-9]{9}" required>
                         </div>
 
                         <div class="form-group">
@@ -101,14 +101,18 @@
                             <input type="text" class="form-control"
                                    name="cabinet_number" id="cabinet_number"
                                    placeholder="Введите номер кабинета"
-                                   required>
+                                   pattern="[0-9]{0,4}" required>
                         </div>
 
                         <div class="form-group">
                             <label for="salary"> * Salary </label>
                             <input type="text" class="form-control"
                                    name="salary" id="salary"
-                                   placeholder="Введите зарплату" required>
+                                   placeholder="Введите зарплату"
+                                   pattern="[0-9]+([,\.][0-9]+)?"
+                                   title="The number input must start with a
+                                   number and use either comma or a dot as a
+                                   decimal character." required>
                         </div>
 
                         <div class="form-group">
@@ -120,7 +124,7 @@
                                    required>
                         </div>
 
-                        <div class="form=group">
+                        <div class="form-group">
                             <label for="specialty">* Специализация </label>
                             <select class="form-control" id="specialty"
                                     name="specialty">
@@ -131,11 +135,6 @@
                                 </c:forEach>
                             </select>
 
-                        </div>
-                        <div class="form-group">
-                            <label for="img"> Photo </label>
-                            <input type="file" name="img" id="img"
-                                   class="form-control">
                         </div>
 
                     </div>
@@ -153,6 +152,4 @@
 <%@include file="../fragments/footer.jsp" %>
 
 </body>
-
-
 </html>

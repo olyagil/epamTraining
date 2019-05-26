@@ -1,4 +1,4 @@
-package by.training.beautysalon.command.comman;
+package by.training.beautysalon.command.common;
 
 import by.training.beautysalon.command.Command;
 import by.training.beautysalon.command.Forward;
@@ -18,17 +18,15 @@ public class LanguageCommand extends Command {
     public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
 
         String lang = request.getParameter("lang");
-        LOGGER.debug(request.getSession(false).getAttribute("lang"));
         request.getSession().setAttribute("lang", lang);
-        LOGGER.debug("LOCALE: " + lang);
-        LOGGER.debug(request.getSession(false).getAttribute("lang"));
         URI uri = null;
         try {
             uri = new URI(request.getHeader("referer"));
         } catch (URISyntaxException e) {
             LOGGER.error("Can't get the previous page");
         }
-        LOGGER.debug("REFERER: " + uri.getPath());
+        LOGGER.debug("The language is changed to: " + lang);
+
         return new Forward(uri.getPath().replace("/salon", ""));
     }
 }
