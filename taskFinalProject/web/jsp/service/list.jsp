@@ -1,8 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="property.lang"/>
 <html>
 <head>
-    <title>Service list</title>
+    <title><fmt:message key="menu.services.list"/></title>
     <script type="text/javascript"
             src="${pageContext.servletContext.contextPath}/js/main.js"></script>
 </head>
@@ -15,46 +18,49 @@
 <div class="container">
     <ul class="breadcrumb">
         <c:url value="/service/list.html" var="serviceListUrl"/>
-        <li class="breadcrumb-item"><a href="${accountMainUrl}">Главная</a></li>
-        <li class="breadcrumb-item active">Список услуг</li>
+        <li class="breadcrumb-item"><a href="${accountMainUrl}">
+            <fmt:message key="menu.main"/>
+        </a></li>
+        <li class="breadcrumb-item active"><fmt:message
+                key="menu.services.list"/></li>
     </ul>
     <div class="tab-pane">
         <button type="button" class="btn btn-primary btn-lg float-right"
                 data-toggle="modal"
-                data-target="#modal">Добавить услугу
+                data-target="#modal"><fmt:message key="menu.services.add"/>
         </button>
 
         <c:url value="/service/list.html" var="searchServiceUrl"/>
         <form action="${searchServiceUrl}" method="get"
               class="form-inline md-form mr-auto mb-4">
 
-
-            <label for="search">Найти услугу по названию: </label>
+            <fmt:message key="placeholder.search" var="search"/>
+            <label for="search"><fmt:message key="service.find"/> </label>
             <input class="form-control mr-sm-2" aria-label="Search"
-                   name="searchName" type="text" placeholder="Search"
+                   name="searchName" type="text" placeholder="${search}"
                    id="search" pattern="[a-zA-Zа-яА-Я0-9]{2,20}" required>
             <button class="btn btn-rounded btn-primary btn-lg"
-                    type="submit">Search
+                    type="submit"><fmt:message key="button.search"/>
             </button>
         </form>
         <c:if test="${empty requestScope.services}">
-            <p>Услугу с названием ${requestScope.searchName} не найдено</p>
+            <p><fmt:message key="service.notfound"/></p>
         </c:if>
         <c:if test="${not empty requestScope.services}">
             <div class="card mb-5">
-                <div class="card-header"><h2>Список услуг</h2>
-                    <p>Для редактирования информации об услуге нажмите на
-                        строку с услугой.</p></div>
+                <div class="card-header"><h2><fmt:message
+                        key="menu.services.list"/></h2>
+                    <p><fmt:message key="service.info"/></p></div>
                 <div class="card-block p-0">
                     <table
                             class="table table-bordered table-sm m-0 table-hover">
                         <thead>
                         <tr>
-                            <th> ID</th>
-                            <th> Название</th>
-                            <th> Описание</th>
-                            <th> Цена</th>
-                            <th> Длительность</th>
+                            <th> №</th>
+                            <th><fmt:message key="service.name"/></th>
+                            <th><fmt:message key="service.description"/></th>
+                            <th><fmt:message key="service.price"/></th>
+                            <th><fmt:message key="service.duration"/></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -92,7 +98,7 @@
                                             name="currentPage"
                                             value="${requestScope.currentPage
                                              - 1}">
-                                        Previous
+                                        <fmt:message key="button.previous"/>
                                     </button>
                                 </li>
                             </c:if>
@@ -129,7 +135,9 @@
                                     <button type="submit" name="currentPage"
                                             value="${requestScope.currentPage
                                              + 1}"
-                                            class="page-link">Next
+                                            class="page-link"><fmt:message
+                                            key="button.next"/>
+
                                     </button>
                                 </li>
                             </c:if>
@@ -144,7 +152,8 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="label"> Добавьте услугу</h5>
+                    <h5 class="modal-title" id="label">
+                        <fmt:message key="service.add"/></h5>
                     <button type="button" class="close" data-dismiss="modal"
                             aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -154,18 +163,27 @@
                     <c:url value="/service/save.html" var="serviceSaveUrl"/>
                     <form action="${serviceSaveUrl}" method="get">
                         <div class="form-group">
-                            <label for="name"> Введите название</label>
+
+                            <fmt:message key="placeholder.service.name"
+                                         var="serviceName"/>
+
+                            <label for="name">
+                                <fmt:message key="service.name"/> </label>
                             <input type="text" class="form-control" id="name"
                                    name="name"
-                                   placeholder="Введите название услуги"
+                                   placeholder="${serviceName}"
                                    pattern="[a-zA-Zа-яА-Я0-9 ]{2,50}"
                                    required>
                         </div>
 
                         <div class="form-group">
-                            <label for="price"> Введите цену</label>
+
+                            <fmt:message key="placeholder.service.price"
+                                         var="servicePrice"/>
+                            <label for="price">
+                                <fmt:message key="service.price"/> </label>
                             <input type="text" class="form-control" id="price"
-                                   name="price" placeholder="Введите цену"
+                                   name="price" placeholder="${servicePrice}"
                                    pattern="[0-9]+([,\.][0-9]+)?"
                                    title="The number input must start with a
                                    number and use either comma or a dot as a
@@ -175,28 +193,37 @@
 
 
                         <div class="form-group">
-                            <label for="duration"> Введите длительность
-                                (в минутах)</label>
+                            <fmt:message key="placeholder.service.duration"
+                                         var="serviceDuration"/>
+                            <label for="duration">
+                                <fmt:message key="service.duration"/>
+                            </label>
                             <input type="text" class="form-control"
                                    id="duration" name="duration" required
-                                   placeholder="Введите длительность"
-                            pattern="[0-9]{0,4}"/>
+                                   placeholder="${serviceDuration}"
+                                   pattern="[0-9]{0,4}"/>
                         </div>
 
                         <div class="form-group">
-                            <label for="description"> Описание услуги</label>
+                            <fmt:message key="placeholder.service.description"
+                                         var="serviceDescription"/>
+                            <label for="description">
+                                <fmt:message
+                                        key="service.description"/> </label>
                             <textarea class="form-control" rows="7"
                                       id="description"
                                       name="description"
-                                      placeholder="Введите описание"
+                                      placeholder="${serviceDescription}"
                                       required></textarea>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary"
-                                    data-dismiss="modal">Закрыть
+                                    data-dismiss="modal">
+                                <fmt:message key="button.close"/>
                             </button>
                             <button type="submit"
-                                    class="btn btn-primary">Добавить
+                                    class="btn btn-primary">
+                                <fmt:message key="button.add"/>
                             </button>
                         </div>
                     </form>

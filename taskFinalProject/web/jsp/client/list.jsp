@@ -1,8 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="property.lang"/>
 <html>
 <head>
-    <title>Client list</title>
+    <title><fmt:message key="menu.client.list"/></title>
     <script type="text/javascript"
             src="${pageContext.servletContext.contextPath}/js/main.js"></script>
 </head>
@@ -12,46 +15,53 @@
 <%@include file="../fragments/menu.jsp" %>
 <div class="container">
     <ul class="breadcrumb">
-        <li class="breadcrumb-item"><a href="${accountMainUrl}">Главная</a></li>
-        <li class="breadcrumb-item active">Список клиентов</li>
+        <li class="breadcrumb-item"><a href="${accountMainUrl}">
+            <fmt:message key="menu.main"/>
+        </a></li>
+        <li class="breadcrumb-item active">
+            <fmt:message key="menu.client.list"/>
+        </li>
     </ul>
     <div class="tab-pane">
         <c:url value="/client/list.html" var="searchClientUrl"/>
         <form action="${searchClientUrl}" method="get"
               class="form-inline md-form mr-auto mb-4">
-            <label for="search">Найти клиента по логину: </label>
+            <label for="search">
+                <fmt:message key="client.find"/>
+            </label>
+            <fmt:message key="placeholder.search" var="search"/>
             <input class="form-control mr-sm-4" aria-label="Search"
-                   name="searchLogin" type="text" placeholder="Search"
+                   name="searchLogin" type="text" placeholder="${search}"
                    id="search" pattern="[a-zA-Zа-яА-Я0-9]{2,30}" required>
             <button type="submit"
-                    class="btn btn-rounded btn-primary btn-lg">
-                Search
+                    class="btn btn-rounded btn-primary">
+                <fmt:message key="button.search"/>
             </button>
         </form>
 
         <c:if test="${empty requestScope.clients}">
-            <p>Клиентов не найдено</p>
+            <p><fmt:message key="clients.notfound"/></p>
         </c:if>
 
         <c:if test="${not empty requestScope.clients}">
             <div class="card mb-5">
-                <div class="card-header"><h2>Список клиентов</h2>
-                    <p> Для просмотра информации о клиенте нажмите на
-                        строку с клиентом</p></div>
+                <div class="card-header"><h2>
+                    <fmt:message key="menu.client.list"/>
+                </h2>
+                    <p><fmt:message key="client.info"/></p></div>
                 <div class="card-block p-0">
                     <table
                             class="table table-bordered table-sm m-0 table-hover">
                         <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Фото</th>
-                            <th>Логин</th>
-                            <th>Фамилия</th>
-                            <th>Имя</th>
-                            <th>Отчество</th>
-                            <th>Пол</th>
-                            <th>Телефон</th>
-                            <th>Дата рождения</th>
+                            <th>№</th>
+                            <th><fmt:message key="user.avatar"/></th>
+                            <th><fmt:message key="user.login"/></th>
+                            <th><fmt:message key="user.surname"/></th>
+                            <th><fmt:message key="user.name"/></th>
+                            <th><fmt:message key="user.patronymic"/></th>
+                            <th><fmt:message key="user.phone"/></th>
+                            <th><fmt:message key="user.date.birth"/></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -79,8 +89,6 @@
                                 <td><c:out value="${client.name}"/></td>
                                 <td><c:out
                                         value="${client.patronymic}"/></td>
-                                <td><c:out
-                                        value="${client.gender.name}"/></td>
                                 <td><c:out value="${client.phone}"/></td>
                                 <td><c:out
                                         value="${client.birthDate}"/></td>
@@ -99,7 +107,7 @@
                                     <button type="submit" class="page-link"
                                             name="currentPage"
                                             value="${requestScope.currentPage - 1}">
-                                        Previous
+                                        <fmt:message key="button.previous"/>
                                     </button>
                                 </li>
                             </c:if>
@@ -135,7 +143,8 @@
                                 <li class="page-item">
                                     <button type="submit" name="currentPage"
                                             value="${requestScope.currentPage + 1}"
-                                            class="page-link">Next
+                                            class="page-link">
+                                        <fmt:message key="button.next"/>
                                     </button>
                                 </li>
                             </c:if>

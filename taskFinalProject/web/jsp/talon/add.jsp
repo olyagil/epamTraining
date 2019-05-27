@@ -1,8 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="property.lang"/>
 <html>
 <head>
-    <title>Service list</title>
+    <title><fmt:message key="talon.add"/></title>
 </head>
 
 <body>
@@ -10,10 +13,12 @@
 <%@include file="../fragments/menu.jsp" %>
 <div class="container">
     <ul class="breadcrumb">
-        <li class="breadcrumb-item"><a href="${accountMainUrl}">Главная</a></li>
-        <li class="breadcrumb-item"><a href="${talonListUrl}"> Список
-            талонов</a></li>
-        <li class="breadcrumb-item active">Добавление талона</li>
+        <li class="breadcrumb-item"><a href="${accountMainUrl}">
+            <fmt:message key="menu.main"/>
+        </a></li>
+        <li class="breadcrumb-item"><a href="${talonListUrl}"> <fmt:message
+                key="menu.talon.list"/></a></li>
+        <li class="breadcrumb-item active"><fmt:message key="talon.add"/></li>
     </ul>
     <div class="row">
         <div class="col-sm-3"></div>
@@ -21,7 +26,8 @@
             <c:url value="/talon/save.html" var="talonSave"/>
             <form action="${talonSave}" method="get">
                 <div class="form-group">
-                    <label for="service"> Выберите услугу </label>
+                    <label for="service">
+                        <fmt:message key="talon.choose.service"/> </label>
                     <select class="form-control selectpicker"
                             id="service"
                             name="serviceId" data-live-search="true">
@@ -33,7 +39,8 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="employee"> Выберите специалиста</label>
+                    <label for="employee">
+                        <fmt:message key="talon.choose.employee"/> </label>
                     <c:choose>
                         <c:when test="${sessionScope.role eq 1}">
                             <select class="form-control" id="employee"
@@ -61,7 +68,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="clients"> Выберите клиента</label>
+                    <label for="clients"> <fmt:message
+                            key="talon.choose.client"/></label>
                     <select class="form-control selectpicker"
                             data-live-search="true" id="clients"
                             name="clientId">
@@ -73,8 +81,8 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="receptionDateCol"> Выберите дату и время
-                        приема</label>
+                    <label for="receptionDateCol">
+                        <fmt:message key="talon.choose.datetime"/> </label>
                     <input type="datetime-local" id="receptionDateCol"
                            name="receptionDateCol" class="form-control"
                            required>
@@ -82,7 +90,8 @@
                 <div class="modal-footer">
 
                     <button type="submit"
-                            class="btn tn-lg btn-success">Добавить талон
+                            class="btn tn-lg btn-success">
+                        <fmt:message key="button.add"/>
                     </button>
                 </div>
             </form>

@@ -1,7 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="property.lang"/>
 <html>
 <head>
-    <title>Специалисты</title>
+    <title><fmt:message key="specialists"/></title>
 </head>
 <body>
 
@@ -10,17 +14,17 @@
 <div class="team-section text-center my-5">
 
     <!-- Section heading -->
-    <h3 class="display-4 text-center">Наши специалисты</h3>
+    <h3 class="display-4 text-center"><fmt:message key="specialists"/></h3>
     <hr class="bg-dark mb-4 w-25">
 
-    <p class="lead grey-text text-center w-responsive mx-auto mb-5">Наша компания
-        предоставляет огромный выбор специалистов для любых ваших
-        потребностей</p>
+    <p class="lead grey-text text-center w-responsive mx-auto mb-5">
+        <fmt:message key="specialists.info"/>
+    </p>
 
     <!-- Grid row -->
     <div class="row">
         <!-- Grid column -->
-        <c:forEach items="${requestScope.specialists}" var="employee">
+        <c:forEach items="${requestScope.employees}" var="employee">
             <div class="col-lg-4 col-md-6 mb-lg-0 mb-5">
                 <div class="avatar mx-auto">
                     <img src="data:image/png;base64,${employee.avatar}"

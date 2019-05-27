@@ -14,7 +14,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light ">
     <div class="container">
-        <c:url value="/index.html" var="mainUrl"/>
+        <c:url value="/main.html" var="mainUrl"/>
         <a class="navbar-brand" href="${mainUrl}">
             <fmt:message key="header.name"/></a>
 
@@ -36,7 +36,7 @@
                 <li class="nav-item">
                     <c:url value="/employees.html" var="specialistUrl"/>
                     <a class="nav-link" href="${specialistUrl}">
-                        <fmt:message key="header.specialists"/>
+                        <fmt:message key="header.employees"/>
                     </a>
                 </li>
 
@@ -65,7 +65,7 @@
                                    value="English">
                         </form>
                         <form method="get" action="${language}">
-                            <input type="hidden" name="lang" value="by_BY">
+                            <input type="hidden" name="lang" value="be_BE">
                             <input type="submit" class="dropdown-item"
                                    value="Беларускі">
                         </form>
@@ -92,26 +92,32 @@
 
                     <li class="nav-item dropdown">
                         <c:url value="/account/main.html" var="accountMainUrl"/>
-                        <a class="nav-link dropdown-toggle" href="${accountMainUrl}"
+                        <a class="nav-link dropdown-toggle"
+                           href="${accountMainUrl}"
                            id="navbarDropdown" data-toggle="dropdown">
                             <fmt:message key="header.cabinet"/> </a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item"
-                               href="${accountMainUrl}">Профиль</a>
+                               href="${accountMainUrl}">
+                                <fmt:message key="header.profile"/>
+                            </a>
                             <c:url value="/account/edit/info.html"
                                    var="accountEditInfoUrl"/>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item"
-                               href="${accountEditInfoUrl}">Редактирование
-                                профиля</a>
+                               href="${accountEditInfoUrl}">
+                                <fmt:message key="header.edit.info"/></a>
                             <c:url value="/account/edit/password.html"
                                    var="accountEditPasswordUrl"/>
                             <a class="dropdown-item"
-                               href="${accountEditPasswordUrl}">Изменение
-                                пароля</a>
+                               href="${accountEditPasswordUrl}">
+                                <fmt:message key="header.edit.password"/>
+                            </a>
                             <c:url value="/logout.html" var="logoutUrl"/>
                             <a class="dropdown-item"
-                               href="${logoutUrl}">Выход</a>
+                               href="${logoutUrl}">
+                                <fmt:message key="header.logout"/>
+                            </a>
                         </div>
                     </li>
                 </c:if>

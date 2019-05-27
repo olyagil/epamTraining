@@ -1,8 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="property.lang"/>
 <html>
 <head>
-    <title>Service list</title>
+    <title><fmt:message key="menu.talon.list"/></title>
     <script type="text/javascript"
             src="${pageContext.servletContext.contextPath}/js/main.js"></script>
 </head>
@@ -12,8 +15,11 @@
 <%@include file="../fragments/menu.jsp" %>
 <div class="container">
     <ul class="breadcrumb">
-        <li class="breadcrumb-item"><a href="${accountMainUrl}">Главная</a></li>
-        <li class="breadcrumb-item active">Список талонов</li>
+        <li class="breadcrumb-item"><a href="${accountMainUrl}">
+            <fmt:message key="menu.main"/>
+        </a></li>
+        <li class="breadcrumb-item active"><fmt:message
+                key="menu.talon.list"/></li>
     </ul>
 
     <c:if test="${sessionScope.role eq 0}">
@@ -22,7 +28,7 @@
                 <form action="${talonListUrl}" method="post" class="col-md-4">
                     <input type="hidden" name="status" value="true">
                     <button type="submit" class="btn btn-primary">
-                        Выполненные
+                        <fmt:message key="status.true"/>
                     </button>
                 </form>
             </div>
@@ -31,7 +37,7 @@
                 <form action="${talonListUrl}" method="post" class="col-md-8">
                     <input type="hidden" name="status" value="false">
                     <button type="submit" class="btn btn-primary">
-                        Не выполненные
+                        <fmt:message key="status.false"/>
                     </button>
                 </form>
 
@@ -40,17 +46,18 @@
 
             <form action="${talonListUrl}" method="get"
                   class="form-inline md-form mr-auto mb-4">
-                <label for="search">Найти талон по дате: </label>
+                <fmt:message key="placeholder.search" var="search"/>
+                <label for="search"><fmt:message key="talon.find"/> </label>
                 <input class="form-control mr-sm-2" aria-label="Search"
-                       name="searchDate" type="date" placeholder="Search"
+                       name="searchDate" type="date" placeholder="${search}"
                        id="search" required>
                 <button class="btn btn-rounded btn-primary btn-lg"
-                        type="submit">Search
+                        type="submit"><fmt:message key="button.search"/>
                 </button>
             </form>
         </div>
         <c:if test="${empty requestScope.talons}">
-            <p>Талонов на ${requestScope.searchDate} не найдено</p>
+            <p><fmt:message key="talon.notfound"/></p>
         </c:if>
     </c:if>
     <div class="row">
@@ -60,7 +67,7 @@
                 <form action="${talonAddUrl}" method="post" class="col-md-12">
                     <button type="submit"
                             class="btn btn-primary btn-lg float-right">
-                        Добавить талон
+                        <fmt:message key="talon.add"/>
                     </button>
                 </form>
             </c:if>
@@ -83,27 +90,28 @@
     <c:if test="${not empty requestScope.talons}">
         <div class="tab-pane">
             <div class="card mb-5">
-                <div class="card-header">Список талонов</div>
+                <div class="card-header"><fmt:message key="menu.talon.list"/>
+                </div>
                 <div class="card-block p-0">
                     <table class="table table-bordered table-sm m-0 table-hover">
                         <thead>
                         <tr>
-                            <th> ID</th>
+                            <th> №</th>
                             <c:if test="${sessionScope.role ne 2}">
-                                <th> ФИО клиента</th>
-                                <th> Телефон</th>
+                                <th><fmt:message key="client.fullname"/></th>
+                                <th><fmt:message key="user.phone"/></th>
                             </c:if>
                             <c:if test="${sessionScope.role ne 1}">
-                                <th> ФИО специалиста</th>
-                                <th> Телефон</th>
+                                <th><fmt:message key="employee.fullname"/></th>
+                                <th><fmt:message key="user.phone"/></th>
                             </c:if>
-                            <th> Название процедуры</th>
-                            <th> Дата</th>
+                            <th><fmt:message key="service.name"/></th>
+                            <th><fmt:message key="service.date"/></th>
                             <c:if test="${sessionScope.role eq 2}">
-                                <th> Отзывы</th>
+                                <th><fmt:message key="feedback"/></th>
                             </c:if>
                             <c:if test="${sessionScope.role ne 2}">
-                                <th> Статус</th>
+                                <th><fmt:message key="talon.status"/></th>
                             </c:if>
                         </tr>
                         </thead>
@@ -142,7 +150,14 @@
                             <td><c:out value="${talon.service.name}"/></td>
                             <td><c:out value="${talon.receptionDate}"/></td>
                             <c:if test="${sessionScope.role ne 2}">
-                                <td><c:out value="${talon.status}"/></td>
+                                <td><c:choose>
+                                <c:when test="${talon.status}">
+                                    <fmt:message key="status.true"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <fmt:message key="status.false"/>
+                                </c:otherwise>
+                            </c:choose>
                             </c:if>
 
                             <c:if test="${sessionScope.role eq 2}">
@@ -155,7 +170,7 @@
                                                value="${talon.id}">
                                         <button type="submit"
                                                 class="btn btn-primary">
-                                            Оставить отзыв
+                                            <fmt:message key="feedback.add"/>
                                         </button>
                                     </form>
                                 </td>
@@ -176,7 +191,7 @@
                                         <button type="submit" class="page-link"
                                                 name="currentPage"
                                                 value="${requestScope.currentPage - 1}">
-                                            Previous
+                                            <fmt:message key="button.previous"/>
                                         </button>
                                     </li>
                                 </c:if>
@@ -211,7 +226,9 @@
                                     <li class="page-item">
                                         <button type="submit" name="currentPage"
                                                 value="${requestScope.currentPage + 1}"
-                                                class="page-link">Next
+                                                class="page-link">
+                                            <fmt:message key="button.previous"/>
+
                                         </button>
                                     </li>
                                 </c:if>

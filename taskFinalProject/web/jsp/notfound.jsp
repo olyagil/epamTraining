@@ -1,7 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="property.lang"/>
 <html>
 <head>
-    <title>Page Not Fount</title>
+    <title><fmt:message key="page.notfound"/></title>
 </head>
 <body>
 
@@ -12,8 +16,8 @@
         <div class="row justify-content-center">
             <div class="col-md-12 text-center">
                 <span class="display-1 d-block">404</span>
-                <div class="mb-4 lead">The page you are looking for was not
-                    found.
+                <div class="mb-4 lead">
+                    <fmt:message key="page.notfound.info"/>
                 </div>
 
             </div>

@@ -1,8 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="property.lang"/>
 <html>
 <head>
-    <title>Редактирование сотрудника</title>
+    <title><fmt:message key="employee.edit"/></title>
 </head>
 <body>
 <%@include file="../fragments/header.jsp" %>
@@ -10,11 +13,15 @@
 
 <div class="container">
     <ul class="breadcrumb">
-        <li class="breadcrumb-item"><a href="${accountMainUrl}">Главная</a></li>
-        <li class="breadcrumb-item"><a href="${employeeListUrl}">Список
-            сотрудников</a>
+        <li class="breadcrumb-item"><a href="${accountMainUrl}">
+            <fmt:message key="menu.main"/>
+        </a></li>
+        <li class="breadcrumb-item"><a href="${employeeListUrl}">
+            <fmt:message key="menu.employee.list"/>
+        </a>
         </li>
-        <li class="breadcrumb-item active">Редактирование сотрудника</li>
+        <li class="breadcrumb-item active"><fmt:message
+                key="employee.edit"/></li>
     </ul>
 
     <c:if test="${not empty requestScope.alert_message}">
@@ -24,7 +31,7 @@
     </c:if>
     <c:if test="${not empty requestScope.user}">
         <div class="row">
-            <h3>Редактирование сотрудника: ${requestScope.user.surname}
+            <h3><fmt:message key="employee.edit"/>: ${requestScope.user.surname}
                     ${requestScope.user.name}
                     ${requestScope.user.patronymic}</h3>
         </div>
@@ -48,20 +55,27 @@
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="cabinet_number"> Cabinet number </label>
+                            <fmt:message key="placeholder.user.cabinet.number"
+                                         var="cabinetNumber"/>
+                            <label for="cabinet_number">
+                                <fmt:message
+                                        key="user.cabinet.number"/> </label>
                             <input type="text" class="form-control"
                                    name="cabinet_number" id="cabinet_number"
                                    value="${requestScope.user.cabinetNumber}"
-                                   placeholder="Введите номер кабинета"
+                                   placeholder="${cabinetNumber}"
                                    pattern="[0-9]{0,4}" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="salary"> Salary </label>
+                            <fmt:message key="placeholder.user.salary"
+                                         var="salary"/>
+                            <label for="salary">
+                                <fmt:message key="user.salary"/> </label>
                             <input type="text" class="form-control"
                                    name="salary" id="salary"
                                    value="${requestScope.user.salary}"
-                                   placeholder="Введите зарплату"
+                                   placeholder="${salary}"
                                    pattern="[0-9]+([,\.][0-9]+)?"
                                    title="The number input must start with a
                                    number and use either comma or a dot as a
@@ -69,17 +83,20 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="employment_date"> Date of
-                                employment</label>
+
+                            <label for="employment_date"> <fmt:message
+                                    key="user.date.employement"/></label>
                             <input type="date" class="form-control"
                                    name="employment_date" id="employment_date"
                                    value="${requestScope.user.employmentDate}"
-                                   placeholder="Введите дату принятия на работу"
                                    required>
                         </div>
 
                         <div class="form=group">
-                            <label for="specialty"> Специализация </label>
+
+                            <label for="specialty">
+                                <fmt:message key="user.specialty"/>
+                            </label>
                             <select class="form-control" id="specialty"
                                     name="specialty">
                                 <c:forEach items="${requestScope.specialties}"
@@ -107,10 +124,11 @@
                                     <br>
                                     <button
                                             class="btn btn-lg btn-success"
-                                            type="submit"> Save
+                                            type="submit">
+                                        <fmt:message key="button.save"/>
                                     </button>
                                     <button class="btn btn-lg" type="reset">
-                                        Reset
+                                        <fmt:message key="button.reset"/>
                                     </button>
                                 </div>
                             </div>

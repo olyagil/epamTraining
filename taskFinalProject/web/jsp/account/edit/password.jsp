@@ -1,8 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="property.lang"/>
 <html>
 <head>
-    <title>Измениние пароля</title>
+    <title><fmt:message key="header.edit.password"/></title>
 </head>
 <body>
 <%@include file="../../fragments/header.jsp" %>
@@ -10,12 +13,16 @@
 
 <div class="container">
     <ul class="breadcrumb">
-        <li class="breadcrumb-item"><a href="${accountMainUrl}">Главная</a></li>
-        <li class="breadcrumb-item active">Измениние пароля</li>
+        <li class="breadcrumb-item"><a href="${accountMainUrl}">
+            <fmt:message key="menu.main"/>
+        </a></li>
+        <li class="breadcrumb-item active">
+            <fmt:message key="header.edit.password"/>
+        </li>
     </ul>
     <div class="row">
         <div class="col-md-6">
-            <h2>Измениние пароля</h2></div>
+            <h2><fmt:message key="header.edit.password"/></h2></div>
     </div>
 
     <div class="row">
@@ -28,18 +35,24 @@
                 <div class="col-md-6">
 
                     <div class="form-group">
-                        <label for="old-password"> Old Password </label>
+                        <fmt:message key="placeholder.user.password.old"
+                                     var="oldPassword"/>
+                        <label for="old-password">
+                            <fmt:message key="user.password.old"/> </label>
                         <input type="password" class="form-control"
                                name="old-password" id="old-password"
-                               placeholder="Введите старый пароль"
+                               placeholder="${oldPassword}"
                                pattern="[a-zA-Zа-яА-Я0-9]{2,13}" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="password">Password </label>
+                        <fmt:message key="placeholder.user.password"
+                                     var="password"/>
+                        <label for="password">
+                            <fmt:message key="user.password"/> </label>
                         <input type="password" class="form-control"
                                name="password" id="password"
-                               placeholder="Введите пароль"
+                               placeholder="${password}"
                                pattern="[a-zA-Zа-яА-Я0-9]{2,13}" required>
                     </div>
                     <c:if test="${not empty sessionScope.success_save_password}">
@@ -68,11 +81,12 @@
                         <div class="form-group ">
                             <div class="col">
                                 <br>
-                                <button class="btn btn-lg btn-primary"
-                                        type="submit"> Save
+                                <button class="btn btn-lg btn-success"
+                                        type="submit">
+                                    <fmt:message key="button.save"/>
                                 </button>
                                 <button class="btn btn-lg" type="reset">
-                                    Reset
+                                    <fmt:message key="button.reset"/>
                                 </button>
                             </div>
                         </div>

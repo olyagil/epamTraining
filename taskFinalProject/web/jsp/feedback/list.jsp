@@ -1,8 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="property.lang"/>
 <html>
 <head>
-    <title>Feedback list</title>
+    <title><fmt:message key="menu.feedback.list"/></title>
     <script type="text/javascript"
             src="${pageContext.servletContext.contextPath}/js/main.js"></script>
 </head>
@@ -14,8 +17,11 @@
 
 <div class="container">
     <ul class="breadcrumb">
-        <li class="breadcrumb-item"><a href="${accountMainUrl}">Главная</a></li>
-        <li class="breadcrumb-item active">Отзывы</li>
+        <li class="breadcrumb-item"><a href="${accountMainUrl}">
+            <fmt:message key="menu.main"/>
+        </a></li>
+        <li class="breadcrumb-item active">
+            <fmt:message key="menu.feedback.list"/></li>
     </ul>
     <c:url value="/user/view.html" var="feedbackViewUrl"/>
     <c:forEach items="${requestScope.feedbacks}" var="feedback">
@@ -44,8 +50,9 @@
                                 <input type="hidden" name="role"
                                        value="${feedback.client.role.id}">
                             </form>
-                            <p> By: <font color="#6495ed">
-                                <c:out value="${feedback.client.surname}
+                            <p><fmt:message key="feedback.by"/> :
+                                <font color="#6495ed">
+                                    <c:out value="${feedback.client.surname}
                                     ${feedback.client.name}"/></font>
                                 <span class="float-right text-secondary">
                                        <c:out value="${feedback.date}"/></span>
@@ -69,8 +76,9 @@
                                     <input type="hidden" name="role"
                                            value="${feedback.employee.role.id}">
                                 </form>
-                                <p> на <font color="#6495ed">
-                                    <c:out value="${feedback.employee.surname}
+                                <p><fmt:message key="feedback.on"/>
+                                    <font color="#6495ed">
+                                        <c:out value="${feedback.employee.surname}
                                     ${feedback.employee.name}"/></font>
                                 </p>
                             </div>
@@ -86,7 +94,8 @@
                                     <button type="submit"
                                             class="float-right btn btn-danger text-white"
                                             title="Delete">
-                                        <i class="fa fa-reply"></i> Удалить
+                                        <i class="fa fa-reply"></i>
+                                        <fmt:message key="button.delete"/>
                                     </button>
                                 </form>
                             </c:if>
@@ -101,7 +110,8 @@
 
                     <button type="submit" name="currentPage"
                             value="${requestScope.currentPage+1}"
-                            class="btn btn-primary btn-sm btn-block">More
+                            class="btn btn-primary btn-sm btn-block">
+                        <fmt:message key="button.more"/>
                     </button>
                 </form>
             </c:if>

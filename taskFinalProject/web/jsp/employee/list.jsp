@@ -1,8 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="property.lang"/>
 <html>
 <head>
-    <title>Employee list</title>
+    <title><fmt:message key="menu.employee.list"/></title>
     <script type="text/javascript"
             src="${pageContext.servletContext.contextPath}/js/main.js"></script>
 </head>
@@ -12,54 +15,60 @@
 <%@include file="../fragments/menu.jsp" %>
 <div class="container">
     <ul class="breadcrumb">
-        <li class="breadcrumb-item"><a href="${accountMainUrl}">Главная</a></li>
-        <li class="breadcrumb-item active">Список сотрудников</li>
+        <li class="breadcrumb-item"><a href="${accountMainUrl}">
+            <fmt:message key="menu.main"/> </a></li>
+        <li class="breadcrumb-item active">
+            <fmt:message key="menu.employee.list"/>
+        </li>
     </ul>
     <div class="tab-pane">
         <c:url value="/employee/add.html" var="employeeAddUrl"/>
         <form action="${employeeAddUrl}">
             <button type="submit"
                     class="btn btn-primary btn-lg float-right">
-                Add Employee
+                <fmt:message key="menu.employee.add"/>
             </button>
         </form>
 
         <form action="${employeeListUrl}" method="get"
               class="form-inline md-form mr-auto mb-4">
-            <label for="search">Найти клиента по логину: </label>
+            <label for="search">
+                <fmt:message key="employee.find"/>
+            </label>
+            <fmt:message key="placeholder.search" var="search"/>
             <input class="form-control mr-sm-2" aria-label="Search"
-                   name="searchLogin" type="text" placeholder="Search"
+                   name="searchLogin" type="text" placeholder="${search}"
                    id="search" pattern="[a-zA-Zа-яА-Я0-9]{2,30}" required>
             <button class="btn btn-rounded btn-primary btn-lg"
-                    type="submit">Search
+                    type="submit"><fmt:message key="button.search"/>
             </button>
         </form>
         <c:if test="${empty requestScope.employees}">
-            <p>Специалистов не найдено</p>
+            <p><fmt:message key="employee.notfound"/></p>
         </c:if>
         <c:if test="${not empty requestScope.employees}">
             <div class="card mb-5">
-                <div class="card-header"><h2>Список сотрудников</h2>
-                    <p>Для просмотра информации о сотруднике нажмите на
-                        строку с сотрудником</p></div>
+                <div class="card-header"><h2>
+                    <fmt:message key="menu.employee.list"/>
+                </h2>
+                    <p><fmt:message key="employee.info"/></p></div>
                 <div class="card-block p-0">
                     <table
                             class="table table-bordered table-sm m-0 table-hover">
                         <thead>
                         <tr>
-                            <th> ID</th>
-                            <th> Фото</th>
-                            <th> Логин</th>
-                            <th> Фамилия</th>
-                            <th> Имя</th>
-                            <th> Отчество</th>
-                            <th> Пол</th>
-                            <th> Телефон</th>
-                            <th> Дата рождения</th>
-                            <th> Кабинет</th>
-                            <th> Оклад</th>
-                            <th> Дата</th>
-                            <th> Специальность</th>
+                            <th> №</th>
+                            <th><fmt:message key="user.avatar"/></th>
+                            <th><fmt:message key="user.login"/></th>
+                            <th><fmt:message key="user.surname"/></th>
+                            <th><fmt:message key="user.name"/></th>
+                            <th><fmt:message key="user.patronymic"/></th>
+                            <th><fmt:message key="user.phone"/></th>
+                            <th><fmt:message key="user.date.birth"/></th>
+                            <th><fmt:message key="user.cabinet.number"/></th>
+                            <th><fmt:message key="user.salary"/></th>
+                            <th><fmt:message key="user.date.employement"/></th>
+                            <th><fmt:message key="user.specialty"/></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -82,28 +91,19 @@
                                          width="100" height="100"
                                          class="rounded-circle img-fluid"
                                          alt="avatar"></td>
-                                <td><c:out
-                                        value="${employee.login}"/></td>
-                                <td><c:out
-                                        value="${employee.surname}"/></td>
+                                <td><c:out value="${employee.login}"/></td>
+                                <td><c:out value="${employee.surname}"/></td>
                                 <td><c:out value="${employee.name}"/></td>
-                                <td><c:out
-                                        value="${employee.patronymic}"/></td>
-                                <td><c:out
-                                        value="${employee.gender.name}"/></td>
-                                <td><c:out
-                                        value="${employee.phone}"/></td>
-                                <td><c:out
-                                        value="${employee.birthDate}"/></td>
+                                <td><c:out value="${employee.patronymic}"/></td>
+                                <td><c:out value="${employee.phone}"/></td>
+                                <td><c:out value="${employee.birthDate}"/></td>
                                 <td><c:out
                                         value="${employee.cabinetNumber}"/></td>
-                                <td><c:out
-                                        value="${employee.salary}"/></td>
+                                <td><c:out value="${employee.salary}"/></td>
                                 <td><c:out
                                         value="${employee.employmentDate}"/></td>
                                 <td><c:out
                                         value="${employee.specialty.name}"/></td>
-
                             </tr>
                         </c:forEach>
                         </tbody>
@@ -120,7 +120,7 @@
                                         <button type="submit" class="page-link"
                                                 name="currentPage"
                                                 value="${requestScope.currentPage - 1}">
-                                            Previous
+                                            <fmt:message key="button.previous"/>
                                         </button>
                                     </li>
                                 </c:if>
@@ -157,7 +157,8 @@
                                         <button type="submit"
                                                 name="currentPage"
                                                 value="${requestScope.currentPage + 1}"
-                                                class="page-link">Next
+                                                class="page-link">
+                                            <fmt:message key="button.next"/>
                                         </button>
                                     </li>
                                 </c:if>

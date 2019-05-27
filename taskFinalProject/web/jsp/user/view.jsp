@@ -1,7 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="property.lang"/>
 <html>
 <head>
-    <title>Title</title>
+    <title><fmt:message key="user.view"/></title>
 </head>
 <body>
 <%@include file="../fragments/header.jsp" %>
@@ -34,7 +38,7 @@
                     </div>
                     <div class="col text-right">
                         <div class="btn-group">
-                            <c:if test="${sessionScope.role eq 0}">
+                            <c:if test="${requestScope.user.role.id eq 1}">
                                 <form action="${userEditUrl}"
                                       method="get"
                                       class="col-md-6">
@@ -42,31 +46,29 @@
                                            value="${requestScope.user.id}">
                                     <button type="submit"
                                             class="btn btn-primary btn-lg">
-                                        Редактировать
-                                    </button>
-                                </form>
-
-                                <form action="${userDeleteUrl}" method="post"
-                                      class="col-md-6">
-                                    <input type="hidden" name="userRole"
-                                           value="${requestScope.user.role.id}">
-                                    <button class="btn btn-lg btn-primary"
-                                            type="submit"
-                                            name="userId"
-                                            value="${requestScope.user.id}">
-                                        Удалить
+                                        <fmt:message key="button.edit"/>
                                     </button>
                                 </form>
                             </c:if>
+                            <form action="${userDeleteUrl}" method="post"
+                                  class="col-md-6">
+                                <input type="hidden" name="userRole"
+                                       value="${requestScope.user.role.id}">
+                                <button class="btn btn-lg btn-danger"
+                                        type="submit"
+                                        name="userId"
+                                        value="${requestScope.user.id}">
+                                    <fmt:message key="button.delete"/>
+                                </button>
+                            </form>
                         </div>
-
                     </div>
                 </div>
                 <hr>
                 <div class="col-md-8">
                     <div class="row">
                         <div class="col-md-6">
-                            <label>Login</label>
+                            <label><fmt:message key="user.login"/> </label>
                         </div>
                         <div class="col-md-6">
                             <p><c:out value="${requestScope.user.login}"/></p>
@@ -74,7 +76,7 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-6">
-                            <label>ФИО</label>
+                            <label><fmt:message key="user.fullname"/></label>
                         </div>
                         <div class="col-md-6">
                             <p><c:out
@@ -85,7 +87,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <label>Gender</label>
+                            <label><fmt:message key="user.gender"/></label>
                         </div>
                         <div class="col-md-6">
                             <p><c:out
@@ -94,7 +96,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <label>Phone</label>
+                            <label><fmt:message key="user.phone"/></label>
                         </div>
                         <div class="col-md-6">
                             <p><c:out value="${requestScope.user.phone}"/></p>
@@ -102,7 +104,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <label>Date of birth</label>
+                            <label><fmt:message key="user.date.birth"/></label>
                         </div>
                         <div class="col-md-6">
                             <p><c:out
@@ -113,7 +115,7 @@
                     <c:if test="${requestScope.user.role.id eq 1}">
                         <div class="row">
                             <div class="col-md-6">
-                                <label>Cabinet number</label>
+                                <label><fmt:message key="user.cabinet.number"/></label>
                             </div>
                             <div class="col-md-6">
                                 <p><c:out
@@ -122,7 +124,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label>Salary</label>
+                                <label><fmt:message key="user.salary"/></label>
                             </div>
                             <div class="col-md-6">
                                 <p><c:out
@@ -131,7 +133,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label>Employment date</label>
+                                <label><fmt:message key="user.date.employement"/></label>
                             </div>
                             <div class="col-md-6">
                                 <p><c:out
@@ -140,7 +142,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label>Specialty</label>
+                                <label><fmt:message key="user.specialty"/></label>
                             </div>
                             <div class="col-md-6">
                                 <p><c:out
@@ -152,9 +154,7 @@
             </div>
         </c:if>
     </div>
-
 </div>
-
 <br><br>
 <%@include file="../fragments/footer.jsp" %>
 </body>
