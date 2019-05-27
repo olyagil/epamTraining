@@ -43,7 +43,7 @@ create table `employees`
   `employment_date` date           not null,
   `specialty`       tinyint        not null check ( `specialty` in (0, 1)),
   unique index `idx_unique_user_id` (`user_info_id`),
-  constraint FK_specialists_user_info foreign key (`user_info_id`)
+  constraint FK_employees_user_info foreign key (`user_info_id`)
     references user_info (`user_id`)
     on update cascade
     on delete cascade

@@ -1,3 +1,0 @@
-drop database if exists `salon_db`;
-
-create database `salon_db` default character set utf8;
