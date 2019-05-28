@@ -29,6 +29,13 @@
             </div>
             <c:url value="/employee/save.html" var="employeeSaveUrl"/>
             <div class="card-body">
+                <c:if test="${not empty sessionScope.alert_message}">
+                    <div class="alert alert-danger" role="alert">
+                        <p><c:out value="${sessionScope.alert_message}"/></p>
+                        <c:remove var="alert_message" scope="session"/>
+
+                    </div>
+                </c:if>
                 <form action="${employeeSaveUrl}" method="post" class="row"
                       enctype="multipart/form-data">
                     <div class="col-md-5">
@@ -158,7 +165,7 @@
 
                         <div class="form-group">
                             <label for="employment_date">
-                                <fmt:message key="user.date.employement"/>
+                                <fmt:message key="user.date.employment"/>
                             </label>
                             <input type="date" class="form-control"
                                    name="employment_date" id="employment_date"

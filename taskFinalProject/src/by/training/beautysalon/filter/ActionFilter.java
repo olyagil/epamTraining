@@ -1,8 +1,8 @@
 package by.training.beautysalon.filter;
 
+import by.training.beautysalon.command.Command;
 import by.training.beautysalon.command.CommandEnum;
 import by.training.beautysalon.command.CommandFactory;
-import by.training.beautysalon.command.Command;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,7 +19,7 @@ public class ActionFilter implements Filter {
     private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
 
     }
 
@@ -40,12 +40,11 @@ public class ActionFilter implements Filter {
             } else {
                 commandName = uri.substring(beginAction);
             }
-            CommandEnum commandEnum = CommandFactory.create(commandName);
+            CommandEnum commandEnum = CommandFactory.create(commandName);//
             Command command = commandEnum.getCommand();
             LOGGER.debug("Command name: " + commandName + " with class: " + command);
 
             command.setName(commandName);
-            httpRequest.setAttribute("command", command);
             httpRequest.setAttribute("commandEnum", commandEnum);
 
             chain.doFilter(request, response);

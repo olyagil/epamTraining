@@ -1,21 +1,22 @@
 package by.training.beautysalon.service;
 
 import by.training.beautysalon.entity.Entity;
-import by.training.beautysalon.exception.PersistentException;
+import by.training.beautysalon.exception.DataBaseException;
 
 import java.util.List;
 
 public interface Service<Type extends Entity> {
-    int countRows() throws PersistentException;
-    List<Type> find(int currentPage, int recordsPerPage) throws PersistentException;
+    int countRows() throws DataBaseException;
 
-    List<Type> find() throws PersistentException;
+    List<Type> find(int currentPage, int recordsPerPage) throws DataBaseException;
 
-    Type find(Integer id) throws PersistentException;
+    List<Type> find() throws DataBaseException;
 
-    Integer save(Type entity) throws PersistentException;
+    Type find(Integer id) throws DataBaseException;
 
-    void delete(Integer id) throws PersistentException;
+    Integer save(Type entity) throws DataBaseException;
+
+    boolean delete(Integer id) throws DataBaseException;
 
 
 }

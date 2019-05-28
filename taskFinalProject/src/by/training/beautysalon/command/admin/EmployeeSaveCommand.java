@@ -3,13 +3,13 @@ package by.training.beautysalon.command.admin;
 import by.training.beautysalon.command.Command;
 import by.training.beautysalon.command.Forward;
 import by.training.beautysalon.entity.Employee;
+import by.training.beautysalon.entity.User;
 import by.training.beautysalon.entity.enumeration.Gender;
 import by.training.beautysalon.entity.enumeration.Role;
 import by.training.beautysalon.entity.enumeration.Specialty;
-import by.training.beautysalon.exception.PersistentException;
+import by.training.beautysalon.exception.DataBaseException;
 import by.training.beautysalon.service.EmployeeService;
 import by.training.beautysalon.service.UserService;
-import by.training.beautysalon.utill.ImageUtill;
 import by.training.beautysalon.validator.UserValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,69 +17,98 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.Base64;
 
+/**
+ * The class {@code EmployeeSaveCommand} is used for saving info about employee.
+ */
 public class EmployeeSaveCommand extends Command {
     private static final Logger LOGGER = LogManager.getLogger();
+    private static final String SPECIALIST_ID = "specialistId";
+    private static final String LOGIN = "login";
+    private static final String PASSWORD = "password";
+    private static final String SURNAME = "surname";
+    private static final String NAME = "name";
+    private static final String PATRONYMIC = "patronymic";
+    private static final String GENDER = "gender";
+    private static final String PHONE = "phone";
+    private static final String IMG = "img";
+    private static final String CABINET_NUMBER = "cabinet_number";
+    private static final String SALARY = "salary";
+    private static final String EMPLOYMENT_DATE = "employment_date";
+    private static final String SPECIALTY = "specialty";
+    private static final String BIRTH_DATE = "birth_date";
 
     @Override
-    public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
+    public Forward execute(HttpServletRequest request, HttpServletResponse response) throws DataBaseException {
         EmployeeService service = serviceFactory.getEmployeeService();
         UserService userService = serviceFactory.getUserService();
-        String id = request.getParameter("specialistId");
-        String login = request.getParameter("login");
+        String id = request.getParameter(SPECIALIST_ID);
+        String login = request.getParameter(LOGIN);
         Employee employee = new Employee();
+        User user = null;
         try {
             if (id != null) {
                 employee.setId(Integer.parseInt(id));
+                user = userService.find(Integer.parseInt(id));
             }
+            if (user == null) {
+                LOGGER.debug(userService.find(login));
 
-            if (login != null) {
-                employee.setLogin(request.getParameter("login"));
-                employee.setPassword(request.getParameter("password"));
-                employee.setRole(Role.EMPLOYEE);
-                employee.setSurname(request.getParameter("surname"));
-                employee.setName(request.getParameter("name"));
-                employee.setPatronymic(request.getParameter("patronymic"));
-                employee.setGender(Gender.valueOf(request.getParameter(
-                        "gender").toUpperCase()));
+                if (UserValidator.checkLogin(login)
+                        && userService.find(login).isEmpty()) {
+                    LOGGER.debug("Adding new employee.");
+                    employee.setLogin(login);
+                    employee.setPassword(request.getParameter(PASSWORD));
+                    employee.setRole(Role.EMPLOYEE);
+                    employee.setSurname(request.getParameter(SURNAME));
+                    employee.setName(request.getParameter(NAME));
+                    employee.setPatronymic(request.getParameter(PATRONYMIC));
+                    employee.setGender(Gender.valueOf(request
+                            .getParameter(GENDER).toUpperCase()));
+                    employee.setPhone(Integer.valueOf(request.getParameter(PHONE)));
+                    employee.setBirthDate(Date.valueOf(request.getParameter(BIRTH_DATE)));
+                    try {
+                        employee.setAvatar(UserValidator.getAvatar(request.getPart(IMG),
+                                employee.getGender()));
+                    } catch (IOException | ServletException | SQLException e) {
+                        LOGGER.error("Can't read the image from file", e);
+                        throw new DataBaseException(e);
+                    }
+                    employee.setId(userService.save(employee));
+                    LOGGER.debug("Employee is saved.");
 
-                employee.setPhone(Integer.valueOf(request.getParameter("phone")));
-                employee.setBirthDate(Date.valueOf(request.getParameter(
-                        "birth_date")));
-                try {
-                    employee.setAvatar(UserValidator.getAvatar(request.getPart("img"),
-                            employee.getGender()));
-                } catch (IOException | ServletException | SQLException e) {
-                    LOGGER.error("Can't read the image from file", e);
-                    throw new PersistentException(e);
+                } else {
+                    request.getSession().setAttribute("alert_message",
+                            "Such user is exist or enter the correct date.");
+                    return new Forward("/employee/add.html");
                 }
-                employee.setId(userService.save(employee));
-                LOGGER.debug("Employee is saved.");
             }
             LOGGER.debug("Employee id: " + employee.getId());
-            employee.setCabinetNumber(Integer.parseInt(request.getParameter(
-                    "cabinet_number")));
-            employee.setSalary(Double.parseDouble(request.getParameter(
-                    "salary")));
-            employee.setEmploymentDate(Date.valueOf(request.getParameter(
-                    "employment_date")));
+            employee.setCabinetNumber(Integer.parseInt(request.getParameter(CABINET_NUMBER)));
+            employee.setSalary(Double.parseDouble(request.getParameter(SALARY)));
+            employee.setEmploymentDate(Date.valueOf(request.getParameter(EMPLOYMENT_DATE)));
             employee.setSpecialty(Specialty.getById(Integer
-                    .parseInt(request.getParameter("specialty"))));
+                    .parseInt(request.getParameter(SPECIALTY))));
 
 
             service.save(employee);
             LOGGER.debug("Employee is changed");
+
         } catch (IllegalArgumentException e) {
             LOGGER.error("Can't parse the data of the user");
             request.setAttribute("alert_message", "Please, enter the correct " +
                     "date.");
-            return new Forward("/employee/edit.html?specialistId=" + id);
+            if (id != null) {
+                return new Forward("/employee/edit.html?specialistId=" + id);
+            } else {
+                request.getSession().setAttribute("alert_message", "Please, " +
+                        "enter the correct date.");
+                return new Forward("/employee/add.html");
+
+            }
         }
         return new Forward("/employee/list.html");
 

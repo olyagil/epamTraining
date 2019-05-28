@@ -1,12 +1,10 @@
 package by.training.beautysalon.command;
 
-import by.training.beautysalon.exception.PersistentException;
+import by.training.beautysalon.exception.DataBaseException;
 import by.training.beautysalon.service.ServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class Command {
     private String name;
@@ -27,6 +25,6 @@ public abstract class Command {
 
     public abstract Forward execute(HttpServletRequest request,
                                     HttpServletResponse response)
-            throws PersistentException;
+            throws DataBaseException;
 
 }

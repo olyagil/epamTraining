@@ -18,6 +18,13 @@ public class User extends Entity {
     private Date birthDate;
     private String avatar;
 
+    public User() {
+    }
+
+    public User(Integer id) {
+        super(id);
+    }
+
     public String getLogin() {
         return login;
     }
@@ -96,5 +103,71 @@ public class User extends Entity {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+
+        User user = (User) o;
+
+        if (getLogin() != null ? !getLogin().equals(user.getLogin()) : user.getLogin() != null) {
+            return false;
+        }
+        if (getPassword() != null ?
+                !getPassword().equals(user.getPassword()) : user.getPassword() != null) {
+            return false;
+        }
+        if (getRole() != user.getRole()) {
+            return false;
+        }
+        if (getName() != null ? !getName().equals(user.getName()) : user.getName() != null) {
+            return false;
+        }
+        if (getSurname() != null ? !getSurname().equals(user.getSurname()) :
+                user.getSurname() != null) {
+            return false;
+        }
+        if (getPatronymic() != null ?
+                !getPatronymic().equals(user.getPatronymic()) : user.getPatronymic() != null) {
+            return false;
+        }
+        if (getGender() != user.getGender()) {
+            return false;
+        }
+        if (getPhone() != null ? !getPhone().equals(user.getPhone()) :
+                user.getPhone() != null) {
+            return false;
+        }
+        if (getBirthDate() != null ?
+                !getBirthDate().equals(user.getBirthDate()) : user.getBirthDate() != null) {
+            return false;
+        }
+        return getAvatar() != null ? getAvatar().equals(user.getAvatar()) :
+                user.getAvatar() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (getLogin() != null ? getLogin().hashCode() : 0);
+        result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
+        result = 31 * result + (getRole() != null ? getRole().hashCode() : 0);
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + (getSurname() != null ? getSurname().hashCode() : 0);
+        result = 31 * result + (getPatronymic() != null ? getPatronymic().hashCode() : 0);
+        result = 31 * result + (getGender() != null ? getGender().hashCode() : 0);
+        result = 31 * result + (getPhone() != null ? getPhone().hashCode() : 0);
+        result = 31 * result + (getBirthDate() != null ? getBirthDate().hashCode() : 0);
+        result = 31 * result + (getAvatar() != null ? getAvatar().hashCode() : 0);
+        return result;
     }
 }

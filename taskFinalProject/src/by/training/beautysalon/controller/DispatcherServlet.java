@@ -1,9 +1,11 @@
 package by.training.beautysalon.controller;
 
 import by.training.beautysalon.command.Command;
+import by.training.beautysalon.command.CommandEnum;
 import by.training.beautysalon.command.Forward;
 import by.training.beautysalon.dao.connection.ConnectionPool;
-import by.training.beautysalon.exception.PersistentException;
+import by.training.beautysalon.dao.mysql.DaoFactory;
+import by.training.beautysalon.exception.DataBaseException;
 import by.training.beautysalon.service.ServiceFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,34 +20,30 @@ import java.io.IOException;
 @MultipartConfig
 public class DispatcherServlet extends HttpServlet {
 
-    private static Logger LOGGER = LogManager.getLogger();
+    private final static Logger LOGGER = LogManager.getLogger();
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
-
-        Command command = (Command) request.getAttribute("command");
-        LOGGER.debug("COMMAND: " + command.getName());
-        ServiceFactory factory = ServiceFactory.getInstance();
+        CommandEnum commandEnum = (CommandEnum) request.getAttribute("commandEnum");
+        Command command = commandEnum.getCommand();
+        LOGGER.debug("Command which would be executed: " + command.getName());
+        ServiceFactory factory = getFactory();
         try {
             command.setFactory(factory);
             Forward forward = command.execute(request, response);
             factory.close();
 
-            String requestedUri = request.getRequestURI();
-            if (request.getMethod().equalsIgnoreCase("post")
-                    || forward.isRedirect()) {
+            if (forward != null) {
                 String redirectedUri = request.getContextPath() + forward.getPage();
-                LOGGER.debug(String.format("Request for URI \"%s\" id " +
-                        "redirected to URI \"%s\"", requestedUri, redirectedUri));
+                LOGGER.debug("Request is redirected to URI: " + redirectedUri);
                 response.sendRedirect(redirectedUri);
             } else {
-                String jspPage = "/jsp/" + forward.getPage() + ".jsp";
-                LOGGER.debug(String.format("Request for URI \"%s\" is forwarded " +
-                        "to JSP \"%s\"", requestedUri, jspPage));
+                String jspPage = "/jsp/" + commandEnum.getName() + ".jsp";
+                LOGGER.debug("Request is forwarded to JSP: " + jspPage);
                 getServletContext().getRequestDispatcher(jspPage).forward(request, response);
             }
-        } catch (PersistentException e) {
+        } catch (DataBaseException e) {
             LOGGER.error("It is impossible to process request", e);
             request.setAttribute("error", "Ошибка обработки данных");
             getServletContext().getRequestDispatcher("/jsp/error.jsp").forward(request, response);
@@ -53,12 +51,16 @@ public class DispatcherServlet extends HttpServlet {
 
     }
 
+    private ServiceFactory getFactory() {
+        return new ServiceFactory(new DaoFactory());
+    }
+
     @Override
-    public void init() throws ServletException {
+    public void init() {
         try {
             LOGGER.trace("Initializing application.");
             ConnectionPool.getInstance().init();
-        } catch (PersistentException e) {
+        } catch (DataBaseException e) {
             LOGGER.error("Can't initialize application.");
             destroy();
         }

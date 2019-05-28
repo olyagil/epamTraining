@@ -2,7 +2,6 @@ package by.training.beautysalon.utill;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.util.FileUtils;
 
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.File;
@@ -13,7 +12,7 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Base64;
 
-public class ImageUtill {
+public class ImageUtil {
     private static final Logger LOGGER = LogManager.getLogger();
 
 
@@ -30,7 +29,7 @@ public class ImageUtill {
         return new SerialBlob(imageByteArray);
     }
 
-    public static String encoderFromFile(String path) throws SQLException {
+    public static String encoderFromFile(String path) {
         File file = new File(path);
         FileInputStream fileInputStreamReader = null;
         try {
@@ -42,8 +41,8 @@ public class ImageUtill {
         byte[] bytes = new byte[(int) file.length()];
         try {
             fileInputStreamReader.read(bytes);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (NullPointerException | IOException e) {
+            LOGGER.error("Can't read from file.", e);
         }
 
         return Base64.getEncoder().encodeToString(bytes);

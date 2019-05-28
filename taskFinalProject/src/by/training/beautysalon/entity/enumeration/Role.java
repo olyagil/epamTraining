@@ -4,10 +4,9 @@ public enum Role {
 
     ADMINISTRATOR("Администратор"),
     EMPLOYEE("Специалист"),
-    CLIENT("Клиент"),
-    GUEST("Гость");
+    CLIENT("Клиент");
 
-    private String name;
+    private final String name;
 
     Role(String name) {
         this.name = name;

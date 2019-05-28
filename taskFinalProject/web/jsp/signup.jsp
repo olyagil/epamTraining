@@ -6,6 +6,8 @@
 <html>
 <head>
     <title><fmt:message key="header.signup"/></title>
+    <script type="text/javascript"
+            src="${pageContext.servletContext.contextPath}/js/main.js"></script>
 <body>
 <jsp:include page="fragments/header.jsp"/>
 <br><br>
@@ -97,7 +99,7 @@
                         </div>
                     </div>
                     <div class="form-group ">
-                        <div class="maxl">
+                        <div class="max">
                             <label class="radio inline col-md-6 col-form-label text-md-right">
                                 <input type="radio" name="gender"
                                        value="male" checked>
@@ -113,13 +115,14 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <fmt:message key="placeholder.user.phone" var="phone"/>
                         <label for="phone"
                                class="col-md-4 col-form-label text-md-right">
                             <fmt:message key="user.phone"/>
                         </label>
                         <div class="col-md-6">
                             <input type="text" id="phone"
-                                   placeholder="Enter phone"
+                                   placeholder="${phone}"
                                    class="form-control phone_mask"
                                    name="phone" required>
                             <script src="js/jquery.maskedinput.min.js"></script>
@@ -145,6 +148,7 @@
                             <fmt:message key="user.avatar"/> </label>
                         <div class="col-md-6">
                             <input type="file" id="img"
+                                   accept="image/jpeg"
                                    class="form-control" name="img">
                         </div>
                     </div>

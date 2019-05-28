@@ -2,7 +2,7 @@ package by.training.beautysalon.dao.mysql;
 
 import by.training.beautysalon.dao.ServiceDao;
 import by.training.beautysalon.entity.Service;
-import by.training.beautysalon.exception.PersistentException;
+import by.training.beautysalon.exception.DataBaseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -41,13 +41,13 @@ public class ServiceDaoImpl extends BaseDaoImpl implements ServiceDao {
             + "`description`, `price`,  `duration` from `services` " +
             "order by `id` limit ?,?";
 
-    public ServiceDaoImpl(Connection connection) {
+    ServiceDaoImpl(Connection connection) {
         this.connection = connection;
     }
 
 
     @Override
-    public int countRows() throws PersistentException {
+    public int countRows() throws DataBaseException {
         int count = 0;
         try (PreparedStatement statement =
                      connection.prepareStatement(COUNT_SERVICES);
@@ -57,13 +57,13 @@ public class ServiceDaoImpl extends BaseDaoImpl implements ServiceDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Can't count the number of services", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
         return count;
     }
 
     @Override
-    public List<Service> read(String name) throws PersistentException {
+    public List<Service> read(String name) throws DataBaseException {
         try (PreparedStatement statement =
                      connection.prepareStatement(READ_SERVICE_BY_NAME)) {
             statement.setString(1, "%" + name + "%");
@@ -77,12 +77,12 @@ public class ServiceDaoImpl extends BaseDaoImpl implements ServiceDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Can't read the services from DB", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public List<Service> read(int currentPage, int recordsPerPage) throws PersistentException {
+    public List<Service> read(int currentPage, int recordsPerPage) throws DataBaseException {
         int start = currentPage * recordsPerPage - recordsPerPage;
 
         try (PreparedStatement statement =
@@ -98,13 +98,13 @@ public class ServiceDaoImpl extends BaseDaoImpl implements ServiceDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Can't read by page the services", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
 
     }
 
     @Override
-    public List<Service> read() throws PersistentException {
+    public List<Service> read() throws DataBaseException {
         try (PreparedStatement statement =
                      connection.prepareStatement(SELECT_ALL);
              ResultSet resultSet = statement.executeQuery()) {
@@ -117,12 +117,12 @@ public class ServiceDaoImpl extends BaseDaoImpl implements ServiceDao {
             return serviceList;
         } catch (SQLException e) {
             LOGGER.error("Can't read all services from DB", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public Integer create(Service service) throws PersistentException {
+    public Integer create(Service service) throws DataBaseException {
         try (PreparedStatement statement = connection.prepareStatement(INSERT_SERVICE,
                 Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, service.getName());
@@ -134,19 +134,19 @@ public class ServiceDaoImpl extends BaseDaoImpl implements ServiceDao {
                 if (resultSet.next()) {
                     return resultSet.getInt(1);
                 } else {
-                    LOGGER.error("There is no autoincremented index after trying " +
+                    LOGGER.error("There is no autoincrement index after trying " +
                             "to add record into `users` ");
-                    throw new PersistentException();
+                    throw new DataBaseException();
                 }
             }
         } catch (SQLException e) {
             LOGGER.error("Can't insert the service in DB.", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public Service read(Integer id) throws PersistentException {
+    public Service read(Integer id) throws DataBaseException {
         try (PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -158,13 +158,13 @@ public class ServiceDaoImpl extends BaseDaoImpl implements ServiceDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Can't find the service with id: " + id, e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
 
     }
 
     @Override
-    public boolean update(Service service) throws PersistentException {
+    public boolean update(Service service) throws DataBaseException {
         try (PreparedStatement statement =
                      connection.prepareStatement(UPDATE_SERVICE)) {
             statement.setString(1, service.getName());
@@ -176,19 +176,19 @@ public class ServiceDaoImpl extends BaseDaoImpl implements ServiceDao {
             return true;
         } catch (SQLException e) {
             LOGGER.error("Can't update service", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public boolean delete(Integer id) throws PersistentException {
+    public boolean delete(Integer id) throws DataBaseException {
         try (PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID)) {
             statement.setInt(1, id);
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
             LOGGER.error("Can't delete service with id: " + id, e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 }

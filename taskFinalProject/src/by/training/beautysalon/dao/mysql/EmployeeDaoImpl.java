@@ -2,8 +2,7 @@ package by.training.beautysalon.dao.mysql;
 
 import by.training.beautysalon.dao.EmployeeDao;
 import by.training.beautysalon.entity.Employee;
-import by.training.beautysalon.entity.Service;
-import by.training.beautysalon.exception.PersistentException;
+import by.training.beautysalon.exception.DataBaseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,7 +10,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +63,7 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
     }
 
     @Override
-    public int countRows() throws PersistentException {
+    public int countRows() throws DataBaseException {
         int count = 0;
         try (PreparedStatement statement =
                      connection.prepareStatement(COUNT_EMPLOYEES);
@@ -75,13 +73,13 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Can't count the number of employees", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
         return count;
     }
 
     @Override
-    public List<Employee> read() throws PersistentException {
+    public List<Employee> read() throws DataBaseException {
         try (PreparedStatement statement = connection.prepareStatement(SELECT_ALL);
              ResultSet resultSet = statement.executeQuery()) {
             List<Employee> employeeList = new ArrayList<>();
@@ -91,12 +89,12 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
             return employeeList;
 
         } catch (SQLException e) {
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public List<Employee> read(int currentPage, int recordsPerPage) throws PersistentException {
+    public List<Employee> read(int currentPage, int recordsPerPage) throws DataBaseException {
         int start = currentPage * recordsPerPage - recordsPerPage;
 
         try (PreparedStatement statement =
@@ -112,12 +110,12 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Can't read by page the employees", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public List<Employee> read(String login) throws PersistentException {
+    public List<Employee> read(String login) throws DataBaseException {
         try (PreparedStatement statement = connection.prepareStatement(SELECT_BY_LOGIN)) {
             statement.setString(1, login);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -129,12 +127,12 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Can't read the employee by the login: " + login, e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public Integer create(Employee employee) throws PersistentException {
+    public Integer create(Employee employee) throws DataBaseException {
         try (PreparedStatement statement =
                      connection.prepareStatement(INSERT_EMPLOYEE)) {
 
@@ -148,13 +146,13 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
 
         } catch (SQLException e) {
             LOGGER.error("Can't insert the employee into the DB", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
 
     }
 
     @Override
-    public Employee read(Integer id) throws PersistentException {
+    public Employee read(Integer id) throws DataBaseException {
         try (PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -165,13 +163,13 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
                 return employee;
             }
         } catch (SQLException e) {
-            LOGGER.error("Can't read the employee from DB eith id: " + id, e);
-            throw new PersistentException(e);
+            LOGGER.error("Can't read the employee from DB with id: " + id, e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public boolean update(Employee employee) throws PersistentException {
+    public boolean update(Employee employee) throws DataBaseException {
         try (PreparedStatement statement =
                      connection.prepareStatement(UPDATE_EMPLOYEE_BY_ID)) {
             statement.setInt(1, employee.getCabinetNumber());
@@ -184,12 +182,12 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
         } catch (SQLException e) {
             LOGGER.error("Can't update the info about employee with id: "
                     + employee.getId(), e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public boolean delete(Integer id) throws PersistentException {
+    public boolean delete(Integer id) {
         return false;
     }
 }

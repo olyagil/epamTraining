@@ -3,7 +3,7 @@ package by.training.beautysalon.command.admin;
 import by.training.beautysalon.command.Command;
 import by.training.beautysalon.command.Forward;
 import by.training.beautysalon.entity.Service;
-import by.training.beautysalon.exception.PersistentException;
+import by.training.beautysalon.exception.DataBaseException;
 import by.training.beautysalon.service.ServiceService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,22 +11,33 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * The class {@code ServiceDeleteCommand} is used for deleting service from DB.
+ */
 public class ServiceDeleteCommand extends Command {
     private static final Logger LOGGER = LogManager.getLogger();
+    private static final String ID = "id";
 
     @Override
-    public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
+    public Forward execute(HttpServletRequest request, HttpServletResponse response) throws DataBaseException {
 
         ServiceService service = serviceFactory.getServiceService();
-        Integer id = Integer.parseInt(request.getParameter("id"));
+        String id = request.getParameter(ID);
+        try {
+            if (id != null) {
+                Service serv = service.find(Integer.parseInt(id));
+                LOGGER.debug(String.format("Trying to delete the id: %s which is " +
+                        "service: %s", id, serv));
+                if (serv != null) {
+                    service.delete(Integer.parseInt(id));
+                }else{
+                    request.getSession().setAttribute("alert", "Can't delete service");
 
-        Service serv = service.find(id);
-        LOGGER.debug("Trying to delete the id: " + id + " which is " +
-                "service: " + service);
-        if (serv != null) {
-            service.delete(id);
+                }
+            }
+        } catch (NumberFormatException e) {
+            request.getSession().setAttribute("alert", "Can't delete service");
         }
-
         return new Forward("/service/list.html");
     }
 }

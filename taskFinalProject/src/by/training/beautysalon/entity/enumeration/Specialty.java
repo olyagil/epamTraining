@@ -6,11 +6,12 @@ public enum Specialty {
     COSMETOLOGIST("Косметолог");
 
 
-    private String name;
+    private final String name;
 
     Specialty(String name) {
         this.name = name;
     }
+
     public String getName() {
         return name;
     }

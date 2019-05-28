@@ -1,28 +1,14 @@
 package by.training.beautysalon.dao.connection;
 
-import java.sql.Array;
-import java.sql.Blob;
-import java.sql.CallableStatement;
-import java.sql.Clob;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.NClob;
-import java.sql.PreparedStatement;
-import java.sql.SQLClientInfoException;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.SQLXML;
-import java.sql.Savepoint;
-import java.sql.Statement;
-import java.sql.Struct;
+import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
-public class PooledConnection implements Connection, Comparable<PooledConnection> {
-    private Connection connection;
+class PooledConnection implements Connection, Comparable<PooledConnection> {
+    private final Connection connection;
 
-    public PooledConnection(Connection connection) {
+    PooledConnection(Connection connection) {
         this.connection = connection;
     }
 
@@ -51,7 +37,7 @@ public class PooledConnection implements Connection, Comparable<PooledConnection
     }
 
     @Override
-    public void close() throws SQLException {
+    public void close() {
         ConnectionPool.getInstance().releaseConnection(this);
     }
 

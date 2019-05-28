@@ -9,41 +9,35 @@ import by.training.beautysalon.service.impl.UserServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.SQLException;
-
 public class ServiceFactory {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    private static final ServiceFactory instance = new ServiceFactory();
 
-    private ServiceFactory() {
+    private final DaoFactory factory;
 
-    }
+    public ServiceFactory(DaoFactory daoFactory) {
+        this.factory = daoFactory;
 
-    protected DaoFactory factory = DaoFactory.getInstance();
-
-    public static ServiceFactory getInstance() {
-        return instance;
     }
 
     public UserServiceImpl getUserService() {
-        return new UserServiceImpl();
+        return new UserServiceImpl(factory.getUserDao());
     }
 
     public EmployeeServiceImpl getEmployeeService() {
-        return new EmployeeServiceImpl();
+        return new EmployeeServiceImpl(factory.getEmployeeDao());
     }
 
     public ServiceServiceImpl getServiceService() {
-        return new ServiceServiceImpl();
+        return new ServiceServiceImpl(factory.getServiceDao());
     }
 
     public TalonServiceImpl getTalonService() {
-        return new TalonServiceImpl();
+        return new TalonServiceImpl(factory.getTalonDao());
     }
 
     public FeedbackServiceImpl getFeedbackService() {
-        return new FeedbackServiceImpl();
+        return new FeedbackServiceImpl(factory.getFeedbackDao());
     }
 
     public void close() {

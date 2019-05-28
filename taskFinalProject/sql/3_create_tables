@@ -37,7 +37,7 @@ create table `user_info`
 
 create table `employees`
 (
-  `user_info_id`         int(11)        not null,
+  `user_info_id`    int(11)        not null,
   `cabinet_number`  int(11)        not null,
   `salary`          decimal(15, 2) not null,
   `employment_date` date           not null,
@@ -91,11 +91,11 @@ create table `talons`
 
 create table `feedback`
 (
-  `id`          int(11) not null auto_increment,
-  `client_id`   int(11) not null,
-  `employee_id` int(11) not null,
-  `date`        date    not null,
-  `review`      blob    not null,
+  `id`          int(11)      not null auto_increment,
+  `client_id`   int(11)      not null,
+  `employee_id` int(11)      not null,
+  `date`        date         not null,
+  `review`      varchar(255) not null,
   constraint PK_feedback primary key (`id`),
   constraint FK_feedback_client_id foreign key (`client_id`)
     references user_info (`user_id`)

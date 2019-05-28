@@ -1,9 +1,8 @@
 package by.training.beautysalon.dao.mysql;
 
 import by.training.beautysalon.dao.TalonDao;
-import by.training.beautysalon.entity.Service;
 import by.training.beautysalon.entity.Talon;
-import by.training.beautysalon.exception.PersistentException;
+import by.training.beautysalon.exception.DataBaseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -49,12 +48,12 @@ public class TalonDaoImpl extends BaseDaoImpl implements TalonDao {
     private static final String COUNT_TALONS = "select count(`id`) "
             + "from `talons`";
 
-    public TalonDaoImpl(Connection connection) {
+   TalonDaoImpl(Connection connection) {
         this.connection = connection;
     }
 
     @Override
-    public List<Talon> readByClient(Integer clientId) throws PersistentException {
+    public List<Talon> readByClient(Integer clientId) throws DataBaseException {
         try (PreparedStatement statement =
                      connection.prepareStatement(SELECT_BY_CLIENT)) {
             statement.setInt(1, clientId);
@@ -69,12 +68,12 @@ public class TalonDaoImpl extends BaseDaoImpl implements TalonDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Can't read clients by client id: " + clientId, e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public List<Talon> readByEmployee(Integer specialistId) throws PersistentException {
+    public List<Talon> readByEmployee(Integer specialistId) throws DataBaseException {
         try (PreparedStatement statement =
                      connection.prepareStatement(SELECT_BY_EMPLOYEE)) {
             statement.setInt(1, specialistId);
@@ -88,12 +87,12 @@ public class TalonDaoImpl extends BaseDaoImpl implements TalonDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Can't read clients by employee id: " + specialistId, e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public List<Talon> read(Boolean status) throws PersistentException {
+    public List<Talon> read(Boolean status) throws DataBaseException {
         try (PreparedStatement statement =
                      connection.prepareStatement(SELECT_BY_STATUS)) {
             statement.setBoolean(1, status);
@@ -107,12 +106,12 @@ public class TalonDaoImpl extends BaseDaoImpl implements TalonDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Can't read talons with status: " + status, e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public List<Talon> read(Date date) throws PersistentException {
+    public List<Talon> read(Date date) throws DataBaseException {
         try (PreparedStatement statement =
                      connection.prepareStatement(SELECT_BY_DATE)) {
             Timestamp data = new Timestamp(date.getTime());
@@ -132,12 +131,12 @@ public class TalonDaoImpl extends BaseDaoImpl implements TalonDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Can't read talons by date id: " + date, e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public int countRows() throws PersistentException {
+    public int countRows() throws DataBaseException {
         int count = 0;
         try (PreparedStatement statement =
                      connection.prepareStatement(COUNT_TALONS);
@@ -147,13 +146,13 @@ public class TalonDaoImpl extends BaseDaoImpl implements TalonDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Can't count the number of talons", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
         return count;
     }
 
     @Override
-    public List<Talon> read(int currentPage, int recordsPerPage) throws PersistentException {
+    public List<Talon> read(int currentPage, int recordsPerPage) throws DataBaseException {
         int start = currentPage * recordsPerPage - recordsPerPage;
 
         try (PreparedStatement statement =
@@ -169,12 +168,12 @@ public class TalonDaoImpl extends BaseDaoImpl implements TalonDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Can't read by page the talons", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public List<Talon> read() throws PersistentException {
+    public List<Talon> read() throws DataBaseException {
         try (PreparedStatement statement =
                      connection.prepareStatement(SELECT_ALL);
              ResultSet resultSet = statement.executeQuery()) {
@@ -187,12 +186,12 @@ public class TalonDaoImpl extends BaseDaoImpl implements TalonDao {
 
         } catch (SQLException e) {
             LOGGER.error("Can't read all talons", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public Integer create(Talon talon) throws PersistentException {
+    public Integer create(Talon talon) throws DataBaseException {
         try (PreparedStatement statement = connection.prepareStatement(INSERT_TALON,
                 Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, talon.getClient().getId());
@@ -205,19 +204,19 @@ public class TalonDaoImpl extends BaseDaoImpl implements TalonDao {
                 if (resultSet.next()) {
                     return resultSet.getInt(1);
                 } else {
-                    LOGGER.error("There is no autoincremented index after trying " +
+                    LOGGER.error("There is no autoincrement index after trying " +
                             "to add record into `talons` ");
-                    throw new PersistentException();
+                    throw new DataBaseException();
                 }
             }
         } catch (SQLException e) {
             LOGGER.error("Can't insert talon in DB ", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public Talon read(Integer id) throws PersistentException {
+    public Talon read(Integer id) throws DataBaseException {
         try (PreparedStatement statement =
                      connection.prepareStatement(SELECT_BY_ID)) {
             statement.setInt(1, id);
@@ -231,12 +230,12 @@ public class TalonDaoImpl extends BaseDaoImpl implements TalonDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Can't read talon by id: " + id, e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public boolean update(Talon talon) throws PersistentException {
+    public boolean update(Talon talon) throws DataBaseException {
         try (PreparedStatement statement = connection.prepareStatement(UPDATE_TALON)) {
             statement.setInt(1, talon.getService().getId());
             statement.setTimestamp(2, talon.getReceptionDate());
@@ -246,19 +245,19 @@ public class TalonDaoImpl extends BaseDaoImpl implements TalonDao {
             return true;
         } catch (SQLException e) {
             LOGGER.error("Can't make the update of the talon to DB ", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public boolean delete(Integer id) throws PersistentException {
+    public boolean delete(Integer id) throws DataBaseException {
         try (PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID)) {
             statement.setInt(1, id);
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
             LOGGER.error("Can't delete the talon from DB ", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 }

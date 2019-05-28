@@ -32,6 +32,7 @@
                     <c:remove var="message" scope="session"/>
                 </div>
             </c:if>
+
             <!-- Login -->
             <div class="form-group ">
                 <fmt:message key="placeholder.user.login" var="login"/>

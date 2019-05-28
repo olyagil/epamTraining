@@ -39,7 +39,7 @@
                     <input type="file" name="img"
                            class="text-center center-block file-upload"
                            required>
-                    <button type="submit"
+                     <button type="submit"
                             class="btn btn-success float-right">
                         <fmt:message key="button.change"/>
                     </button>
@@ -88,7 +88,7 @@
                                pattern="[a-zA-Zа-яА-Я0-9]{2,30}" required>
                     </div>
                     <div class="form-group">
-                        <div class="maxl">
+                        <div class="max">
                             <c:if test="${requestScope.user.gender.id eq 0}">
                                 <label class="radio inline">
                                     <input type="radio" name="gender"
@@ -127,7 +127,7 @@
                         </div>
                     </c:if>
                     <c:if test="${not empty sessionScope.failure_save_info}">
-                        <div class="alert alert-success" role="alert">
+                        <div class="alert alert-danger" role="alert">
                                 ${sessionScope.failure_save_info}
                             <c:remove var="failure_save_info" scope="session"/>
                         </div>

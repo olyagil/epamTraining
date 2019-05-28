@@ -1,9 +1,8 @@
 package by.training.beautysalon.service.impl;
 
 import by.training.beautysalon.dao.UserDao;
-import by.training.beautysalon.dao.mysql.DaoFactory;
 import by.training.beautysalon.entity.User;
-import by.training.beautysalon.exception.PersistentException;
+import by.training.beautysalon.exception.DataBaseException;
 import by.training.beautysalon.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,47 +14,44 @@ import java.util.List;
 
 public class UserServiceImpl implements UserService {
     private static final Logger LOGGER = LogManager.getLogger();
+    private final UserDao dao;
+
+    public UserServiceImpl(UserDao userDao) {
+        this.dao = userDao;
+    }
 
     @Override
-    public int countRows() throws PersistentException {
-        UserDao dao = DaoFactory.getInstance().getUserDao();
+    public int countRows() throws DataBaseException {
         return dao.countRows();
     }
 
     @Override
-    public List<User> find() throws PersistentException {
-        UserDao dao = DaoFactory.getInstance().getUserDao();
+    public List<User> find() throws DataBaseException {
         return dao.read();
     }
 
     public List<User> find(int currentPage, int recordsPerPage)
-            throws PersistentException {
-        UserDao dao = DaoFactory.getInstance().getUserDao();
+            throws DataBaseException {
         return dao.read(currentPage, recordsPerPage);
     }
 
     @Override
-    public List<User> find(String login) throws PersistentException {
-        UserDao dao = DaoFactory.getInstance().getUserDao();
+    public List<User> find(String login) throws DataBaseException {
         return dao.read(login);
     }
 
     @Override
-    public User find(Integer id) throws PersistentException {
-        UserDao dao = DaoFactory.getInstance().getUserDao();
+    public User find(Integer id) throws DataBaseException {
         return dao.read(id);
     }
 
     @Override
-    public User find(String login, String password) throws PersistentException {
-        UserDao dao = DaoFactory.getInstance().getUserDao();
+    public User find(String login, String password) throws DataBaseException {
         return dao.read(login, md5(password));
     }
 
     @Override
-    public Integer save(User user) throws PersistentException {
-        UserDao dao = DaoFactory.getInstance().getUserDao();
-
+    public Integer save(User user) throws DataBaseException {
         if (user.getId() != null) {
             if (user.getPassword() != null) {
                 user.setPassword(md5(user.getPassword()));
@@ -77,9 +73,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(Integer id) throws PersistentException {
-        UserDao dao = DaoFactory.getInstance().getUserDao();
-        dao.delete(id);
+    public boolean delete(Integer id) throws DataBaseException {
+        return dao.delete(id);
 
     }
 
@@ -91,6 +86,7 @@ public class UserServiceImpl implements UserService {
             messageDigest.update(password.getBytes());
             byte[] hash = messageDigest.digest();
             Formatter formatter = new Formatter();
+
             for (int i = 0; i < hash.length; i++) {
                 formatter.format("%02X", hash[i]);
             }

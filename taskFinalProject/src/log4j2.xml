@@ -5,7 +5,7 @@
             %d{dd-MM HH:mm:ss} [%t] %-5level %logger{2} - %msg%n
         </Property>
         <Property name="patternshort">
-             [%t] %-5level %logger{1} - %msg%n
+            [%t] %-5level %logger{1} - %msg%n
         </Property>
     </Properties>
 

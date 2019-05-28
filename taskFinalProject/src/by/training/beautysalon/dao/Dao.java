@@ -1,26 +1,26 @@
 package by.training.beautysalon.dao;
 
 import by.training.beautysalon.builder.Builder;
-import by.training.beautysalon.entity.Employee;
 import by.training.beautysalon.entity.Entity;
-import by.training.beautysalon.exception.PersistentException;
+import by.training.beautysalon.exception.DataBaseException;
 
 import java.util.List;
 
 public interface Dao<Type extends Entity> {
-    //    Optional<Type> read(Integer id) throws PersistentException;
-    int countRows() throws PersistentException;
-    List<Type> read(int currentPage, int recordsPerPage) throws PersistentException;
+    //    Optional<Type> read(Integer id) throws DataBaseException;
+    int countRows() throws DataBaseException;
 
-    List<Type> read() throws PersistentException;
+    List<Type> read(int currentPage, int recordsPerPage) throws DataBaseException;
 
-    Integer create(Type entity) throws PersistentException;
+    List<Type> read() throws DataBaseException;
 
-    Type read(Integer id) throws PersistentException;
+    Integer create(Type entity) throws DataBaseException;
 
-    boolean update(Type entity) throws PersistentException;
+    Type read(Integer id) throws DataBaseException;
 
-    boolean delete(Integer id) throws PersistentException;
+    boolean update(Type entity) throws DataBaseException;
+
+    boolean delete(Integer id) throws DataBaseException;
 
     Builder<Type> getBuilder();
 }

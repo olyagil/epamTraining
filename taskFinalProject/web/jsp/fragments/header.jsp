@@ -1,6 +1,7 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="tag" uri="/WEB-INF/taglib.tld" %>
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="property.lang"/>
 <html>
@@ -16,7 +17,7 @@
     <div class="container">
         <c:url value="/main.html" var="mainUrl"/>
         <a class="navbar-brand" href="${mainUrl}">
-            <fmt:message key="header.name"/></a>
+            <fmt:message key="header.name"/><tag:name/></a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse"
                 data-target="#navbarSupportedContent"
@@ -72,7 +73,7 @@
                         <form method="get" action="${language}">
                             <input type="hidden" name="lang" value="de_DE">
                             <input type="submit" class="dropdown-item"
-                                   value="Немецкі">
+                                   value="Deutsch">
                         </form>
                     </div>
                 </li>

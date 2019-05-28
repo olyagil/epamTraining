@@ -46,6 +46,12 @@
         <c:if test="${empty requestScope.services}">
             <p><fmt:message key="service.notfound"/></p>
         </c:if>
+
+        <c:if test="${not empty sessionScope.alert}">
+            <div class="alert alert-danger" role="alert">
+                <p><c:out value="${sessionScope.alert}"/></p>
+                <c:remove var="alert" scope="session"/></div>
+        </c:if>
         <c:if test="${not empty requestScope.services}">
             <div class="card mb-5">
                 <div class="card-header"><h2><fmt:message

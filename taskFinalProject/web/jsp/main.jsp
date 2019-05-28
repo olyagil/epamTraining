@@ -5,16 +5,14 @@
 <fmt:setBundle basename="property.lang"/>
 <html lang="en">
 <head>
-    <title><fmt:message key="header.name"/> </title>
+    <title><fmt:message key="header.name"/></title>
 </head>
 
 
 <body>
 <%@include file="fragments/header.jsp" %>
-<%--<jsp:include page="fragments/header.jsp"/>--%>
-<img src="img/main4.jpg" alt="main"  style="width:100%">
+<img src="img/main4.jpg" alt="main" style="width:100%">
 
-<%--<%@include file="footer.jsp"%>--%>
 <jsp:include page="fragments/footer.jsp"/>
 </body>
 

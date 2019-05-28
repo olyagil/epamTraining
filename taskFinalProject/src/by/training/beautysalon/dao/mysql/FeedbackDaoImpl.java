@@ -2,7 +2,7 @@ package by.training.beautysalon.dao.mysql;
 
 import by.training.beautysalon.dao.FeedbackDao;
 import by.training.beautysalon.entity.Feedback;
-import by.training.beautysalon.exception.PersistentException;
+import by.training.beautysalon.exception.DataBaseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,8 +29,8 @@ public class FeedbackDaoImpl extends BaseDaoImpl implements FeedbackDao {
             "`date` DESC limit ?";
     private static final String UPDATE_FEEDBACK = "update `feedback` set  `client_id`=?, employee_id=?, `date`=?, `review`=?\n" +
             "where `id`=?";
-    private static final String READ_FEEDBACK_BY_ID = "select `id`, `client_id`, employee_id, `date`, " +
-            "`review` from `feedback` where `id`=? order by `date` DESC ";
+    private static final String READ_FEEDBACK_BY_ID = SELECT_ALL + "where " +
+            "`id`=? order by `date` DESC ";
     private static final String INSERT_FEEDBACK = "insert into `feedback` " +
             "(`client_id`, employee_id, `date`, `review`)" +
             "values (?,?,?,?)";
@@ -54,7 +54,7 @@ public class FeedbackDaoImpl extends BaseDaoImpl implements FeedbackDao {
     }
 
     @Override
-    public List<Feedback> readByClientId(Integer clientId) throws PersistentException {
+    public List<Feedback> readByClientId(Integer clientId) throws DataBaseException {
 
         try (PreparedStatement statement = connection.prepareStatement(SELECT_BY_CLIENT_ID)) {
             statement.setInt(1, clientId);
@@ -68,12 +68,12 @@ public class FeedbackDaoImpl extends BaseDaoImpl implements FeedbackDao {
         } catch (SQLException e) {
             LOGGER.error("Can't read the feedback by client id: "
                     + clientId, e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public List<Feedback> readByEmployee(Integer employeeId) throws PersistentException {
+    public List<Feedback> readByEmployee(Integer employeeId) throws DataBaseException {
 
         try (PreparedStatement statement = connection.prepareStatement(SELECT_BY_EMPLOYEE_ID)) {
             statement.setInt(1, employeeId);
@@ -87,12 +87,12 @@ public class FeedbackDaoImpl extends BaseDaoImpl implements FeedbackDao {
         } catch (SQLException e) {
             LOGGER.error("Can't read the feedback by employee id: "
                     + employeeId, e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public List<Feedback> read(Date date) throws PersistentException {
+    public List<Feedback> read(Date date) throws DataBaseException {
         try (PreparedStatement statement = connection.prepareStatement(SELECT_FEEDBACK_BY_DATE)) {
             statement.setDate(1, date);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -105,12 +105,12 @@ public class FeedbackDaoImpl extends BaseDaoImpl implements FeedbackDao {
         } catch (SQLException e) {
             LOGGER.error("Can't read the feedback by date: "
                     + date.toString(), e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public int countRows() throws PersistentException {
+    public int countRows() throws DataBaseException {
         int count = 0;
         try (PreparedStatement statement =
                      connection.prepareStatement(COUNT_FEEDBACK);
@@ -120,19 +120,18 @@ public class FeedbackDaoImpl extends BaseDaoImpl implements FeedbackDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Can't count the number of feedback", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
         return count;
     }
 
     @Override
-    public List<Feedback> read(int currentPage, int recordsPerPage) throws PersistentException {
+    public List<Feedback> read(int currentPage, int recordsPerPage) throws DataBaseException {
         int start = currentPage * recordsPerPage;
 
         try (PreparedStatement statement =
                      connection.prepareStatement(SELECT_ALL_BY_PARTS)) {
             statement.setInt(1, start);
-//            statement.setInt(2, recordsPerPage);
             try (ResultSet resultSet = statement.executeQuery()) {
                 List<Feedback> feedbackList = new ArrayList<>();
                 while (resultSet.next()) {
@@ -142,12 +141,12 @@ public class FeedbackDaoImpl extends BaseDaoImpl implements FeedbackDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Can't read by page the feedback", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public List<Feedback> read() throws PersistentException {
+    public List<Feedback> read() throws DataBaseException {
 
         try (PreparedStatement statement =
                      connection.prepareStatement(SELECT_ALL);
@@ -159,12 +158,12 @@ public class FeedbackDaoImpl extends BaseDaoImpl implements FeedbackDao {
             return feedbackList;
         } catch (SQLException e) {
             LOGGER.error("Can't find all feedback from db", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public Integer create(Feedback feedback) throws PersistentException {
+    public Integer create(Feedback feedback) throws DataBaseException {
         try (PreparedStatement statement = connection.prepareStatement(INSERT_FEEDBACK,
                 Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, feedback.getClient().getId());
@@ -176,19 +175,19 @@ public class FeedbackDaoImpl extends BaseDaoImpl implements FeedbackDao {
                 if (resultSet.next()) {
                     return resultSet.getInt(1);
                 } else {
-                    LOGGER.error("There is no autoincremented index after " +
+                    LOGGER.error("There is no autoincrement index after " +
                             "trying to add record into `feedback` ");
-                    throw new PersistentException();
+                    throw new DataBaseException();
                 }
             }
         } catch (SQLException e) {
             LOGGER.error("Can't insert feedback from db", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public Feedback read(Integer id) throws PersistentException {
+    public Feedback read(Integer id) throws DataBaseException {
 
         try (PreparedStatement statement =
                      connection.prepareStatement(READ_FEEDBACK_BY_ID)) {
@@ -202,12 +201,12 @@ public class FeedbackDaoImpl extends BaseDaoImpl implements FeedbackDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Can't read the feedback from db", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public boolean update(Feedback feedback) throws PersistentException {
+    public boolean update(Feedback feedback) throws DataBaseException {
         try (PreparedStatement statement =
                      connection.prepareStatement(UPDATE_FEEDBACK)) {
             statement.setInt(1, feedback.getClient().getId());
@@ -219,19 +218,19 @@ public class FeedbackDaoImpl extends BaseDaoImpl implements FeedbackDao {
             return true;
         } catch (SQLException e) {
             LOGGER.error("Can't update the feedback from db", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public boolean delete(Integer id) throws PersistentException {
+    public boolean delete(Integer id) throws DataBaseException {
         try (PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID)) {
             statement.setInt(1, id);
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
             LOGGER.error("Can't delete the feedback from db", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
 
     }

@@ -21,7 +21,7 @@ public class SecurityFilter implements Filter {
     private final static Logger LOGGER = LogManager.getLogger();
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
 
     }
 
@@ -85,7 +85,7 @@ public class SecurityFilter implements Filter {
 
     private boolean guestCommand(CommandEnum command) {
         EnumSet<CommandEnum> set = EnumSet.range(CommandEnum.NOTFOUND,
-                CommandEnum.INDEX);
+                CommandEnum.MAIN);
         return set.contains(command);
     }
 

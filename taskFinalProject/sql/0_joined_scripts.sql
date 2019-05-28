@@ -95,11 +95,11 @@ create table `talons`
 
 create table `feedback`
 (
-  `id`          int(11) not null auto_increment,
-  `client_id`   int(11) not null,
-  `employee_id` int(11) not null,
-  `date`        date    not null,
-  `review`      blob    not null,
+  `id`          int(11)      not null auto_increment,
+  `client_id`   int(11)      not null,
+  `employee_id` int(11)      not null,
+  `date`        date         not null,
+  `review`      varchar(255) not null,
   constraint PK_feedback primary key (`id`),
   constraint FK_feedback_client_id foreign key (`client_id`)
     references user_info (`user_id`)
@@ -123,8 +123,8 @@ values (1,
         "21232f297a57a5a743894a0e4a801fc3",
         0);
 
-
 use `salon_db`;
+
 insert into `users`(`id`,
                     `login`,
                     `password`,
@@ -135,12 +135,13 @@ values (2, "client1", "62608e08adc29a8d6dbc9754e659f125", 2),/*md5 for client*/
        (5, "client4", "62608e08adc29a8d6dbc9754e659f125", 2),
        (6, "client5", "62608e08adc29a8d6dbc9754e659f125", 2),
        (7, "client6", "62608e08adc29a8d6dbc9754e659f125", 2),
-       (8, "specialist1", "d94a1402cc48a9a286b71734e2e5b573", 1),
+       (8, "employee1", "FA5473530E4D1A5A1E1EB53D2FEDB10C", 1),
   /*md5 for employee*/
-       (9, "specialist2", "d94a1402cc48a9a286b71734e2e5b573", 1),
-       (10, "specialist3", "d94a1402cc48a9a286b71734e2e5b573", 1),
-       (11, "specialist4", "d94a1402cc48a9a286b71734e2e5b573", 1),
-       (12, "specialist5", "d94a1402cc48a9a286b71734e2e5b573", 1);
+       (9, "employee2", "FA5473530E4D1A5A1E1EB53D2FEDB10C", 1),
+       (10, "employee3", "FA5473530E4D1A5A1E1EB53D2FEDB10C", 1),
+       (11, "employee4", "FA5473530E4D1A5A1E1EB53D2FEDB10C", 1),
+       (12, "employee5", "FA5473530E4D1A5A1E1EB53D2FEDB10C", 1);
+
 
 insert into salon_db.user_info(`user_id`, `surname`, `name`, `patronymic`,
                                `gender`, `birth_date`, `phone`, `avatar`)

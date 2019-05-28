@@ -115,7 +115,8 @@
                     <c:if test="${requestScope.user.role.id eq 1}">
                         <div class="row">
                             <div class="col-md-6">
-                                <label><fmt:message key="user.cabinet.number"/></label>
+                                <label><fmt:message
+                                        key="user.cabinet.number"/></label>
                             </div>
                             <div class="col-md-6">
                                 <p><c:out
@@ -133,7 +134,8 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label><fmt:message key="user.date.employement"/></label>
+                                <label><fmt:message
+                                        key="user.date.employment"/></label>
                             </div>
                             <div class="col-md-6">
                                 <p><c:out
@@ -142,7 +144,8 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label><fmt:message key="user.specialty"/></label>
+                                <label><fmt:message
+                                        key="user.specialty"/></label>
                             </div>
                             <div class="col-md-6">
                                 <p><c:out

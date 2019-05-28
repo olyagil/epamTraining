@@ -1,11 +1,10 @@
 package by.training.beautysalon.command.employee;
 
 import by.training.beautysalon.command.Command;
-import by.training.beautysalon.command.CommandEnum;
 import by.training.beautysalon.command.Forward;
 import by.training.beautysalon.entity.Talon;
 import by.training.beautysalon.entity.enumeration.Role;
-import by.training.beautysalon.exception.PersistentException;
+import by.training.beautysalon.exception.DataBaseException;
 import by.training.beautysalon.service.TalonService;
 import by.training.beautysalon.utill.PaginationUtil;
 import org.apache.logging.log4j.LogManager;
@@ -21,15 +20,22 @@ public class TalonListCommand extends Command {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final int DEFAULT_CURRENT_PAGE = 1;
     private static final int RECORDS_PER_PAGE = 5;
+    private static final String CURRENT_PAGE = "currentPage";
+    private static final String ID = "id";
+    private static final String ROLE = "role";
+    private static final String STATUS = "status";
+    private static final String TALONS = "talons";
+    private static final String SEARCH_DATE = "searchDate";
+    private static final String NO_OF_PAGES = "noOfPages";
 
     @Override
-    public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
+    public Forward execute(HttpServletRequest request, HttpServletResponse response) throws DataBaseException {
         TalonService service = serviceFactory.getTalonService();
         HttpSession session = request.getSession();
 
         int currentPage;
-        if (request.getParameter("currentPage") != null) {
-            currentPage = Integer.valueOf(request.getParameter("currentPage"));
+        if (request.getParameter(CURRENT_PAGE) != null) {
+            currentPage = Integer.valueOf(request.getParameter(CURRENT_PAGE));
         } else {
             currentPage = DEFAULT_CURRENT_PAGE;
         }
@@ -37,44 +43,45 @@ public class TalonListCommand extends Command {
         int rows = 0;
         List<Talon> talonList;
         try {
-            Integer id = (Integer) session.getAttribute("id");
-            Role role = Role.getById((Integer) session.getAttribute("role"));
-            if (request.getParameter("status") != null) {
-                Boolean status = Boolean.valueOf(request.getParameter("status"));
+            Integer id = (Integer) session.getAttribute(ID);
+            Role role = Role.getById((Integer) session.getAttribute(ROLE));
+            if (request.getParameter(STATUS) != null) {
+                Boolean status = Boolean.valueOf(request.getParameter(STATUS));
                 talonList = service.find(status);
                 rows = 0;
-                request.setAttribute("talons", talonList);
-            } else if (request.getParameter("searchDate") != null) {
-                Date date = Date.valueOf(request.getParameter("searchDate"));
+                request.setAttribute(TALONS, talonList);
+            } else if (request.getParameter(SEARCH_DATE) != null) {
+                Date date = Date.valueOf(request.getParameter(SEARCH_DATE));
                 talonList = service.find(date);
                 rows = 0;
-                request.setAttribute("talons",talonList);
-                request.setAttribute("searchDate", date);
+                request.setAttribute(TALONS, talonList);
+                request.setAttribute(SEARCH_DATE, date);
             } else {
                 switch (role) {
                     case EMPLOYEE:
                         talonList = service.findByEmployee(id);
-                        request.setAttribute("talons", talonList);
+                        request.setAttribute(TALONS, talonList);
                         rows = 0;
                         break;
                     case CLIENT:
                         talonList = service.findByClient(id);
-                        request.setAttribute("talons", talonList);
+                        request.setAttribute(TALONS, talonList);
                         rows = 0;
                         break;
                     case ADMINISTRATOR:
-                        request.setAttribute("talons",
+                        request.setAttribute(TALONS,
                                 service.find(currentPage, RECORDS_PER_PAGE));
                         rows = service.countRows();
                 }
             }
         } catch (NumberFormatException e) {
             LOGGER.error("Can't parse the id" + e);
+
         }
         int nOfPages = PaginationUtil.getNumOfPages(rows);
-        request.setAttribute("noOfPages", nOfPages);
-        request.setAttribute("currentPage", currentPage);
+        request.setAttribute(NO_OF_PAGES, nOfPages);
+        request.setAttribute(CURRENT_PAGE, currentPage);
 
-        return new Forward(CommandEnum.TALON_LIST.getName(), false);
+        return null;
     }
 }

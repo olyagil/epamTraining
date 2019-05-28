@@ -6,7 +6,7 @@ import by.training.beautysalon.entity.Employee;
 import by.training.beautysalon.entity.Service;
 import by.training.beautysalon.entity.Talon;
 import by.training.beautysalon.entity.User;
-import by.training.beautysalon.exception.PersistentException;
+import by.training.beautysalon.exception.DataBaseException;
 import by.training.beautysalon.service.TalonService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,9 +21,16 @@ import java.util.Date;
 
 public class TalonSaveCommand extends Command {
     private static final Logger LOGGER = LogManager.getLogger();
+    private static final String ID = "id";
+    private static final String SERVICE_ID = "serviceId";
+    private static final String CLIENT_ID = "clientId";
+    private static final String EMPLOYEE_ID = "employeeId";
+    private static final String RECEPTION_DATE_COL = "receptionDateCol";
+    private static final String RECEPTION_DATE = "receptionDate";
+    private static final String RECEPTION_DATE_COL1 = "receptionDateCol";
 
     @Override
-    public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
+    public Forward execute(HttpServletRequest request, HttpServletResponse response) throws DataBaseException {
         HttpSession session = request.getSession();
         TalonService service = serviceFactory.getTalonService();
         Talon talon = new Talon();
@@ -31,10 +38,10 @@ public class TalonSaveCommand extends Command {
         User client = new User();
         Employee employee = new Employee();
 
-        String id = request.getParameter("id");
-        String serviceId = request.getParameter("serviceId");
-        String clientId = request.getParameter("clientId");
-        String employeeId = request.getParameter("employeeId");
+        String id = request.getParameter(ID);
+        String serviceId = request.getParameter(SERVICE_ID);
+        String clientId = request.getParameter(CLIENT_ID);
+        String employeeId = request.getParameter(EMPLOYEE_ID);
         if (id != null) {
             talon.setId(Integer.parseInt(id));
         }
@@ -53,16 +60,18 @@ public class TalonSaveCommand extends Command {
         talon.setEmployee(employee);
         Date date;
         try {
-            if (request.getParameter("receptionDateCol") != null) {
+            if (request.getParameter(RECEPTION_DATE_COL) != null) {
                 date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm")
-                        .parse(request.getParameter("receptionDateCol"));
+                        .parse(request.getParameter(RECEPTION_DATE_COL1));
             } else {
                 date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-                        .parse(request.getParameter("receptionDate"));
+                        .parse(request.getParameter(RECEPTION_DATE));
             }
         } catch (ParseException e) {
             LOGGER.debug("Can't parse the date");
-            throw new PersistentException(e);
+            request.getSession().setAttribute("alert", "Please, enter correct" +
+                    " data.");
+            return new Forward("/talon/list.html");
         }
 
         talon.setReceptionDate(new Timestamp(date.getTime()));

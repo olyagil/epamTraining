@@ -27,7 +27,7 @@
     <c:if test="${not empty requestScope.alert_message}">
         <div class="alert alert-danger" role="alert">
             <p><c:out value="${requestScope.alert_message}"/></p>
-        </div>
+            <c:remove var="alert_message" scope="session"/></div>
     </c:if>
     <c:if test="${not empty requestScope.user}">
         <div class="row">
@@ -85,7 +85,7 @@
                         <div class="form-group">
 
                             <label for="employment_date"> <fmt:message
-                                    key="user.date.employement"/></label>
+                                    key="user.date.employment"/></label>
                             <input type="date" class="form-control"
                                    name="employment_date" id="employment_date"
                                    value="${requestScope.user.employmentDate}"

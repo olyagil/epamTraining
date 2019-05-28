@@ -100,7 +100,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <label><fmt:message key="user.date.employement"/>
+                            <label><fmt:message key="user.date.employment"/>
                             </label>
                         </div>
                         <div class="col-md-6">

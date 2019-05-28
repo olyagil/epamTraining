@@ -5,7 +5,7 @@
 <fmt:setBundle basename="property.lang"/>
 <html>
 <head>
-    <title><fmt:message key="page.notfound"/> </title>
+    <title><fmt:message key="page.notfound"/></title>
 </head>
 <body>
 

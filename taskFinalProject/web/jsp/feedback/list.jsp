@@ -51,9 +51,9 @@
                                        value="${feedback.client.role.id}">
                             </form>
                             <p><fmt:message key="feedback.by"/> :
-                                <font color="#6495ed">
+                                <span style="color:#6495ed">
                                     <c:out value="${feedback.client.surname}
-                                    ${feedback.client.name}"/></font>
+                                    ${feedback.client.name}"/></span>
                                 <span class="float-right text-secondary">
                                        <c:out value="${feedback.date}"/></span>
                             </p>
@@ -77,9 +77,9 @@
                                            value="${feedback.employee.role.id}">
                                 </form>
                                 <p><fmt:message key="feedback.on"/>
-                                    <font color="#6495ed">
+                                    <span style="color: #6495ed">
                                         <c:out value="${feedback.employee.surname}
-                                    ${feedback.employee.name}"/></font>
+                                    ${feedback.employee.name}"/></span>
                                 </p>
                             </div>
 

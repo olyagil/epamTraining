@@ -67,7 +67,7 @@
                             <th><fmt:message key="user.date.birth"/></th>
                             <th><fmt:message key="user.cabinet.number"/></th>
                             <th><fmt:message key="user.salary"/></th>
-                            <th><fmt:message key="user.date.employement"/></th>
+                            <th><fmt:message key="user.date.employment"/></th>
                             <th><fmt:message key="user.specialty"/></th>
                         </tr>
                         </thead>

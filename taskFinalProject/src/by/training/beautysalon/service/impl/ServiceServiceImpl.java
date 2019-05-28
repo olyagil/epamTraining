@@ -1,56 +1,48 @@
 package by.training.beautysalon.service.impl;
 
 import by.training.beautysalon.dao.ServiceDao;
-import by.training.beautysalon.dao.mysql.DaoFactory;
 import by.training.beautysalon.entity.Service;
-import by.training.beautysalon.exception.PersistentException;
+import by.training.beautysalon.exception.DataBaseException;
 import by.training.beautysalon.service.ServiceService;
 
-import java.sql.Date;
 import java.util.List;
 
 public class ServiceServiceImpl implements ServiceService {
+
+    private final ServiceDao dao;
+
+    public ServiceServiceImpl(ServiceDao serviceDao) {
+        this.dao = serviceDao;
+    }
+
     @Override
-    public int countRows() throws PersistentException {
-        ServiceDao dao = DaoFactory.getInstance().getServiceDao();
+    public int countRows() throws DataBaseException {
         return dao.countRows();
     }
 
     @Override
-    public List<Service> find() throws PersistentException {
-        ServiceDao dao = DaoFactory.getInstance().getServiceDao();
+    public List<Service> find() throws DataBaseException {
         return dao.read();
     }
 
     @Override
-    public List<Service> find(int currentPage, int recordsPerPage) throws PersistentException {
-        ServiceDao dao = DaoFactory.getInstance().getServiceDao();
+    public List<Service> find(int currentPage, int recordsPerPage) throws DataBaseException {
         return dao.read(currentPage, recordsPerPage);
     }
 
     @Override
-    public Service find(Integer id) throws PersistentException {
-        ServiceDao dao = DaoFactory.getInstance().getServiceDao();
+    public Service find(Integer id) throws DataBaseException {
         return dao.read(id);
     }
 
 
     @Override
-    public List<Service> find(String name) throws PersistentException {
-        ServiceDao dao = DaoFactory.getInstance().getServiceDao();
+    public List<Service> find(String name) throws DataBaseException {
         return dao.read(name);
     }
 
     @Override
-    public List<Service> find(Date date) throws PersistentException {
-        ServiceDao dao = DaoFactory.getInstance().getServiceDao();
-        return null;
-    }
-
-
-    @Override
-    public Integer save(Service service) throws PersistentException {
-        ServiceDao dao = DaoFactory.getInstance().getServiceDao();
+    public Integer save(Service service) throws DataBaseException {
         if (service.getId() != null) {
             dao.update(service);
         } else {
@@ -60,8 +52,7 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
-    public void delete(Integer id) throws PersistentException {
-        ServiceDao dao = DaoFactory.getInstance().getServiceDao();
-        dao.delete(id);
+    public boolean delete(Integer id) throws DataBaseException {
+        return dao.delete(id);
     }
 }

@@ -3,7 +3,7 @@ package by.training.beautysalon.command.admin;
 import by.training.beautysalon.command.Command;
 import by.training.beautysalon.command.Forward;
 import by.training.beautysalon.entity.enumeration.Role;
-import by.training.beautysalon.exception.PersistentException;
+import by.training.beautysalon.exception.DataBaseException;
 import by.training.beautysalon.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,16 +11,21 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * The class {@code UserDeleteCommand} is used for deleting user.
+ */
 public class UserDeleteCommand extends Command {
     private static final Logger LOGGER = LogManager.getLogger();
+    private static final String USER_ID = "userId";
+    private static final String USER_ROLE = "userRole";
 
     @Override
-    public Forward execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
+    public Forward execute(HttpServletRequest request, HttpServletResponse response) throws DataBaseException {
         try {
             UserService service = serviceFactory.getUserService();
-            Integer id = Integer.parseInt(request.getParameter("userId"));
+            Integer id = Integer.parseInt(request.getParameter(USER_ID));
             Role role = Role.getById(Integer.parseInt(request.getParameter(
-                    "userRole")));
+                    USER_ROLE)));
 
             service.delete(id);
 
@@ -32,7 +37,7 @@ public class UserDeleteCommand extends Command {
             }
         } catch (NumberFormatException e) {
             LOGGER.error("Can't delete user with id ");
-            throw new PersistentException(e);
+            request.getSession().setAttribute("alert", "Can't determine id.");
         }
         return new Forward("/client/list.html");
 

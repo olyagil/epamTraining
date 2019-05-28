@@ -3,8 +3,8 @@ package by.training.beautysalon.dao.mysql;
 import by.training.beautysalon.dao.UserDao;
 import by.training.beautysalon.entity.User;
 import by.training.beautysalon.entity.enumeration.Role;
-import by.training.beautysalon.exception.PersistentException;
-import by.training.beautysalon.utill.ImageUtill;
+import by.training.beautysalon.exception.DataBaseException;
+import by.training.beautysalon.utill.ImageUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -58,12 +58,12 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     private static final String DELETE_BY_ID = "delete from users where id=?";
     private static final String COUNT_USERS = "select count(`id`) from `users` where `role`=?";
 
-    public UserDaoImpl(Connection connection) {
+    UserDaoImpl(Connection connection) {
         this.connection = connection;
     }
 
     @Override
-    public int countRows() throws PersistentException {
+    public int countRows() throws DataBaseException {
         int count = 0;
         try (PreparedStatement statement = connection.prepareStatement(COUNT_USERS)) {
             statement.setInt(1, Role.CLIENT.getId());
@@ -74,7 +74,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Can't count all users from DB.", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
         return count;
     }
@@ -82,7 +82,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     @Override
     public List<User> read(int currentPage, int recordsPerPage)
-            throws PersistentException {
+            throws DataBaseException {
         int start = currentPage * recordsPerPage - recordsPerPage;
         try (PreparedStatement statement = connection.prepareStatement(READ_ALL_BY_PARTS)) {
             statement.setInt(1, 2);
@@ -98,12 +98,12 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             return userList;
         } catch (SQLException e) {
             LOGGER.error("Can't find parts users from DB.", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public List<User> read(String login) throws PersistentException {
+    public List<User> read(String login) throws DataBaseException {
         try (PreparedStatement statement = connection.prepareStatement(READ_BY_LOGIN)) {
             statement.setString(1, login);
 //            statement.setInt(2, role.getId());
@@ -116,14 +116,14 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Can't find the user from DB by login.", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
 
     //TODO delete
     @Override
-    public List<User> read() throws PersistentException {
+    public List<User> read() throws DataBaseException {
         try (PreparedStatement statement = connection.prepareStatement(READ_ALL)) {
             statement.setInt(1, 2);
             List<User> userList;
@@ -136,12 +136,12 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             return userList;
         } catch (SQLException e) {
             LOGGER.error("Can't find all users from DB.", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public Integer create(User user) throws PersistentException {
+    public Integer create(User user) throws DataBaseException {
         try (PreparedStatement statement =
                      connection.prepareStatement(CREATE_USER_BY_ID,
                              Statement.RETURN_GENERATED_KEYS)) {
@@ -153,18 +153,18 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             statement.setInt(5, user.getGender().getId());
             statement.setInt(6, user.getPhone());
             statement.setDate(7, user.getBirthDate());
-            statement.setBlob(8, ImageUtill.decoder(user.getAvatar()));
+            statement.setBlob(8, ImageUtil.decoder(user.getAvatar()));
             statement.executeUpdate();
             return user.getId();
         } catch (SQLException e) {
             LOGGER.error("Can't create info about the user with id "
                     + user.getId(), e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
 
         }
     }
 
-    private Integer createUser(User user) throws PersistentException {
+    private Integer createUser(User user) throws DataBaseException {
         try (PreparedStatement statement = connection.prepareStatement(CREATE_USER,
                 Statement.RETURN_GENERATED_KEYS)) {
 
@@ -178,18 +178,18 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 } else {
                     LOGGER.error("There is no autoincremented index after trying " +
                             "to add record into `users` ");
-                    throw new PersistentException();
+                    throw new DataBaseException();
                 }
             }
         } catch (SQLException e) {
             LOGGER.error("Can't insert the user in db", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
 
     @Override
-    public User read(Integer id) throws PersistentException {
+    public User read(Integer id) throws DataBaseException {
         try (PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -203,13 +203,13 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Can't find the user from DB by id.", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
     public User read(String login, String password) throws
-            PersistentException {
+            DataBaseException {
         try (PreparedStatement statement =
                      connection.prepareStatement(SELECT_BY_PASSWORD_LOGIN)) {
             statement.setString(1, login);
@@ -223,13 +223,13 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Can't read the user from DB.", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
 
     @Override
-    public boolean update(User user) throws PersistentException {
+    public boolean update(User user) throws DataBaseException {
         try (PreparedStatement statement =
                      connection.prepareStatement(UPDATE_USER_INFO)) {
             statement.setString(1, user.getLogin());
@@ -245,44 +245,42 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         } catch (SQLException e) {
             LOGGER.error("Can't update info about user with id: "
                     + user.getId(), e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
 
     }
 
     @Override
-    public boolean updatePassword(User user) throws PersistentException {
+    public void updatePassword(User user) throws DataBaseException {
         try (PreparedStatement statement =
                      connection.prepareStatement(UPDATE_PASSWORD)) {
             statement.setString(1, user.getPassword());
             statement.setInt(2, user.getId());
             statement.executeUpdate();
-            return true;
         } catch (SQLException e) {
             LOGGER.error("Can't update password for user with id: "
                     + user.getId(), e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     @Override
-    public boolean updateAvatar(User user) throws PersistentException {
+    public void updateAvatar(User user) throws DataBaseException {
         try (PreparedStatement statement =
                      connection.prepareStatement(UPDATE_AVATAR)) {
-            statement.setBlob(1, ImageUtill.decoder(user.getAvatar()));
+            statement.setBlob(1, ImageUtil.decoder(user.getAvatar()));
             statement.setInt(2, user.getId());
             statement.executeUpdate();
-            return true;
         } catch (SQLException e) {
             LOGGER.error("Can't update avatar for user with id: "
                     + user.getId(), e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
 
     }
 
     @Override
-    public boolean delete(Integer id) throws PersistentException {
+    public boolean delete(Integer id) throws DataBaseException {
         try (PreparedStatement statement
                      = connection.prepareStatement(DELETE_BY_ID)) {
             statement.setInt(1, id);
@@ -290,7 +288,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             return true;
         } catch (SQLException e) {
             LOGGER.error("Can't delete user from DB with id: " + id, e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 }

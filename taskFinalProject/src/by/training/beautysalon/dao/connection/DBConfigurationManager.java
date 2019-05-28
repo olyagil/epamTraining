@@ -2,16 +2,17 @@ package by.training.beautysalon.dao.connection;
 
 import java.util.ResourceBundle;
 
-public class DBConfigurationManager {
+class DBConfigurationManager {
 
-    private static DBConfigurationManager instance = new DBConfigurationManager();
-    private ResourceBundle bundle = ResourceBundle.getBundle("db_config");
+    private final static DBConfigurationManager instance =
+            new DBConfigurationManager();
+    private final ResourceBundle bundle = ResourceBundle.getBundle("db_config");
 
     private DBConfigurationManager() {
 
     }
 
-    public static DBConfigurationManager getInstance() {
+    static DBConfigurationManager getInstance() {
         return instance;
     }
 

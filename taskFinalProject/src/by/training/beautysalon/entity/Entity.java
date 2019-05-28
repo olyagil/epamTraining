@@ -4,7 +4,16 @@ import java.io.Serializable;
 
 public abstract class Entity implements Serializable {
 
+
     private Integer id;
+
+    Entity() {
+    }
+
+    Entity(Integer id) {
+        this.id = id;
+    }
+
 
     public Integer getId() {
         return id;
@@ -16,8 +25,12 @@ public abstract class Entity implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Entity entity = (Entity) o;
 
@@ -29,9 +42,4 @@ public abstract class Entity implements Serializable {
         return getId() != null ? getId().hashCode() : 0;
     }
 
-    @Override
-    public String toString() {
-        return "id=" + id;
-
-    }
 }

@@ -1,6 +1,6 @@
 package by.training.beautysalon.dao.connection;
 
-import by.training.beautysalon.exception.PersistentException;
+import by.training.beautysalon.exception.DataBaseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,26 +11,37 @@ import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 //TODO add synchronization
-//TODO maybe delete destroy and finalize
 public class ConnectionPool {
 
     private static final Logger LOGGER = LogManager.getLogger();
+    private static final String DRIVER = "jdbc.driver";
+    private static final String URL = "jdbc.url";
+    private static final String USER = "jdbc.user";
+    private static final String PASSWORD = "jdbc.password";
+    private static final String POOL_SIZE_MAX = "jdbc.pool.size.max";
+    private static final String POOL_CONNECTION_TIMEOUT = "jdbc.pool.connection.timeout";
+    private static final String POOL_SIZE_START = "jdbc.pool.size.start";
     private String url;
     private String user;
     private String password;
     private int maxSize;
     private int checkConnectionTimeout;
 
-    private BlockingQueue<PooledConnection> freeConnections
+    private final BlockingQueue<PooledConnection> connectionPool
             = new LinkedBlockingQueue<>();
-    private Set<PooledConnection> usedConnections
+    private final Set<PooledConnection> usedConnections
             = new ConcurrentSkipListSet<>();
+    private final Lock getLock = new ReentrantLock();
+    private final Lock releaseLock = new ReentrantLock();
 
-    private static ConnectionPool instance = new ConnectionPool();
+    private final static ConnectionPool instance = new ConnectionPool();
 
     private ConnectionPool() {
+
     }
 
 
@@ -38,13 +49,14 @@ public class ConnectionPool {
         return instance;
     }
 
-    public Connection getConnection() throws PersistentException {
-
+    public Connection getConnection() throws DataBaseException {
+        LOGGER.debug("Getting connection from pool.");
         PooledConnection connection = null;
         while (connection == null) {
             try {
-                if (!freeConnections.isEmpty()) {
-                    connection = freeConnections.take();
+                getLock.lock();
+                if (!connectionPool.isEmpty()) {
+                    connection = connectionPool.take();
                     if (!connection.isValid(checkConnectionTimeout)) {
                         try {
                             connection.getConnection().close();
@@ -56,34 +68,36 @@ public class ConnectionPool {
                 } else if (usedConnections.size() < maxSize) {
                     connection = createConnection();
                 } else {
-                    LOGGER.error("The limit of number of database " +
-                            "connections is exceeded");
-                    throw new PersistentException();
+                    LOGGER.error("Maximum pool size reached, " +
+                            "no available connections!");
+                    throw new DataBaseException();
                 }
             } catch (InterruptedException | SQLException e) {
                 LOGGER.error("It is impossible to connect to a database", e);
-                throw new PersistentException(e);
+                throw new DataBaseException(e);
+            } finally {
+                getLock.unlock();
             }
         }
         usedConnections.add(connection);
         LOGGER.debug(String.format("Connection was received from pool. " +
-                "Current pool size: %d used connections; %d free connection",
-                usedConnections.size(), freeConnections.size()));
+                        "Current pool size: %d used connections; %d free connection",
+                usedConnections.size(), connectionPool.size()));
         return connection;
     }
 
 
     void releaseConnection(PooledConnection connection) {
         try {
+            releaseLock.lock();
             if (connection.isValid(checkConnectionTimeout)) {
                 connection.clearWarnings();
-//                connection.setAutoCommit(true);
                 usedConnections.remove(connection);
-                freeConnections.put(connection);
+                connectionPool.put(connection);
                 LOGGER.debug(String.format("Connection was released into pool. "
                                 + "Current pool size: %d used connections;"
                                 + " %d free connection", usedConnections.size(),
-                        freeConnections.size()));
+                        connectionPool.size()));
             }
         } catch (SQLException | InterruptedException e) {
             LOGGER.error("Can't return database connection into pool", e);
@@ -92,37 +106,37 @@ public class ConnectionPool {
             } catch (SQLException e2) {
                 LOGGER.error("Can't close connection", e2);
             }
+        } finally {
+            releaseLock.unlock();
         }
     }
 
-    public void init() throws PersistentException {
+    public void init() throws DataBaseException {
         try {
             DBConfigurationManager confManager =
                     DBConfigurationManager.getInstance();
             destroy();
-            Class.forName(confManager.getValue("jdbc.driver"));
-            this.url = confManager.getValue("jdbc.url");
-            this.user = confManager.getValue("jdbc.user");
-            this.password = confManager.getValue("jdbc.password");
-            this.maxSize = Integer.parseInt(confManager
-                    .getValue("jdbc.pool.size.max"));
+            Class.forName(confManager.getValue(DRIVER));
+            this.url = confManager.getValue(URL);
+            this.user = confManager.getValue(USER);
+            this.password = confManager.getValue(PASSWORD);
+            this.maxSize = Integer.parseInt(confManager.getValue(POOL_SIZE_MAX));
             this.checkConnectionTimeout = Integer.parseInt(confManager
-                    .getValue("jdbc.pool.connection.timeout"));
-            int startSize = Integer.parseInt(confManager
-                    .getValue("jdbc.pool.size.start"));
+                    .getValue(POOL_CONNECTION_TIMEOUT));
+            int startSize = Integer.parseInt(confManager.getValue(POOL_SIZE_START));
 
             for (int counter = 0; counter < startSize; counter++) {
-                freeConnections.put(createConnection());
+                connectionPool.put(createConnection());
             }
         } catch (ClassNotFoundException | InterruptedException | SQLException e) {
             LOGGER.fatal("It is impossible to initialize connection", e);
-            throw new PersistentException(e);
+            throw new DataBaseException(e);
         }
     }
 
     private void destroy() {
-        usedConnections.addAll(freeConnections);
-        freeConnections.clear();
+        usedConnections.addAll(connectionPool);
+        connectionPool.clear();
         for (PooledConnection connection : usedConnections) {
             try {
                 connection.getConnection().close();
@@ -139,8 +153,5 @@ public class ConnectionPool {
                 password));
     }
 
-    @Override
-    protected void finalize() throws Throwable {
-        destroy();
-    }
+
 }

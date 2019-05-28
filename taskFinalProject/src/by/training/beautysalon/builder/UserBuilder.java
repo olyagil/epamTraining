@@ -1,28 +1,39 @@
 package by.training.beautysalon.builder;
 
-import by.training.beautysalon.utill.ImageUtill;
 import by.training.beautysalon.entity.User;
 import by.training.beautysalon.entity.enumeration.Gender;
 import by.training.beautysalon.entity.enumeration.Role;
+import by.training.beautysalon.utill.ImageUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserBuilder implements Builder<User> {
 
+    private static final String USER_ID = "user_id";
+    private static final String LOGIN = "login";
+    private static final String ROLE = "role";
+    private static final String SURNAME = "surname";
+    private static final String NAME = "name";
+    private static final String PATRONYMIC = "patronymic";
+    private static final String GENDER = "gender";
+    private static final String PHONE = "phone";
+    private static final String BIRTH_DATE = "birth_date";
+    private static final String AVATAR = "avatar";
+
     @Override
     public User build(ResultSet resultSet) throws SQLException {
         User user = new User();
-        user.setId(resultSet.getInt("user_id"));
-        user.setLogin(resultSet.getString("login"));
-        user.setRole(Role.getById(resultSet.getInt("role")));
-        user.setSurname(resultSet.getString("surname"));
-        user.setName(resultSet.getString("name"));
-        user.setPatronymic(resultSet.getString("patronymic"));
-        user.setGender(Gender.getById(resultSet.getInt("gender")));
-        user.setPhone(resultSet.getInt("phone"));
-        user.setBirthDate(resultSet.getDate("birth_date"));
-        user.setAvatar(ImageUtill.encoder(resultSet.getBlob("avatar")));
+        user.setId(resultSet.getInt(USER_ID));
+        user.setLogin(resultSet.getString(LOGIN));
+        user.setRole(Role.getById(resultSet.getInt(ROLE)));
+        user.setSurname(resultSet.getString(SURNAME));
+        user.setName(resultSet.getString(NAME));
+        user.setPatronymic(resultSet.getString(PATRONYMIC));
+        user.setGender(Gender.getById(resultSet.getInt(GENDER)));
+        user.setPhone(resultSet.getInt(PHONE));
+        user.setBirthDate(resultSet.getDate(BIRTH_DATE));
+        user.setAvatar(ImageUtil.encoder(resultSet.getBlob(AVATAR)));
 
         return user;
     }
