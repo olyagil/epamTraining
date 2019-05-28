@@ -106,7 +106,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     public List<User> read(String login) throws DataBaseException {
         try (PreparedStatement statement = connection.prepareStatement(READ_BY_LOGIN)) {
             statement.setString(1, login);
-//            statement.setInt(2, role.getId());
             try (ResultSet resultSet = statement.executeQuery()) {
                 List<User> userList = new ArrayList<>();
                 while (resultSet.next()) {
@@ -119,9 +118,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             throw new DataBaseException(e);
         }
     }
-
-
-    //TODO delete
     @Override
     public List<User> read() throws DataBaseException {
         try (PreparedStatement statement = connection.prepareStatement(READ_ALL)) {

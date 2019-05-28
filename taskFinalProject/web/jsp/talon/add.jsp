@@ -24,7 +24,7 @@
         <div class="col-sm-3"></div>
         <div class="modal-body">
             <c:url value="/talon/save.html" var="talonSave"/>
-            <form action="${talonSave}" method="get">
+            <form action="${talonSave}" method="post">
                 <div class="form-group">
                     <label for="service">
                         <fmt:message key="talon.choose.service"/> </label>

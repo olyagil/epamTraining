@@ -50,7 +50,7 @@
 
     <div class="col-md-9">
         <c:url value="/talon/save.html" var="talonSaveUrl"/>
-        <form action="${talonSaveUrl}" method="get" class="row">
+        <form action="${talonSaveUrl}" method="post" class="row">
             <div class="col-md-6">
                 <input type="hidden" value="${requestScope.talon.id}" name="id">
                 <div class="form-group">

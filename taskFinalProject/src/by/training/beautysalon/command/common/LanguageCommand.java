@@ -15,7 +15,7 @@ import java.net.URISyntaxException;
  * Class ${@code LanguageCommand} is used for changing language.
  */
 public class LanguageCommand extends Command {
-    private final static Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
     private static final String LANGUAGE = "lang";
 
     @Override

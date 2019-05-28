@@ -2,18 +2,14 @@ package by.training.beautysalon.validator;
 
 import by.training.beautysalon.entity.enumeration.Gender;
 import by.training.beautysalon.utill.ImageUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.SQLException;
 import java.util.Base64;
 import java.util.regex.Pattern;
 
 public class UserValidator {
-    private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String REGEX_LOGIN = "^[a-zA-Z0-9_-]{3,16}$";
     private static final String REGEX_PASSWORD = "^[a-zA-Z0-9_-]{6,18}$";

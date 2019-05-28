@@ -46,7 +46,8 @@ public class AccountSaveCommand extends Command {
                 user.setId(id);
 
                 String login = request.getParameter(LOGIN);
-                if (UserValidator.checkLogin(login)) {
+                if (UserValidator.checkLogin(login)
+                        && service.find(login).isEmpty()) {
                     String name = request.getParameter(NAME);
                     String surname = request.getParameter(SURNAME);
                     String patronymic = request.getParameter(PATRONYMIC);
@@ -72,8 +73,8 @@ public class AccountSaveCommand extends Command {
             }
         } catch (IllegalArgumentException e) {
             LOGGER.debug("Can't parse date.", e);
-            session.setAttribute("failure_save_info", "Please enter correct " +
-                    "data.");
+            session.setAttribute("failure_save_info", "Such user is " +
+                    "exist or  enter correct data. ");
 
         }
         return new Forward("/account/edit/info.html");

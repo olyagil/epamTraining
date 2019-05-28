@@ -67,6 +67,7 @@ public class TalonSaveCommand extends Command {
                 date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
                         .parse(request.getParameter(RECEPTION_DATE));
             }
+            LOGGER.debug(date);
         } catch (ParseException e) {
             LOGGER.debug("Can't parse the date");
             request.getSession().setAttribute("alert", "Please, enter correct" +

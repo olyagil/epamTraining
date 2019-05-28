@@ -14,7 +14,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-//TODO add synchronization
 public class ConnectionPool {
 
     private static final Logger LOGGER = LogManager.getLogger();
@@ -38,7 +37,7 @@ public class ConnectionPool {
     private final Lock getLock = new ReentrantLock();
     private final Lock releaseLock = new ReentrantLock();
 
-    private final static ConnectionPool instance = new ConnectionPool();
+    private static final  ConnectionPool instance = new ConnectionPool();
 
     private ConnectionPool() {
 

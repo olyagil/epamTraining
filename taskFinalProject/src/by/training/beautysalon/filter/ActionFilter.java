@@ -33,7 +33,7 @@ public class ActionFilter implements Filter {
 
             LOGGER.debug(String.format("Starting of processing of request for URI \"%s\"", uri));
             int beginAction = contextPath.length() + 1;
-            int endAction = uri.indexOf(".");
+            int endAction = uri.indexOf('.');
             String commandName;
             if (endAction >= 0) {
                 commandName = uri.substring(beginAction, endAction);

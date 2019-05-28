@@ -72,6 +72,11 @@
                 </form>
             </c:if>
         </div>
+        <c:if test="${not empty sessionScope.alert}">
+            <div class="alert alert-danger" role="alert">
+                <p><c:out value="${sessionScope.alert}"/></p>
+                <c:remove var="alert" scope="session"/></div>
+        </c:if>
         <c:if test="${not empty sessionScope.success_save_talon}">
             <div class="alert alert-success" role="alert">
                     ${sessionScope.success_save_talon}

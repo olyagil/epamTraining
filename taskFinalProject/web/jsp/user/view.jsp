@@ -38,7 +38,7 @@
                     </div>
                     <div class="col text-right">
                         <div class="btn-group">
-                            <c:if test="${requestScope.user.role.id eq 1}">
+                            <c:if test="${sessionScope.role eq 0}">
                                 <form action="${userEditUrl}"
                                       method="get"
                                       class="col-md-6">
@@ -49,18 +49,19 @@
                                         <fmt:message key="button.edit"/>
                                     </button>
                                 </form>
+
+                                <form action="${userDeleteUrl}" method="post"
+                                      class="col-md-6">
+                                    <input type="hidden" name="userRole"
+                                           value="${requestScope.user.role.id}">
+                                    <button class="btn btn-lg btn-danger"
+                                            type="submit"
+                                            name="userId"
+                                            value="${requestScope.user.id}">
+                                        <fmt:message key="button.delete"/>
+                                    </button>
+                                </form>
                             </c:if>
-                            <form action="${userDeleteUrl}" method="post"
-                                  class="col-md-6">
-                                <input type="hidden" name="userRole"
-                                       value="${requestScope.user.role.id}">
-                                <button class="btn btn-lg btn-danger"
-                                        type="submit"
-                                        name="userId"
-                                        value="${requestScope.user.id}">
-                                    <fmt:message key="button.delete"/>
-                                </button>
-                            </form>
                         </div>
                     </div>
                 </div>

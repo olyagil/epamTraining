@@ -4,7 +4,7 @@ import java.util.ResourceBundle;
 
 class DBConfigurationManager {
 
-    private final static DBConfigurationManager instance =
+    private static final  DBConfigurationManager instance =
             new DBConfigurationManager();
     private final ResourceBundle bundle = ResourceBundle.getBundle("db_config");
 

@@ -14,7 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 
 /**
  * The class {@code AccountSaveAvatarCommand} is used for saving avatar of user.
@@ -36,7 +35,7 @@ public class AccountSaveAvatarCommand extends Command {
                 user.setAvatar(UserValidator.getAvatar(request.getPart(IMG),
                         Gender.FEMALE));
                 service.save(user);
-            } catch (IOException | ServletException | SQLException e) {
+            } catch (IOException | ServletException e) {
                 LOGGER.error("Can't read the image from file", e);
                 throw new DataBaseException(e);
             }

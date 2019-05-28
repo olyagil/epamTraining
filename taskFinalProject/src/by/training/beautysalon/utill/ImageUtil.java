@@ -36,7 +36,6 @@ public class ImageUtil {
             fileInputStreamReader = new FileInputStream(file);
         } catch (FileNotFoundException e) {
             LOGGER.error("Can't find the file" + path);
-            e.printStackTrace();
         }
         byte[] bytes = new byte[(int) file.length()];
         try {

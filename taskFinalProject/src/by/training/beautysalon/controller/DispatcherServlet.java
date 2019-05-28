@@ -20,7 +20,7 @@ import java.io.IOException;
 @MultipartConfig
 public class DispatcherServlet extends HttpServlet {
 
-    private final static Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html");

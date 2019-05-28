@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class FeedBackAddCommand extends Command {
-    private static final Logger LOGGER = LogManager.getLogger();
     private static final String TALON_ID = "talonId";
     private static final String TALON = "talon";
 

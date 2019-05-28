@@ -7,7 +7,6 @@ import by.training.beautysalon.exception.DataBaseException;
 import java.util.List;
 
 public interface Dao<Type extends Entity> {
-    //    Optional<Type> read(Integer id) throws DataBaseException;
     int countRows() throws DataBaseException;
 
     List<Type> read(int currentPage, int recordsPerPage) throws DataBaseException;

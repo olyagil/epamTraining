@@ -167,7 +167,7 @@
                 </div>
                 <div class="modal-body">
                     <c:url value="/service/save.html" var="serviceSaveUrl"/>
-                    <form action="${serviceSaveUrl}" method="get">
+                    <form action="${serviceSaveUrl}" method="post">
                         <div class="form-group">
 
                             <fmt:message key="placeholder.service.name"

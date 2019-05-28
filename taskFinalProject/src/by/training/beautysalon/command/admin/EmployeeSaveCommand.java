@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
-import java.sql.SQLException;
 
 /**
  * The class {@code EmployeeSaveCommand} is used for saving info about employee.
@@ -40,6 +39,7 @@ public class EmployeeSaveCommand extends Command {
     private static final String EMPLOYMENT_DATE = "employment_date";
     private static final String SPECIALTY = "specialty";
     private static final String BIRTH_DATE = "birth_date";
+    private static final String ALERT_MESSAGE = "alert_message";
 
     @Override
     public Forward execute(HttpServletRequest request, HttpServletResponse response) throws DataBaseException {
@@ -73,7 +73,7 @@ public class EmployeeSaveCommand extends Command {
                     try {
                         employee.setAvatar(UserValidator.getAvatar(request.getPart(IMG),
                                 employee.getGender()));
-                    } catch (IOException | ServletException | SQLException e) {
+                    } catch (IOException | ServletException e) {
                         LOGGER.error("Can't read the image from file", e);
                         throw new DataBaseException(e);
                     }
@@ -81,7 +81,7 @@ public class EmployeeSaveCommand extends Command {
                     LOGGER.debug("Employee is saved.");
 
                 } else {
-                    request.getSession().setAttribute("alert_message",
+                    request.getSession().setAttribute(ALERT_MESSAGE,
                             "Such user is exist or enter the correct date.");
                     return new Forward("/employee/add.html");
                 }
@@ -99,12 +99,12 @@ public class EmployeeSaveCommand extends Command {
 
         } catch (IllegalArgumentException e) {
             LOGGER.error("Can't parse the data of the user");
-            request.setAttribute("alert_message", "Please, enter the correct " +
+            request.setAttribute(ALERT_MESSAGE, "Please, enter the correct " +
                     "date.");
             if (id != null) {
                 return new Forward("/employee/edit.html?specialistId=" + id);
             } else {
-                request.getSession().setAttribute("alert_message", "Please, " +
+                request.getSession().setAttribute(ALERT_MESSAGE, "Please, " +
                         "enter the correct date.");
                 return new Forward("/employee/add.html");
 
